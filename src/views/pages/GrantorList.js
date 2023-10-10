@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 // ** Reactstrap Imports
 import {
@@ -20,12 +20,15 @@ import image2 from '@src/assets/images/avatars/2.png'
 import image3 from '@src/assets/images/avatars/3.png'
 import { Tooltip as ReactTooltip } from "react-tooltip";
 
-const GrantorList = () => {
+const GrantorList = (props) => {
   const source = finger;
   const sourceapp = fingerapp;
   // ** States
   const [basicModal, setBasicModal] = useState(false);
-
+  const [guarantorList, setGuarantorList] = useState(props?.guarantors);
+useEffect(() =>{
+  setGuarantorList(props?.guarantors)
+},[props?.guarantors])
   return (
     <div className="demo-inline-spacing">
       <div className="basic-modal">
@@ -52,18 +55,37 @@ const GrantorList = () => {
           <Table responsive>
       <thead>
         <tr>
-          <th>Photo</th>
           <th>Name</th>
-          <th>Father Name</th>
           <th>NID Number</th>
+          <th>Father Name</th>
+          <th>Mother Name</th>
           <th>Phone Number</th>
-          <th>Relation</th>
-          <th>Status</th>
+          <th>Profession</th>
+          <th>Created By</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
+        {
+          guarantorList?.length > 0 ? guarantorList?.map((v, i) => {
+            return (
+            <tr key={i}>
+              <td>{v.nameEn}</td>
+              <td>{v.nationalId}</td>
+              <td>{v.father}</td>
+              <td>{v.mother}</td>
+              <td>{v.mobile}</td>
+              <td>{v.occupation}</td>
+              <td>{v.createdBy}</td>
+              <td><Badge color={'primary'} className="text-capitalize" style={{cursor:"pointer"}} >
+                <span >Edit</span>
+              </Badge></td>
+            </tr>)
+          }) : <tr>
+            <td colSpan="7"><p style={{textAlign:"center", marginTop:"15px"}}>No Guarantor Found</p></td>
+            </tr>
+        }
+        {/* <tr>
           <td>
             <img className='me-75' src={image2} alt='angular' height='20' width='20' />
           </td>
@@ -128,7 +150,7 @@ const GrantorList = () => {
               </Badge>
               </Link>
           </td>
-        </tr>
+        </tr> */}
       </tbody>
     </Table>
           </ModalBody>

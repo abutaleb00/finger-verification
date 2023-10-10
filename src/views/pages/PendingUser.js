@@ -257,7 +257,7 @@ const PendingUser = () => {
                   <div style={{padding:"2px"}} className="btn btn-sm" >
                   <Link
                     id='button2'
-                      to={`/user-view`}
+                      to={`/view-application`}
                       state={{ userinfo: alldata }}
                   >
                     <Badge id="details" color={'secondary'} className="text-capitalize" style={{cursor:"pointer"}} >
@@ -273,7 +273,7 @@ const PendingUser = () => {
                   <div style={{padding:"2px"}} className="btn btn-sm" >
                   <Link
                     id='button2'
-                      to={`/user-edit`}
+                      to={`/edit-application`}
                       state={{ userinfo: alldata }}
                   >
                     <Badge id="edit" color={'info'} className="text-capitalize" style={{cursor:"pointer"}} >

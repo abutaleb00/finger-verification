@@ -18,39 +18,30 @@ import {
   import axios from 'axios'
   import UILoader from '@components/ui-loader'
   import { v4 as uuidv4 } from 'uuid'
-  import { nidfield, presentAddressData, parmanentAddressData } from "../../components/localjs/data";
+  import { nidfield, presentAddressData, parmanentAddressData } from "../../components/localjs/data2";
   import TextBox from "../../components/TextBox"
   
-  const EditApplicant = (props) => {
+  const CreateEcUser = (props) => {
     const location = useLocation()
     const navigate = useNavigate()
-    const [application, setApplication] = useState(location.state?.userinfo)
-    const [state, setState] = useState(location.state?.userinfo?.loanee)
+    const [state, setState] = useState([])
     const [block, setBlock] = useState(false)
-    const [permanentAddress, setPermanentAddress] = useState(location.state?.userinfo?.loanee?.permanentAddress)
-    const [presentAddress, setPresentAddress] = useState(location.state?.userinfo?.loanee?.presentAddress)
+    const [permanentAddress, setPermanentAddress] = useState([])
+    const [presentAddress, setPresentAddress] = useState([])
     console.log("location", location.state)
 
    const handleChange = (e) => {
         setState({ ...state, [e.target.name]: e.target.value })
       }
    const handlePresentChange = (e) => {
-    setPresentAddress({ ...state, [e.target.name]: e.target.value })
+    setPresentAddress({ ...presentAddress, [e.target.name]: e.target.value })
       }
    const handlePermanentChange = (e) => {
-    setPermanentAddress({ ...state, [e.target.name]: e.target.value })
+    setPermanentAddress({ ...permanentAddress, [e.target.name]: e.target.value })
       }
     const updateLoanApplication = (e) =>{
   e.preventDefault()
   const sendata = {
-    loanapplication: {
-        loan_no: application?.loan_no,
-        createdBy: application?.createdBy,
-        branchName: application?.branchName,
-        status: application?.status,
-        id: application?.id
-    },
-    loanee: {
         name: state?.name,
         nameEn: state?.nameEn,
         bloodGroup: state?.bloodGroup,
@@ -58,22 +49,17 @@ import {
         father: state?.father,
         mother: state?.mother,
         spouse: state?.spouse,
-        mobile: state?.mobile,
-        designation: state?.designation,
-        email: state?.email,
         nationalId: state?.nationalId,
         occupation: state?.occupation,
         permanentAddress: permanentAddress,
         presentAddress: presentAddress
-    },
-    guarantors: application?.guarantors
   }
   setBlock(true)
-  axios.post('/addloan', sendata).then(res => {
+  axios.post('/addvoter', sendata).then(res => {
     if(res.data.result.error === false){
       setBlock(false)
       toast.success("Application Update Succsfully")
-      navigate('/new-applications')
+      navigate('/admin/ec-data')
     } else if(res.data.result.error === true){
       setBlock(false)
       toast.error(res.data.result.errorMsg)
@@ -90,7 +76,7 @@ import {
       <Card>
         <CardHeader style={{marginBottom:"10px", borderBottom:"1px dashed gray"}}>
           <CardTitle tag="h4">Update Applicant Information</CardTitle>
-          <Button tag={Link} to="/pending-user" color="primary" className="btn-md" outline>Back to Applicant List</Button>
+          <Button tag={Link} to="/admin/ec-data" color="primary" className="btn-md" outline>Back to User List</Button>
         </CardHeader>
   
         <CardBody>
@@ -109,7 +95,6 @@ import {
                     isMandatory={v.isMandatory}
                     placeholder={v.placeholder}
                     disable={v.disable}
-                    val={state[v.id] !== undefined && state[v.id] !== null ? state[v.id] : "" }
                     ChangeHandler={(e) => handleChange(e)}
                     />
                     );
@@ -132,7 +117,6 @@ import {
                     isMandatory={v.isMandatory}
                     placeholder={v.placeholder}
                     disable={v.disable}
-                    val={presentAddress[v.id] !== undefined && presentAddress[v.id] !== null ? presentAddress[v.id] : "" }
                     ChangeHandler={(e) => handlePresentChange(e)}
                     />
                     );
@@ -155,7 +139,6 @@ import {
                     isMandatory={v.isMandatory}
                     placeholder={v.placeholder}
                     disable={v.disable}
-                    val={permanentAddress[v.id] !== undefined && permanentAddress[v.id] !== null ? permanentAddress[v.id] : "" }
                     ChangeHandler={(e) => handlePermanentChange(e)}
                     />
                     );
@@ -177,4 +160,4 @@ import {
       </UILoader>
     );
   };
-  export default EditApplicant
+  export default CreateEcUser

@@ -20,14 +20,16 @@ import "flatpickr/dist/themes/airbnb.css";
 // ** Third Party Components
 import "cleave.js/dist/addons/cleave-phone.us";
 import GrantorList from "./GrantorList";
-import GrantorEdit from "./GrantorEdit";
+import axios from 'axios'
 import { User, Edit, BarChart } from 'react-feather'
 import MUIDataTable from "mui-datatables"
 import moment from "moment"
 import { Search } from 'react-feather'
 // ** Styles
 import "@styles/react/libs/react-select/_react-select.scss";
-import data from "../components/ec.json"
+import toast from 'react-hot-toast'
+import Swal from "sweetalert2"
+import UILoader from '@components/ui-loader'
 
 
 const styles = {
@@ -44,82 +46,201 @@ const styles = {
 const Reports = () => {
     const [startDate, setStartDate] = useState(moment().subtract(30, 'days').format("YYYY-MM-DD"))
     const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"))
-    const [data, setData] = useState([["20-09-2023","Mirpur Branch","ASIF BIN MOSTAFA ANIK", "মোঃ গোলাম মোস্তফা", "রাব্বেয়া মোস্তফা", "1948048457", "17-09-1992", "Service", "2", "Verified"],
-    ["15-09-2023","Gulshan 1 Branch","MD SOLIMAN AL- HASAN", "মোঃ ফজলুর রহমান", "সালেহা বেগম", "3263339149", "01-11-1991", "ছাত্র", "3", "Verified"],
-    ["12-09-2023","Gulshan 1 Branch","Moin Mostakim", "মোঃ নাছির উদ্দিন", "মনোয়ারা বেগম", "34546678996", "25-10-1989", "Service", "1", "Pending"],
-    ["02-09-2023","Dhanmondi Branch","Abdul Kalam", "আহমেদ শরীফ", "রেবাকা আমিন", "2389098765", "20-03-1992", "ছাত্র", "2", "Verified"]])
+    const [block, setBlock] = useState(false)
+    const [data, setData] = useState([])
     const [state, setState] = useState({
         startDate: startDate,
         endDate: endDate,
         branch: null,
         status: null
     })
-    const columns = ["Create Date", "Branch", "Applicant Name", "Father Name", "Mother Name", "NID Number", "Date of Birth", "Occupation", "Guarantor", "Status"]
-
-    const data1 = [
-     ["20-09-2023","Mirpur Branch","ASIF BIN MOSTAFA ANIK", "মোঃ গোলাম মোস্তফা", "রাব্বেয়া মোস্তফা", "1948048457", "17-09-1992", "Service", "2", "Verified"],
-     ["15-09-2023","Gulshan 1 Branch","MD SOLIMAN AL- HASAN", "মোঃ ফজলুর রহমান", "সালেহা বেগম", "3263339149", "01-11-1991", "ছাত্র", "3", "Verified"],
-     ["12-09-2023","Gulshan 1 Branch","Moin Mostakim", "মোঃ নাছির উদ্দিন", "মনোয়ারা বেগম", "34546678996", "25-10-1989", "Service", "1", "Pending"],
-     ["02-09-2023","Dhanmondi Branch","Abdul Kalam", "আহমেদ শরীফ", "রেবাকা আমিন", "2389098765", "20-03-1992", "ছাত্র", "2", "Verified"]
+    const allPendingApplicant = () => {
+      setBlock(true)
+       axios.get('/allLoans').then(res => {
+        if(res.data.result.error === false){
+          setBlock(false)
+          setData(res.data.data)
+        } else  if(res.data.result.error === false){
+          setBlock(false)
+          toast.error(res.data.result.errorMsg)
+        }
+       })
+       .catch((err) =>{
+        setBlock(false)
+          toast.error(err.data.result.errorMsg)
+       })
+     }
+     const columns = [
+      {
+        name: "loan_no",
+        label: "Application No",
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRender: (value) => {
+            return (
+              <div style={{ width: "auto" }}>
+                {value !== null && value !== undefined ? value : "N/A"}
+              </div>
+            );
+          },
+        },
+      },
+      {
+        name: "creationDate",
+        label: "Date",
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRender: (value) => {
+            return (
+              <div style={{ width: "auto" }}>
+                {value !== null && value !== undefined ? value : "N/A"}
+              </div>
+            );
+          },
+        },
+      },
+      {
+        name: "nameEn",
+        label: "Applicant Name",
+        searchable: true,
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRenderLite: (dataIndex) => {
+            const loanee = data[dataIndex]?.loanee
+            return (
+                <div style={{ width: "auto"}}>
+                {loanee?.nameEn}
+              </div>
+            )
+          }
+        },
+      },
+      {
+        name: "nationalId",
+        label: "NID",
+        searchable: true,
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRenderLite: (dataIndex) => {
+            const loanee = data[dataIndex]?.loanee
+            return (
+                <div style={{ width: "auto"}}>
+                {loanee?.nationalId}
+              </div>
+            )
+          }
+        },
+      },
+      {
+        name: "lonee",
+        label: "Father Name",
+        searchable: true,
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRenderLite: (dataIndex) => {
+            const loanee = data[dataIndex]?.loanee
+            return (
+                <div style={{ width: "auto"}}>
+                {loanee?.father}
+              </div>
+            )
+          }
+        },
+      },
+      {
+        name: "lonee",
+        label: "Mother Name",
+        searchable: true,
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRenderLite: (dataIndex) => {
+            const loanee = data[dataIndex]?.loanee
+            return (
+                <div style={{ width: "auto"}}>
+                {loanee?.mother}
+              </div>
+            )
+          }
+        },
+      },
+      {
+        name: "mobile",
+        label: "Mobile",
+        searchable: true,
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRenderLite: (dataIndex) => {
+            const loanee = data[dataIndex]?.loanee
+            return (
+                <div style={{ width: "auto"}}>
+                {loanee?.mobile}
+              </div>
+            )
+          }
+        },
+      },
+      {
+        name: "branchName",
+        label: "Branch",
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRender: (value) => {
+            return (
+              <div>{value !== null && value !== undefined ? value : "N/A"}</div>
+            );
+          },
+        },
+      },
+      {
+        name: "createdBy",
+        label: "Created By",
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRender: (value) => {
+            return (
+              <div>{value !== null && value !== undefined ? value : "N/A"}</div>
+            );
+          },
+        },
+      },
+      {
+        name: "modifiedBy",
+        label: "Completed By",
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRender: (value) => {
+            return (
+              <div>{value !== null && value !== undefined ? value : "N/A"}</div>
+            );
+          },
+        },
+      },
+      {
+        name: "status",
+        label: "Status",
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRender: (value) => {
+            return (
+              <div style={{textAlign:"center"}}><Badge color={value === 1 ? "primary" : value === 0 ? "warning" : "success"}>{value === 1 ? "Waiting for Approval" : value === 0 ? "Pending" : value === 2 ? "Verified": ""}</Badge></div>
+            );
+          },
+        },
+      }
     ]
  const getSearch =() =>{
-    if(state.branch === null){
-        setData([
-            ["20-09-2023","Mirpur Branch","ASIF BIN MOSTAFA ANIK", "মোঃ গোলাম মোস্তফা", "রাব্বেয়া মোস্তফা", "1948048457", "17-09-1992", "Service", "2", "Verified"],
-            ["15-09-2023","Gulshan 1 Branch","MD SOLIMAN AL- HASAN", "মোঃ ফজলুর রহমান", "সালেহা বেগম", "3263339149", "01-11-1991", "ছাত্র", "3", "Verified"],
-            ["12-09-2023","Gulshan 1 Branch","Moin Mostakim", "মোঃ নাছির উদ্দিন", "মনোয়ারা বেগম", "34546678996", "25-10-1989", "Service", "1", "Pending"],
-            ["02-09-2023","Dhanmondi Branch","Abdul Kalam", "আহমেদ শরীফ", "রেবাকা আমিন", "2389098765", "20-03-1992", "ছাত্র", "2", "Verified"]
-        ])
-    } else if(state.branch === 1){
-        setData([
-            ["20-09-2023","Mirpur Branch","ASIF BIN MOSTAFA ANIK", "মোঃ গোলাম মোস্তফা", "রাব্বেয়া মোস্তফা", "1948048457", "17-09-1992", "Service", "2", "Verified"]
-        ])
-    } else if(state.branch === 2){
-        setData([
-            ["15-09-2023","Gulshan 1 Branch","MD SOLIMAN AL- HASAN", "মোঃ ফজলুর রহমান", "সালেহা বেগম", "3263339149", "01-11-1991", "ছাত্র", "3", "Verified"],
-     ["12-09-2023","Gulshan 1 Branch","Moin Mostakim", "মোঃ নাছির উদ্দিন", "মনোয়ারা বেগম", "34546678996", "25-10-1989", "Service", "1", "Pending"]
-        ])
-    } else if(state.branch === 3){
-        setData([
-            ["02-09-2023","Dhanmondi Branch","Abdul Kalam", "আহমেদ শরীফ", "রেবাকা আমিন", "2389098765", "20-03-1992", "ছাত্র", "2", "Verified"]
-        ])
-    } else if(state.branch === 1 && state.status === 1){
-        setData([
-            ["20-09-2023","Mirpur Branch","ASIF BIN MOSTAFA ANIK", "মোঃ গোলাম মোস্তফা", "রাব্বেয়া মোস্তফা", "1948048457", "17-09-1992", "Service", "2", "Verified"]
-        ])
-    } else if(state.branch === 4){
-        setData([
-           
-        ])
-    }
-    if(state.status === 1){
-        setData([
-            ["20-09-2023","Mirpur Branch","ASIF BIN MOSTAFA ANIK", "মোঃ গোলাম মোস্তফা", "রাব্বেয়া মোস্তফা", "1948048457", "17-09-1992", "Service", "2", "Verified"],
-            ["15-09-2023","Gulshan 1 Branch","MD SOLIMAN AL- HASAN", "মোঃ ফজলুর রহমান", "সালেহা বেগম", "3263339149", "01-11-1991", "ছাত্র", "3", "Verified"],
-            ["02-09-2023","Dhanmondi Branch","Abdul Kalam", "আহমেদ শরীফ", "রেবাকা আমিন", "2389098765", "20-03-1992", "ছাত্র", "2", "Verified"]
-        ])
-    } else if(state.status === 2){
-        setData([
-            ["12-09-2023","Gulshan 1 Branch","Moin Mostakim", "মোঃ নাছির উদ্দিন", "মনোয়ারা বেগম", "34546678996", "25-10-1989", "Service", "1", "Pending"]
-        ])
-    } else if(state.status === 2 && state.branch !== 2){
-        setData([
-        ])
-    }
-    if(moment(startDate).format("YYYY-MM-DD") === moment().format("2023-09-19")){
-        setData([
-            ["20-09-2023","Mirpur Branch","ASIF BIN MOSTAFA ANIK", "মোঃ গোলাম মোস্তফা", "রাব্বেয়া মোস্তফা", "1948048457", "17-09-1992", "Service", "2", "Verified"],
-            ["15-09-2023","Gulshan 1 Branch","MD SOLIMAN AL- HASAN", "মোঃ ফজলুর রহমান", "সালেহা বেগম", "3263339149", "01-11-1991", "ছাত্র", "3", "Verified"],
-        ])
-    }else if (moment(startDate).format("YYYY-MM-DD") !== moment().format("2023-09-19")){
-        setData([
-            ["20-09-2023","Mirpur Branch","ASIF BIN MOSTAFA ANIK", "মোঃ গোলাম মোস্তফা", "রাব্বেয়া মোস্তফা", "1948048457", "17-09-1992", "Service", "2", "Verified"],
-            ["15-09-2023","Gulshan 1 Branch","MD SOLIMAN AL- HASAN", "মোঃ ফজলুর রহমান", "সালেহা বেগম", "3263339149", "01-11-1991", "ছাত্র", "3", "Verified"],
-            ["12-09-2023","Gulshan 1 Branch","Moin Mostakim", "মোঃ নাছির উদ্দিন", "মনোয়ারা বেগম", "34546678996", "25-10-1989", "Service", "1", "Pending"],
-            ["02-09-2023","Dhanmondi Branch","Abdul Kalam", "আহমেদ শরীফ", "রেবাকা আমিন", "2389098765", "20-03-1992", "ছাত্র", "2", "Verified"]
-        ])
-    }
-    console.log("start", startDate)
+    console.log(first)
  }
     const branchOption = [
         {value: null, label: "Select Branch"},
@@ -141,9 +262,10 @@ const Reports = () => {
     }
 
   useEffect(()=> {
-    localStorage.setItem("accountType", "0")
+    allPendingApplicant()
   }, [])
   return (
+    <UILoader blocking={block}>
     <Card>
       <CardHeader className="border-bottom">
         <CardTitle tag="h4">Application List</CardTitle>
@@ -246,6 +368,7 @@ const Reports = () => {
       
       </CardBody>
     </Card>
+    </UILoader>
   );
 };
 

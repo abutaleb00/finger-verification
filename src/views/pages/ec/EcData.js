@@ -170,27 +170,36 @@ const EcData = () => {
                   <div style={{ width: "auto"}}>
                   <div style={{ display: "inline-flex" }}>
                     <div style={{padding:"2px"}} className="btn btn-sm" >
-                    <Eye id="details" size={14} className='me-50' color="green" />
+                    <Badge id="details" color={'secondary'} className="text-capitalize" style={{cursor:"pointer"}} >
+                    <span ><Eye /></span>
+                    </Badge>
                     <UncontrolledTooltip
                         placement="top"
                         target="details"
                       > View</UncontrolledTooltip>
                     </div>
                     <div style={{padding:"2px"}} className="btn btn-sm" >
-                    <Edit id="edit" size={14} className='me-50' color="blue" />
+                      <Link
+                        to={`/admin/ec-user-update`}
+                        state={{ userinfo: alldata }}
+                    >
+                      <Badge id="edit" color={'info'} className="text-capitalize" style={{cursor:"pointer"}} >
+                    <span ><Edit /></span>
+                    </Badge>
+                    </Link>
                     <UncontrolledTooltip
                         placement="top"
                         target="edit"
                       > Edit</UncontrolledTooltip>
                     </div>
-                    <div style={{padding:"2px"}} className="btn btn-sm" >
+                    {/* <div style={{padding:"2px"}} className="btn btn-sm" >
                     <Trash id="delete" size={14} className='me-50' color="red" />
                     <UncontrolledTooltip
                         placement="top"
                         target="delete"
                         trigger="hover"
                       > Delete</UncontrolledTooltip>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               )
@@ -264,7 +273,7 @@ const EcData = () => {
             }}
           />
         </Col>
-        <Col md="3">
+        <Col md="2">
         <FormGroup className="mbb">
             <label>Branch Name</label>
           <Select
@@ -281,7 +290,7 @@ const EcData = () => {
            />
         </FormGroup>
         </Col>
-        <Col md="3">
+        <Col md="2">
         <FormGroup className="mbb">
          <label>Select Status</label>
           <Select
@@ -318,6 +327,9 @@ const EcData = () => {
             <Search size={14} />
             <span className="align-middle ms-25">Search</span>
           </Button.Ripple>
+        </Col>
+        <Col md="2" style={{textAlign:"right"}}>
+            <Button style={{marginTop:"18px",}} tag={Link} to="/admin/ec-user-create" color="primary" className=''> + Add New </Button>
         </Col>
       </Row>
       <MUIDataTable

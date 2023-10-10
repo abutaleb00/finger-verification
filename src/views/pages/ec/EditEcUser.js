@@ -18,39 +18,31 @@ import {
   import axios from 'axios'
   import UILoader from '@components/ui-loader'
   import { v4 as uuidv4 } from 'uuid'
-  import { nidfield, presentAddressData, parmanentAddressData } from "../../components/localjs/data";
+  import { nidfield, presentAddressData, parmanentAddressData } from "../../components/localjs/data2";
   import TextBox from "../../components/TextBox"
   
-  const EditApplicant = (props) => {
+  const EditEcUser = (props) => {
     const location = useLocation()
     const navigate = useNavigate()
     const [application, setApplication] = useState(location.state?.userinfo)
-    const [state, setState] = useState(location.state?.userinfo?.loanee)
+    const [state, setState] = useState(location.state?.userinfo)
     const [block, setBlock] = useState(false)
-    const [permanentAddress, setPermanentAddress] = useState(location.state?.userinfo?.loanee?.permanentAddress)
-    const [presentAddress, setPresentAddress] = useState(location.state?.userinfo?.loanee?.presentAddress)
+    const [permanentAddress, setPermanentAddress] = useState(location.state?.userinfo?.permanentAddress)
+    const [presentAddress, setPresentAddress] = useState(location.state?.userinfo?.presentAddress)
     console.log("location", location.state)
 
    const handleChange = (e) => {
         setState({ ...state, [e.target.name]: e.target.value })
       }
    const handlePresentChange = (e) => {
-    setPresentAddress({ ...state, [e.target.name]: e.target.value })
+    setPresentAddress({ ...presentAddress, [e.target.name]: e.target.value })
       }
    const handlePermanentChange = (e) => {
-    setPermanentAddress({ ...state, [e.target.name]: e.target.value })
+    setPermanentAddress({ ...permanentAddress, [e.target.name]: e.target.value })
       }
     const updateLoanApplication = (e) =>{
   e.preventDefault()
   const sendata = {
-    loanapplication: {
-        loan_no: application?.loan_no,
-        createdBy: application?.createdBy,
-        branchName: application?.branchName,
-        status: application?.status,
-        id: application?.id
-    },
-    loanee: {
         name: state?.name,
         nameEn: state?.nameEn,
         bloodGroup: state?.bloodGroup,
@@ -65,15 +57,13 @@ import {
         occupation: state?.occupation,
         permanentAddress: permanentAddress,
         presentAddress: presentAddress
-    },
-    guarantors: application?.guarantors
   }
   setBlock(true)
-  axios.post('/addloan', sendata).then(res => {
+  axios.post('/addvoter', sendata).then(res => {
     if(res.data.result.error === false){
       setBlock(false)
       toast.success("Application Update Succsfully")
-      navigate('/new-applications')
+      navigate('/admin/ec-data')
     } else if(res.data.result.error === true){
       setBlock(false)
       toast.error(res.data.result.errorMsg)
@@ -89,8 +79,8 @@ import {
       <UILoader blocking={block}>
       <Card>
         <CardHeader style={{marginBottom:"10px", borderBottom:"1px dashed gray"}}>
-          <CardTitle tag="h4">Update Applicant Information</CardTitle>
-          <Button tag={Link} to="/pending-user" color="primary" className="btn-md" outline>Back to Applicant List</Button>
+          <CardTitle tag="h4">Update EC User Information</CardTitle>
+          <Button tag={Link} to="/admin/ec-data" color="primary" className="btn-md" outline>Back to User List</Button>
         </CardHeader>
   
         <CardBody>
@@ -177,4 +167,4 @@ import {
       </UILoader>
     );
   };
-  export default EditApplicant
+  export default EditEcUser

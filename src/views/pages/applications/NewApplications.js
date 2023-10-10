@@ -18,15 +18,14 @@ import Swal from "sweetalert2"
 import Flatpickr from "react-flatpickr"
 import Select from 'react-select'
 import axios from 'axios'
-import { Tooltip as ReactTooltip } from "react-tooltip";
-import { Link, json } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "flatpickr/dist/themes/airbnb.css";
 // ** Third Party Components
 import "cleave.js/dist/addons/cleave-phone.us";
 import MUIDataTable from "mui-datatables"
 import moment from "moment"
 import GrantorList from "../GrantorList";
-import { Search, Trash, Eye, Edit, UserMinus, UserPlus, Check, X, CheckCircle } from 'react-feather'
+import { Search, Eye, Edit, UserPlus, X, CheckCircle } from 'react-feather'
 import UILoader from '@components/ui-loader'
 import toast from 'react-hot-toast'
 // ** Styles
@@ -46,6 +45,7 @@ const styles = {
   }
 const NewApplications = () => {
   const [data, setData] = useState([])
+  const navigate = useNavigate()
     const [first, setFirst] = useState(0)
     const [last, setLast] = useState(100)
     const [filter, setFilter] = useState("")
@@ -176,7 +176,7 @@ const NewApplications = () => {
       },
       {
         name: "nationalId",
-        label: "Mother Name",
+        label: "NID",
         searchable: true,
         options: {
           filter: true,
@@ -289,14 +289,16 @@ const NewApplications = () => {
           sort: false,
           customBodyRenderLite: (dataIndex) => {
             const alldata = data[dataIndex]
+            const guarantors = data[dataIndex]?.guarantors
             const id = data[dataIndex]?.loan_no
+            console.log("alldata", alldata)
             return (
                 <div style={{ width: "auto"}}>
                 <div style={{ display: "inline-flex" }}>
                   <div style={{padding:"2px"}} className="btn btn-sm" >
                   <Link
                     id='button2'
-                      to={`/user-view`}
+                      to={`/view-application`}
                       state={{ userinfo: alldata }}
                   >
                     <Badge id="details" color={'secondary'} className="text-capitalize" style={{cursor:"pointer"}} >
@@ -312,7 +314,7 @@ const NewApplications = () => {
                   <div style={{padding:"2px"}} className="btn btn-sm" >
                   <Link
                     id='button2'
-                      to={`/user-edit`}
+                      to={`/edit-application`}
                       state={{ userinfo: alldata }}
                   >
                     <Badge id="edit" color={'info'} className="text-capitalize" style={{cursor:"pointer"}} >
@@ -325,7 +327,14 @@ const NewApplications = () => {
                     > Edit</UncontrolledTooltip>
                   </div>
                   <div style={{padding:"2px"}} className="btn btn-sm" >
-                  <Badge id="adduser" color={'warning'} className="text-capitalize" style={{cursor:"pointer"}} >
+                  {/* <Link
+                      to={`/guarantor-nid-verify`}
+                      state={{ loanee: alldata }}
+                  > */}
+                  <Badge 
+                  onClick={() => {
+                    localStorage.setItem("lonee", JSON.stringify(alldata))
+                    navigate('/guarantor-nid-verify')}} id="adduser" color={'warning'} className="text-capitalize" style={{cursor:"pointer"}} >
                    <span ><UserPlus /></span>
                   </Badge>
                   <UncontrolledTooltip
@@ -333,9 +342,10 @@ const NewApplications = () => {
                       target="adduser"
                       trigger="hover"
                     > Add Guarantor</UncontrolledTooltip>
+                    {/* </Link> */}
                   </div>
                   <div style={{padding:"2px"}} className="btn btn-sm" >
-                  <GrantorList />
+                  <GrantorList guarantors={guarantors} />
                   </div>
                   <div style={{padding:"2px"}} className="btn btn-sm" >
                   <Badge onClick={() => updateStatus(id)} id="Complete" color={'success'} className="text-capitalize" style={{cursor:"pointer"}} >

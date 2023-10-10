@@ -25,7 +25,7 @@ import "cleave.js/dist/addons/cleave-phone.us";
 import MUIDataTable from "mui-datatables"
 import moment from "moment"
 import GrantorList from "../GrantorList";
-import { Search, Trash, Eye, Edit, UserMinus, UserPlus, Check, X, CheckCircle } from 'react-feather'
+import { Search, Trash, Eye, Edit, UserMinus, UserPlus, Check, X, CheckCircle, BarChart } from 'react-feather'
 import UILoader from '@components/ui-loader'
 import toast from 'react-hot-toast'
 // ** Styles
@@ -66,7 +66,7 @@ const VerifiedApplications = () => {
          })
          .catch(err => console.log(err))
        }
-       const allEcData = () => {
+       const allVerifiedApplicant = () => {
         const send = {
           loanapplication: {
               status: 2
@@ -138,7 +138,7 @@ const VerifiedApplications = () => {
       },
       {
         name: "nationalId",
-        label: "Mother Name",
+        label: "NID",
         searchable: true,
         options: {
           filter: true,
@@ -231,6 +231,19 @@ const VerifiedApplications = () => {
         },
       },
       {
+        name: "modifiedBy",
+        label: "Approved By",
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRender: (value) => {
+            return (
+              <div>{value !== null && value !== undefined ? value : "N/A"}</div>
+            );
+          },
+        },
+      },
+      {
         name: "status",
         label: "Status",
         options: {
@@ -238,7 +251,7 @@ const VerifiedApplications = () => {
           sort: true,
           customBodyRender: (value) => {
             return (
-              <div style={{textAlign:"center"}}><Badge color="warning">{value === 0 ? "Pending" : "Approved"}</Badge></div>
+              <div style={{textAlign:"center"}}><Badge color="success">{value === 2 ? "Verified" : ""}</Badge></div>
             );
           },
         },
@@ -251,13 +264,14 @@ const VerifiedApplications = () => {
           sort: false,
           customBodyRenderLite: (dataIndex) => {
             const alldata = data[dataIndex]
+            const guarantors = data[dataIndex]?.guarantors
             return (
                 <div style={{ width: "auto"}}>
                 <div style={{ display: "inline-flex" }}>
                   <div style={{padding:"2px"}} className="btn btn-sm" >
                   <Link
                     id='button2'
-                      to={`/user-view`}
+                      to={`/view-application`}
                       state={{ userinfo: alldata }}
                   >
                     <Badge id="details" color={'secondary'} className="text-capitalize" style={{cursor:"pointer"}} >
@@ -271,63 +285,24 @@ const VerifiedApplications = () => {
                     > View</UncontrolledTooltip>
                   </div>
                   <div style={{padding:"2px"}} className="btn btn-sm" >
+                  <GrantorList guarantors={guarantors} />
+                  </div>
+                  <div style={{padding:"2px"}} className="btn btn-sm" >
                   <Link
                     id='button2'
-                      to={`/user-edit`}
-                      state={{ userinfo: alldata }}
+                      to={`/application-form`}
                   >
-                    <Badge id="edit" color={'info'} className="text-capitalize" style={{cursor:"pointer"}} >
-                   <span ><Edit /></span>
+                  <Badge id="Complete" color={'info'} className="text-capitalize" style={{cursor:"pointer"}} >
+                   <span ><BarChart /></span>
                   </Badge>
                   </Link>
-                  <UncontrolledTooltip
-                      placement="top"
-                      target="edit"
-                    > Edit</UncontrolledTooltip>
-                  </div>
-                  <div style={{padding:"2px"}} className="btn btn-sm" >
-                  <Badge id="adduser" color={'warning'} className="text-capitalize" style={{cursor:"pointer"}} >
-                   <span ><UserPlus /></span>
-                  </Badge>
-                  <UncontrolledTooltip
-                      placement="top"
-                      target="adduser"
-                      trigger="hover"
-                    > Add Guarantor</UncontrolledTooltip>
-                  </div>
-                  <div style={{padding:"2px"}} className="btn btn-sm" >
-                  <GrantorList />
-                  </div>
-                  <div style={{padding:"2px"}} className="btn btn-sm" >
-                  <Badge id="Complete" color={'success'} className="text-capitalize" style={{cursor:"pointer"}} >
-                   <span ><CheckCircle /></span>
-                  </Badge>
                   <UncontrolledTooltip
                       placement="top"
                       target="Complete"
                       trigger="hover"
                     > Complete</UncontrolledTooltip>
                   </div>
-                  <div style={{padding:"2px"}} className="btn btn-sm" >
-                  <Badge id="Approved" color={'success'} className="text-capitalize" style={{cursor:"pointer"}} >
-                   <span ><Check /></span>
-                  </Badge>
-                  <UncontrolledTooltip
-                      placement="top"
-                      target="Approved"
-                      trigger="hover"
-                    > Approved</UncontrolledTooltip>
-                  </div>
-                  <div style={{padding:"2px"}} className="btn btn-sm" >
-                  <Badge id="Reject" color={'danger'} className="text-capitalize" style={{cursor:"pointer"}} >
-                   <span ><X /></span>
-                  </Badge>
-                  <UncontrolledTooltip
-                      placement="top"
-                      target="Reject"
-                      trigger="hover"
-                    > Reject</UncontrolledTooltip>
-                  </div>
+
                 </div>
               </div>
             )
@@ -337,7 +312,7 @@ const VerifiedApplications = () => {
     ]
 
  useEffect(() => {
-  allEcData()
+  allVerifiedApplicant()
 }, [])  
     const options = {
     filterType: "checkbox",

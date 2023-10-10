@@ -3,6 +3,8 @@ const ViewApplicant = lazy(() => import("../../views/pages/applications/ViewAppl
 const NewApplications = lazy(() => import("../../views/pages/applications/NewApplications"))
 const PendingApplications = lazy(() => import("../../views/pages/applications/PendingApplications"))
 const VerifiedApplications = lazy(() => import("../../views/pages/applications/VerifiedApplications"))
+const GuarantorNidVerify = lazy(() => import("../../views/pages/applications/GuarantorNidVerify"))
+const GuarantorEcData = lazy(() => import("../../views/pages/applications/GuarantorEcData"))
 const EditApplicant = lazy(() => import("../../views/pages/applications/EditApplicant"));
 const NidVerify2 = lazy(() => import("../../views/pages/NidVerify2"));
 const EcReturnData = lazy(() => import("../../views/pages/EcReturnData"));
@@ -18,6 +20,8 @@ const AuditTrail = lazy(() => import("../../views/pages/admin/AuditTrail"));
 const UserList = lazy(() => import("../../views/pages/admin/UserList"));
 const CreateUser = lazy(() => import("../../views/pages/admin/CreateUser"));
 const UpdateUser = lazy(() => import("../../views/pages/admin/UpdateUser"));
+const CreateEcUser = lazy(() => import("../../views/pages/admin/CreateEcUser"));
+const EditEcUser = lazy(() => import("../../views/pages/ec/EditEcUser"));
 const OthersRoutes = [
     {
         path: "/nid-verify",
@@ -27,9 +31,25 @@ const OthersRoutes = [
           resource: 'FingerPrintVerify'
         }
       },
+    {
+        path: "/guarantor-nid-verify",
+        element: <GuarantorNidVerify />,
+        meta: {
+          action: 'read',
+          resource: 'FingerPrintVerify'
+        }
+      },
       {
         path: "/ec-data",
         element: <EcReturnData />,
+        meta: {
+          action: 'read',
+          resource: 'EcReturnData'
+        }
+      },
+      {
+        path: "/guarantor-ec-data",
+        element: <GuarantorEcData />,
         meta: {
           action: 'read',
           resource: 'EcReturnData'
@@ -76,7 +96,7 @@ const OthersRoutes = [
         }
       },
       {
-        path: "/user-view",
+        path: "/view-application",
         element: <ViewApplicant />,
         meta: {
           action: 'read',
@@ -108,7 +128,7 @@ const OthersRoutes = [
         }
       },
       {
-        path: "/user-edit",
+        path: "/edit-application",
         element: <EditApplicant />,
         meta: {
           action: 'read',
@@ -166,6 +186,22 @@ const OthersRoutes = [
       {
         path: "/admin/update-user",
         element: <UpdateUser />,
+        meta: {
+          action: 'read',
+          resource: 'AdminSetting'
+        }
+      },
+      {
+        path: "/admin/ec-user-create",
+        element: <CreateEcUser />,
+        meta: {
+          action: 'read',
+          resource: 'AdminSetting'
+        }
+      },
+      {
+        path: "/admin/ec-user-update",
+        element: <EditEcUser />,
         meta: {
           action: 'read',
           resource: 'AdminSetting'

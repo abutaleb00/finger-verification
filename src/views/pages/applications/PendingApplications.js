@@ -28,6 +28,7 @@ import GrantorList from "../GrantorList";
 import { Search, Trash, Eye, Edit, UserMinus, UserPlus, Check, X, CheckCircle } from 'react-feather'
 import UILoader from '@components/ui-loader'
 import toast from 'react-hot-toast'
+import Swal from "sweetalert2"
 // ** Styles
 import "@styles/react/libs/react-select/_react-select.scss"
 
@@ -66,7 +67,7 @@ const PendingApplications = () => {
          })
          .catch(err => console.log(err))
        }
-       const allEcData = () => {
+       const allPendingApplicant = () => {
         const send = {
           loanapplication: {
               status: 1
@@ -87,7 +88,82 @@ const PendingApplications = () => {
             toast.error(err.data.result.errorMsg)
          })
        }
-      
+       const updateStatus = (e) => {
+        const sentdata = {
+            loanapplication: {
+                loan_no: e,
+                status: 2
+            }
+        }
+        Swal.fire({
+            title: `Are you sure ?`,
+            text: `You want to Approve this Application`,
+            type: "warning",
+            icon: 'warning',
+            footer: "",
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            customClass: {
+                cancelButton: 'btn btn-danger ms-1',
+                confirmButton: 'btn btn-primary'
+            }
+        }).then((result) => {
+            if (result.isConfirmed === true) {
+                setBlock(true)
+                axios.put(`/updateloanstatus`, sentdata).then((res) => {
+                    if(res.data.result.error === false){
+                        setBlock(false)
+                        toast.success("Loan Application Update Successfully")
+                        allPendingApplicant()
+                      } else if (res.data.result.error === true){
+                        setBlock(false)
+                        toast.error(res.data.result.errorMsg)
+                      }
+                }).catch((e) => {
+                    setBlock(false)
+                    toast.error(e.data.result.errorMsg)
+                })
+            }
+        })
+    }  
+       const rejectStatus = (e) => {
+        const sentdata = {
+            loanapplication: {
+                loan_no: e,
+                status: 0
+            }
+        }
+        Swal.fire({
+            title: `Are you sure ?`,
+            text: `You want to Reject this Application`,
+            type: "wanring",
+            icon: 'warning',
+            footer: "",
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            customClass: {
+                cancelButton: 'btn btn-danger ms-1',
+                confirmButton: 'btn btn-primary'
+            }
+        }).then((result) => {
+            if (result.isConfirmed === true) {
+                setBlock(true)
+                axios.put(`/updateloanstatus`, sentdata).then((res) => {
+                    if(res.data.result.error === false){
+                        setBlock(false)
+                        toast.success("Loan Application Update Successfully")
+                        allPendingApplicant()
+                      } else if (res.data.result.error === true){
+                        setBlock(false)
+                        toast.error(res.data.result.errorMsg)
+                      }
+                }).catch((e) => {
+                    setBlock(false)
+                    toast.error(e.data.result.errorMsg)
+                })
+            }
+        })
+    }  
     const columns = [
       {
         name: "loan_no",
@@ -138,7 +214,7 @@ const PendingApplications = () => {
       },
       {
         name: "nationalId",
-        label: "Mother Name",
+        label: "NID",
         searchable: true,
         options: {
           filter: true,
@@ -231,6 +307,19 @@ const PendingApplications = () => {
         },
       },
       {
+        name: "modifiedBy",
+        label: "Completed By",
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRender: (value) => {
+            return (
+              <div>{value !== null && value !== undefined ? value : "N/A"}</div>
+            );
+          },
+        },
+      },
+      {
         name: "status",
         label: "Status",
         options: {
@@ -238,7 +327,7 @@ const PendingApplications = () => {
           sort: true,
           customBodyRender: (value) => {
             return (
-              <div style={{textAlign:"center"}}><Badge color="warning">{value === 0 ? "Pending" : "Approved"}</Badge></div>
+              <div style={{textAlign:"center"}}><Badge color="primary">{value === 1 ? "Waiting for Approval" : ""}</Badge></div>
             );
           },
         },
@@ -251,13 +340,15 @@ const PendingApplications = () => {
           sort: false,
           customBodyRenderLite: (dataIndex) => {
             const alldata = data[dataIndex]
+            const guarantors = data[dataIndex]?.guarantors
+            const id = data[dataIndex]?.loan_no
             return (
                 <div style={{ width: "auto"}}>
                 <div style={{ display: "inline-flex" }}>
                   <div style={{padding:"2px"}} className="btn btn-sm" >
                   <Link
                     id='button2'
-                      to={`/user-view`}
+                      to={`/view-application`}
                       state={{ userinfo: alldata }}
                   >
                     <Badge id="details" color={'secondary'} className="text-capitalize" style={{cursor:"pointer"}} >
@@ -271,10 +362,10 @@ const PendingApplications = () => {
                     > View</UncontrolledTooltip>
                   </div>
                   <div style={{padding:"2px"}} className="btn btn-sm" >
-                  <GrantorList />
+                  <GrantorList guarantors={guarantors} />
                   </div>
                   <div style={{padding:"2px"}} className="btn btn-sm" >
-                  <Badge id="Approved" color={'success'} className="text-capitalize" style={{cursor:"pointer"}} >
+                  <Badge  id="Approved" onClick={() => updateStatus(id)} color={'success'} className="text-capitalize" style={{cursor:"pointer"}} >
                    <span ><Check /></span>
                   </Badge>
                   <UncontrolledTooltip
@@ -284,7 +375,7 @@ const PendingApplications = () => {
                     > Approved</UncontrolledTooltip>
                   </div>
                   <div style={{padding:"2px"}} className="btn btn-sm" >
-                  <Badge id="Reject" color={'danger'} className="text-capitalize" style={{cursor:"pointer"}} >
+                  <Badge id="Reject" onClick={() => rejectStatus(id)}  color={'danger'} className="text-capitalize" style={{cursor:"pointer"}} >
                    <span ><X /></span>
                   </Badge>
                   <UncontrolledTooltip
@@ -302,7 +393,7 @@ const PendingApplications = () => {
     ]
 
  useEffect(() => {
-  allEcData()
+  allPendingApplicant()
 }, [])  
     const options = {
     filterType: "checkbox",
