@@ -15,7 +15,7 @@ export default [
     title: "Applications",
     icon: <Users size={20} />,
     action: 'read',
-    resource: 'PendingUser',
+    resource: 'ViewApplicant',
     children: [
       {
         id: 'NewApplications',
@@ -23,15 +23,15 @@ export default [
         icon: <PlusCircle />,
         navLink: '/new-applications',
         action: 'read',
-        resource: 'PendingUser',
+        resource: 'NewApplications',
       },
       {
         id: 'PendingApplications',
         title: 'Pending Applications',
         icon: <Clock />,
         navLink: '/pending-applications',
-        action: 'write',
-        resource: 'AdminSetting',
+        action: 'read',
+        resource: 'PendingApplications',
       },
       {
         id: 'VerifiedApplications',
@@ -39,7 +39,7 @@ export default [
         icon: <CheckCircle />,
         navLink: '/verified-applications',
         action: 'read',
-        resource: 'AdminSetting',
+        resource: 'VerifiedApplications',
       }
     ]
   },
@@ -71,7 +71,7 @@ export default [
         title: 'Permissions',
         icon: <Share2 />,
         navLink: '/admin/permission',
-        action: 'write',
+        action: 'read',
         resource: 'AdminSetting',
       },
       {
@@ -87,7 +87,7 @@ export default [
         title: 'EC Data',
         icon: <Database />,
         navLink: '/admin/ec-data',
-        action: 'write',
+        action: 'read',
         resource: 'AdminSetting',
       }
     ]

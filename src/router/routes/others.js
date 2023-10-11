@@ -100,7 +100,7 @@ const OthersRoutes = [
         element: <ViewApplicant />,
         meta: {
           action: 'read',
-          resource: 'PendingUser'
+          resource: 'ViewApplicant'
         }
       },
       {
@@ -108,7 +108,7 @@ const OthersRoutes = [
         element: <NewApplications />,
         meta: {
           action: 'read',
-          resource: 'PendingUser'
+          resource: 'NewApplications'
         }
       },
       {
@@ -116,7 +116,7 @@ const OthersRoutes = [
         element: <PendingApplications />,
         meta: {
           action: 'read',
-          resource: 'PendingUser'
+          resource: 'PendingApplications'
         }
       },
       {
@@ -124,7 +124,7 @@ const OthersRoutes = [
         element: <VerifiedApplications />,
         meta: {
           action: 'read',
-          resource: 'PendingUser'
+          resource: 'VerifiedApplications'
         }
       },
       {
@@ -132,7 +132,7 @@ const OthersRoutes = [
         element: <EditApplicant />,
         meta: {
           action: 'read',
-          resource: 'PendingUser'
+          resource: 'ViewApplicant'
         }
       },
       {

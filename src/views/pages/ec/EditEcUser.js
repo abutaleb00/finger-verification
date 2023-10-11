@@ -43,6 +43,7 @@ import {
     const updateLoanApplication = (e) =>{
   e.preventDefault()
   const sendata = {
+        id: state?.id,
         name: state?.name,
         nameEn: state?.nameEn,
         bloodGroup: state?.bloodGroup,
