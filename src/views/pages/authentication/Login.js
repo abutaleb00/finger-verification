@@ -141,10 +141,10 @@ fetch("https://esign.digitalsignature.com.bd:8080/ecuser-1.0/getloogedinuser", r
     })
     const abilityfor = mapdata.flat(1)
     const role1 = 'admin'
-    const data = { ...result.data, accessToken: accessToken, refreshToken: refreshToken, ability: abilityfor, role: 'admin' }
+    const data = { ...result.data, accessToken: accessToken, refreshToken: refreshToken, ability: abilityfor, role: result?.roleName }
     dispatch(handleLogin(data))
     ability.update(abilityfor)
-      navigate(getHomeRouteForLoggedInUser(role1))
+      navigate(getHomeRouteForLoggedInUser(data.roleName))
       toast(t => (
         <ToastContent t={t} role={data.role || 'admin'} name={data.fullName || data.username || 'John Doe'} />
       ))
