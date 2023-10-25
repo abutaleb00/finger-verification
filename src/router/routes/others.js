@@ -20,6 +20,7 @@ const AuditTrail = lazy(() => import("../../views/pages/admin/AuditTrail"));
 const UserList = lazy(() => import("../../views/pages/admin/UserList"));
 const CreateUser = lazy(() => import("../../views/pages/admin/CreateUser"));
 const UpdateUser = lazy(() => import("../../views/pages/admin/UpdateUser"));
+const Role = lazy(() => import("../../views/pages/admin/roles"));
 const CreateEcUser = lazy(() => import("../../views/pages/admin/CreateEcUser"));
 const EditEcUser = lazy(() => import("../../views/pages/ec/EditEcUser"));
 const OthersRoutes = [
@@ -202,6 +203,14 @@ const OthersRoutes = [
       {
         path: "/admin/ec-user-update",
         element: <EditEcUser />,
+        meta: {
+          action: 'read',
+          resource: 'AdminSetting'
+        }
+      },
+      {
+        path: "/admin/role-permissions",
+        element: <Role />,
         meta: {
           action: 'read',
           resource: 'AdminSetting'

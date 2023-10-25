@@ -63,15 +63,40 @@ export default class NidVerify2 extends Component {
   }
   this.setState({block: true} , () =>{
     axios.post('/getvoter', datatosend).then(res => {
-      if(res.data.result.error === false){
-        this.setState({block: false, ecresult: res.data.data}, () =>{
-
-          document.getElementById("button2").click()
-          console.log("res.data.data", res.data.data)
+      if(res.data.result.error === false) {
+        this.setState({block: false}, () =>{
+          Swal.fire({
+            title: 'Verified',
+            text: "Now you can proceed to next step",
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Proceed!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.setState({ ecresult: res.data.data}, () =>{
+                document.getElementById("button2").click()
+              })
+            }
+          })
         })
       } else if(res.data.result.error === true){
-        this.setState({block: false})
-        toast.error(res.data.result.errorMsg)
+        this.setState({block: false}, () =>{
+          Swal.fire({
+            title: 'Failed',
+            text: "No User Data Found",
+            icon: 'warning',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Okay'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              
+            }
+          })
+        })
+        // this.setState({block: false})
+        // toast.error(res.data.result.errorMsg)
       }
      })
      .catch(err => {

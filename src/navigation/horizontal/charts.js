@@ -70,7 +70,7 @@ export default [
         id: 'Permissions',
         title: 'Permissions',
         icon: <Share2 />,
-        navLink: '/admin/permission',
+        navLink: '/admin/role-permissions',
         action: 'read',
         resource: 'AdminSetting',
       },
