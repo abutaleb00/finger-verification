@@ -520,7 +520,7 @@ class ApplicationForm extends Component {
         </View>
           </View>
           <View style={styles.rightColumn1}>
-            <Image style={styles.image2} src="/nominee.jpg" />
+            <Image style={styles.image2} src="/user-image.jpg" />
           </View>
         </View>
         <View style={[styles.cusView, { marginTop: "5px" }]}>
