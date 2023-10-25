@@ -27,32 +27,32 @@ const EcommerceDashboard = () => {
         <StatsHorizontal
           color='primary'
           statTitle='Total Users'
-          icon={<User size={20} />}
-          renderStats={<h3 className='fw-bolder mb-75'>21</h3>}
+          icon={<User size={30} />}
+          renderStats={<h3 className='fw-bolder mb-75' style={{fontSize:"36px"}}>21</h3>}
         />
       </Col>
       <Col lg='3' sm='6'>
         <StatsHorizontal
           color='success'
           statTitle='Fingerprint Verified Users'
-          icon={<UserCheck size={20} />}
-          renderStats={<h3 className='fw-bolder mb-75'>04</h3>}
+          icon={<UserCheck size={30} />}
+          renderStats={<h3 className='fw-bolder mb-75' style={{fontSize:"36px"}}>04</h3>}
         />
       </Col>
       <Col lg='3' sm='6'>
         <StatsHorizontal
           color='secondary'
           statTitle='Pending Fingerprint Users'
-          icon={<UserX size={20} />}
-          renderStats={<h3 className='fw-bolder mb-75'>07</h3>}
+          icon={<UserX size={30} />}
+          renderStats={<h3 className='fw-bolder mb-75' style={{fontSize:"36px"}}>07</h3>}
         />
       </Col>
       <Col lg='3' sm='6'>
         <StatsHorizontal
           color='warning'
           statTitle='Guarantor Users'
-          icon={<UserPlus size={20} />}
-          renderStats={<h3 className='fw-bolder mb-75'>23</h3>}
+          icon={<UserPlus size={30} />}
+          renderStats={<h3 className='fw-bolder mb-75' style={{fontSize:"36px"}}>23</h3>}
         />
       </Col>
     </Row>
