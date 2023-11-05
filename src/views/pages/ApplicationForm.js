@@ -11,15 +11,17 @@ import {
   Font,
 } from "@react-pdf/renderer";
 
+
 class ApplicationForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-       ...props?.location?.state,
-      //  location : useLocation()
+      //  ...props?.location?.state,
+      
     };
+    // console.log("...props.location.state", location.state?.userinfo)
   }
-
+  // const location = useLocation()
   // customerCreation = () => {
   //   let customerName = "";
   //   let fatherName,
@@ -81,10 +83,11 @@ class ApplicationForm extends Component {
   componentDidMount() {
     // this.customerCreation();
     
-    console.log("...props.location.state", this.state)
+    
   }
 
   render() {
+    console.log("first", this.props)
     Font.register({
       family: "kalpurush",
       src: "/kalpurush.ttf",

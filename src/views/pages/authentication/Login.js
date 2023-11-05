@@ -62,14 +62,14 @@ const ToastContent = ({ t, name, role }) => {
   )
 }
 
-// const defaultValues = {
-//   password: "123",
-//   loginEmail: "john_doe5",
-// }
 const defaultValues = {
-  password: "",
-  loginEmail: "",
+  password: "123",
+  loginEmail: "john_doe5",
 }
+// const defaultValues = {
+//   password: "",
+//   loginEmail: "",
+// }
 
 const Login = () => {
   // ** Hooks

@@ -291,6 +291,7 @@ const VerifiedApplications = () => {
                   <Link
                     id='button2'
                       to={`/application-form`}
+                      state={{ userinfo: alldata }}
                   >
                   <Badge id="Complete" color={'info'} className="text-capitalize" style={{cursor:"pointer"}} >
                    <span ><BarChart /></span>
