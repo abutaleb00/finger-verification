@@ -82,6 +82,7 @@ class ApplicationForm extends Component {
 
   componentDidMount() {
     // this.customerCreation();
+    console.log("this.props.location.state", this.props.location?.state)
     
     
   }

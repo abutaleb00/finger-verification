@@ -9,7 +9,8 @@ const EditApplicant = lazy(() => import("../../views/pages/applications/EditAppl
 const NidVerify2 = lazy(() => import("../../views/pages/NidVerify2"));
 const EcReturnData = lazy(() => import("../../views/pages/EcReturnData"));
 const Grantors = lazy(() => import("../../views/pages/Grantors"));
-const ApplicationForm = lazy(() => import("../../views/pages/ApplicationForm"));
+// const ApplicationForm = lazy(() => import("../../views/pages/ApplicationForm"));
+const ApplicationForm = lazy(() => import("../../views/pages/applications/ApplicationForm"));
 const NewGrantors = lazy(() => import("../../views/pages/NewGrantors"));
 const VerifiedUserList = lazy(() => import("../../views/pages/VerifiedUserList"));
 const GrantorEdit = lazy(() => import("../../views/pages/GrantorEdit"));

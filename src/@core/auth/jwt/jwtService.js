@@ -14,7 +14,7 @@ export default class JwtService {
   constructor(jwtOverrideConfig) {
     this.jwtConfig = { ...this.jwtConfig, ...jwtOverrideConfig }
 
-    axios.defaults.baseURL = 'https://esign.digitalsignature.com.bd:8080/ecuser-1.0'
+    axios.defaults.baseURL = 'https://esign.digitalsignature.com.bd:8989/ecuser-1.0'
 
     // ** Request Interceptor
     axios.interceptors.request.use(
