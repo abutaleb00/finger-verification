@@ -62,14 +62,14 @@ const ToastContent = ({ t, name, role }) => {
   )
 }
 
-const defaultValues = {
-  password: "123",
-  loginEmail: "john_doe5",
-}
 // const defaultValues = {
-//   password: "",
-//   loginEmail: "",
+//   password: "123",
+//   loginEmail: "john_doe5",
 // }
+const defaultValues = {
+  password: "",
+  loginEmail: "",
+}
 
 const Login = () => {
   // ** Hooks
@@ -118,7 +118,7 @@ var requestOptions = {
   redirect: 'follow'
 };
 
-fetch("https://esign.digitalsignature.com.bd:8080/ecuser-1.0/oauth/token", requestOptions)
+fetch("https://esign.digitalsignature.com.bd:8989/ecuser-1.0/oauth/token", requestOptions)
   .then(response => response.json())
   .then(function (res) {
     // const data1 = JSON.stringify(res)
@@ -135,7 +135,7 @@ var requestOptions = {
   redirect: 'follow'
 };
 
-fetch("https://esign.digitalsignature.com.bd:8080/ecuser-1.0/getloogedinuser", requestOptions)
+fetch("https://esign.digitalsignature.com.bd:8989/ecuser-1.0/getloogedinuser", requestOptions)
   .then(response => response.json())
   .then(result => {
     const mapdata = result.data !== undefined && result.data?.pages?.map((v) =>{
