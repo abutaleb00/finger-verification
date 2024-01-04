@@ -16,10 +16,10 @@ Font.register({
   family: "kalpurush",
   src: "/kalpurush.ttf",
 });
-Font.register({
-  family: "Oswald",
-  src: "https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf",
-});
+// Font.register({
+//   family: "Oswald",
+//   src: "https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf",
+// });
 const BORDER_COLOR = "#000000";
 const BORDER_STYLE = "solid";
 const COL1_WIDTH = 12.5;
@@ -308,10 +308,18 @@ const ApplicationForm = (props) => {
   const location = useLocation();
   const [applicantList, setApplicantList] = useState([]);
   const [nomineeList, setNomineeList] = useState([]);
+  const [createdBy, setCreatedBy] = useState('');
+  const [approvedBy, setApprovedBy] = useState('');
+  const [createdByTime, setCreatedByTime] = useState('');
+  const [approvedByTime, setApprovedByTime] = useState('');
 
   useEffect(() => {
     setApplicantList(location.state?.userinfo?.loanee);
     setNomineeList(location.state?.userinfo?.guarantors);
+    setCreatedBy(location.state?.userinfo?.createdBy);
+    setApprovedBy(location.state?.userinfo?.modifiedBy);
+    setCreatedByTime(location.state?.userinfo?.creationDate);
+    setApprovedByTime(location.state?.userinfo?.modificationDate);
   }, [location.state?.userinfo]);
   console.log("location", location.state);
   const MyDoc = () => (
@@ -443,7 +451,7 @@ const ApplicationForm = (props) => {
               <Text style={styles.text}>The Manager</Text>
             </View>
             <View style={[styles.cusView, { marginTop: "-10px" }]}>
-              <Text style={styles.text}>UCO Bank</Text>
+              <Text style={styles.text}>Southeast Bank PLC</Text>
             </View>
             <View style={[styles.cusView, { marginTop: "-10px" }]}>
               <Text
@@ -870,16 +878,16 @@ const ApplicationForm = (props) => {
                   <View style={styles.tableRow}>
                     <View style={[styles.tableColCus, { width: "49%" }]}>
                       <Text style={styles.tableCellCus}>
-                        ৬৭২, পশ্চিম শেওড়াপাড়া, ওয়ার্ড নং-14, মিরপুর-1216, ঢাকা
-                        উত্তর সিটি কর্পোরেশন, ঢাকা{" "}
-                      </Text>
-                      <Text style={styles.tableCellCus}>
-                        বিদ্যাবাগীশ,ফুলবাড়ী,ফুলবাড়ী -৫৬৮০, কুড়িগ্রাম, রংপুর{" "}
+                        {v?.presentAddress?.additionalVillageOrRoad}{" ,"}{v?.presentAddress?.postOffice}{" - "}
+                        {v?.presentAddress?.postalCode}{" ,"}{v?.presentAddress?.upozila}{" ,"}
+                        {v?.presentAddress?.district}{" ,"}{v?.presentAddress?.division}
                       </Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "51%" }]}>
                       <Text style={styles.tableCellCus}>
-                        বিদ্যাবাগীশ,ফুলবাড়ী,ফুলবাড়ী -৫৬৮০, কুড়িগ্রাম, রংপুর{" "}
+                      {v?.permanentAddress?.additionalVillageOrRoad}{" ,"}{v?.permanentAddress?.postOffice}{" -"}
+                        {v?.permanentAddress?.postalCode}{" ,"}{v?.permanentAddress?.upozila}{" ,"}
+                        {v?.permanentAddress?.district}{" ,"}{v?.permanentAddress?.division}
                       </Text>
                     </View>
                   </View>
@@ -939,7 +947,6 @@ const ApplicationForm = (props) => {
         </View>
         <View style={[styles.cusViewH2, { marginTop: "40px" }]}>
           <Text style={[styles.text, { textAlign: "left", fontSize: "12" }]}>
-            SOLIMAN AL- HASAN
           </Text>
         </View>
         <View
@@ -975,6 +982,34 @@ const ApplicationForm = (props) => {
           >
             Place:- Gulshan 1, Dhaka
           </Text>
+        </View>
+        <View style={styles.container}>
+          <View style={styles.leftColumn1}>
+          <Text
+            style={[
+              styles.text,
+              { textAlign: "left", fontSize: "12" },
+            ]}
+            break
+          >
+            Created by:
+          </Text>
+          <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{createdBy}</Text>
+          <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{createdByTime}</Text>
+          </View>
+          <View style={styles.rightColumn1}>
+          <Text
+            style={[
+              styles.text,
+              { textAlign: "left", fontSize: "12" },
+            ]}
+            break
+          >
+            Approved by:
+          </Text>
+          <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{approvedBy}</Text>
+          <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{approvedByTime}</Text>
+          </View>
         </View>
       </Page>
     </Document>

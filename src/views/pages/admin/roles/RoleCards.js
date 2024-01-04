@@ -163,6 +163,20 @@ const RoleCards = () => {
         toast.error(err.data.result?.errorMsg);
       });
   };
+
+  const submitRole = () =>{
+
+      let roles = {
+        data: [{
+          admin: admin,
+          maker: maker,
+          checker: checker,
+          branchUser: branchUser,
+          user: user
+        }]
+      }
+    console.log("allrole", roles)
+  }
   useEffect(() => {
     allRole();
   }, []);
@@ -414,6 +428,12 @@ const RoleCards = () => {
                                     defaultChecked={role.permissions.includes(
                                       "read"
                                     )}
+                                    onChange={(e)=>{
+                                      if(e.target.checked === true){
+                                        role.permissions.push("read")
+                                      }
+                                      console.log("value", e.target.checked)
+                                    }}
                                   />
                                   <Label
                                     className="form-check-label"
@@ -569,7 +589,7 @@ const RoleCards = () => {
               </Table>
             </Col>
             <Col className="text-center mt-2" xs={12}>
-              <Button type="submit" color="primary" className="me-1">
+              <Button type="submit" onClick={()=> submitRole()} color="primary" className="me-1">
                 Submit
               </Button>
               <Button type="reset" outline onClick={onReset}>

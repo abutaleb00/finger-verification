@@ -19,6 +19,7 @@ import { getRoutes } from './routes'
 // ** Components
 const Error = lazy(() => import('../views/pages/misc/Error'))
 const Login = lazy(() => import('../views/pages/authentication/Login'))
+const BankLogin = lazy(() => import('../views/pages/authentication/BankLogin'))
 const NotAuthorized = lazy(() => import('../views/pages/misc/NotAuthorized'))
 
 const Router = () => {
@@ -45,6 +46,11 @@ const Router = () => {
       path: '/login',
       element: <BlankLayout />,
       children: [{ path: '/login', element: <Login /> }]
+    },
+    {
+      path: '/banklogin',
+      element: <BlankLayout />,
+      children: [{ path: '/banklogin', element: <BankLogin /> }]
     },
     {
       path: '/auth/not-auth',

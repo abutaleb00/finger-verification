@@ -23,6 +23,12 @@ import InputPasswordToggle from '@components/input-password-toggle'
 
 // ** Utils
 import { getHomeRouteForLoggedInUser } from '@utils'
+import jwtDefaultConfig from '../../../@core/auth/jwt/jwtDefaultConfig'
+export const baseAPI_URL = globalThis.baseAPI_URL;
+export const baseURL = globalThis.baseURL;
+export const ADcallBack = globalThis.ADcallBack;
+export const bankLogin = globalThis.bankLogin;
+export const security_key = globalThis.security_key;
 
 // ** Reactstrap Imports
 import {
@@ -37,7 +43,6 @@ import {
   CardTitle,
   FormFeedback,
 } from 'reactstrap'
-
 // ** Illustrations Imports
 import illustrationsLight from '@src/assets/images/pages/login-v2.svg'
 import illustrationsDark from '@src/assets/images/pages/login-v2-dark.svg'
@@ -46,6 +51,7 @@ import illustrationsDark from '@src/assets/images/pages/login-v2-dark.svg'
 import '@styles/react/pages/page-authentication.scss'
 
 const ToastContent = ({ t, name, role }) => {
+
   return (
     <div className='d-flex'>
       <div className='me-1'>
@@ -118,7 +124,7 @@ var requestOptions = {
   redirect: 'follow'
 };
 
-fetch("https://esign.digitalsignature.com.bd:8989/ecuser-1.0/oauth/token", requestOptions)
+fetch(`${baseAPI_URL}/oauth/token`, requestOptions)
   .then(response => response.json())
   .then(function (res) {
     // const data1 = JSON.stringify(res)
@@ -135,7 +141,7 @@ var requestOptions = {
   redirect: 'follow'
 };
 
-fetch("https://esign.digitalsignature.com.bd:8989/ecuser-1.0/getloogedinuser", requestOptions)
+fetch(`${baseAPI_URL}/getloogedinuser`, requestOptions)
   .then(response => response.json())
   .then(result => {
     const mapdata = result.data !== undefined && result.data?.pages?.map((v) =>{
@@ -166,7 +172,7 @@ fetch("https://esign.digitalsignature.com.bd:8989/ecuser-1.0/getloogedinuser", r
       }
     }
   }
-
+ 
   return (
     <div className='auth-wrapper auth-cover'>
       <Row className='auth-inner m-0'>
@@ -232,6 +238,12 @@ fetch("https://esign.digitalsignature.com.bd:8989/ecuser-1.0/getloogedinuser", r
               <Button type='submit' color='primary' block>
                 Sign in
               </Button>
+              <p style={{textAlign:"center", marginBottom:"0px", marginTop:"10px"}}>or</p>
+              <a  href={`${bankLogin}?j_security_key=${security_key}`}>
+              <Button type='button' color='success' style={{marginTop:"10px"}} block>
+                Sign in with Bank ID
+              </Button>
+              </a>
             </Form>
             {/* <p className='text-center mt-2'>
               <span className='me-25'>New on our platform?</span>

@@ -293,11 +293,103 @@ export default class NidVerify2 extends Component {
                     // style={{display:"none"}}
                      id='button1'
                      color='primary'
-                     onClick={(e) => {
-                      this.callECServer()
+                     onClick={() => {
+                      let dataToSend = {
+                        dateOfBirth: this.state.dob,
+                        fingerEnums: [
+                          "RIGHT_THUMB",
+                          "RIGHT_INDEX",
+                          "LEFT_THUMB",
+                          "LEFT_INDEX",
+                        ],
+                        listoffingers: this.state.listoffingers,
+                        mobileNumber:
+                          this.state.mobileNumber === undefined ||
+                          this.state.mobileNumber === null
+                            ? ""
+                            : this.state.mobileNumber,
+                      };
+                      dataToSend[
+                        this.state.nid.length === 17
+                          ? "nid17Digit"
+                          : "nid10Digit"
+                      ] = this.state.nid;
+
+                      //console.log("datato send ", ecData.data.success.data);
+
+                      axios
+                        .post("/makethefulleccall", dataToSend)
+                        .then((res) => {
+                          if (res.data.result.error === false) {
+                            this.setState(
+                              {
+                                block: true,
+                                loaderText: "Processing.....",
+                              },
+                              () => {
+                                setTimeout(() => {
+                                  let dataSend = {
+                                    ...res.data.data,
+                                  };
+                                  axios
+                                    .post("/callECVerify", dataSend)
+                                    .then((res) => {
+                                      if (res.data.result.error === false) {
+                                        this.setState(
+                                          { ecresult: res.data?.data?.verificationResponse?.voterInfo,loaderText: res.data.data.result },
+                                          () => {
+                                            if (
+                                              this.state.loaderText ===
+                                              "MATCH FOUND"
+                                            ) {
+                                              document.getElementById("button2").click()
+                                            } else if (
+                                              this.state.loaderText ===
+                                              "NO MATCH FOUND"
+                                            ) {
+                                              setTimeout(() => {
+                                                this.loaderHide();
+                                              }, 1000);
+                                            }
+                                          }
+                                        );
+                                      } else {
+                                        this.setState(
+                                          {
+                                            loaderText: res.data.result.errMsg,
+                                            block: false,
+                                          },
+                                          () => {
+                                            confirmAlert({
+                                              title: "Error Message",
+                                              message: (
+                                                <p className="mod-p">
+                                                  {res.data.result.errMsg}
+                                                </p>
+                                              ),
+                                              buttons: [
+                                                {
+                                                  label: "Ok",
+                                                  onClick: () => {},
+                                                },
+                                              ],
+                                              closeOnClickOutside: false,
+                                            });
+                                          }
+                                        );
+                                      }
+                                    });
+                                }, 2000);
+                              }
+                            );
+                          }
+                        });
+                    }}
+                    //  onClick={(e) => {
+                    //   this.callECServer()
                       //   const ecresult = data.filter((obj) => obj.nationalId === this.state.nid);
                       //  if(ecresult?.length > 0){
-                      //   this.setState({ecresult: ecresult}, ()=>{
+                      //   this.setState({ecresult: ecresult}, ()=> {
                       //     // document.getElementById("button2").click();
                       //     this.dataAlert()
                       //   })
@@ -305,7 +397,7 @@ export default class NidVerify2 extends Component {
                       //   this.dataAlert()
                       //   // this.successAlert()
                       //  }
-                    }}
+                    // }}
                     disabled={this.state.nid === ''}
                         >
                         Submit

@@ -90,7 +90,8 @@ import {
       <Card>
         <CardHeader style={{marginBottom:"10px", borderBottom:"1px dashed gray"}}>
           <CardTitle tag="h4">Update Applicant Information</CardTitle>
-          <Button tag={Link} to="/pending-user" color="primary" className="btn-md" outline>Back to Applicant List</Button>
+          <Button onClick={() => navigate(-1)} color="primary" className="btn-md" outline>Back to Applicant List</Button>
+          {/* <Button tag={Link} to="/pending-user" color="primary" className="btn-md" outline>Back to Applicant List</Button> */}
         </CardHeader>
   
         <CardBody>

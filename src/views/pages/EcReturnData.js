@@ -70,12 +70,19 @@ axios.post('/addloan', sendata).then(res => {
   if(res.data.result.error === false){
     setBlock(false)
     toast.success("Application Submit Succsfully")
+    window.location.href = "/new-applications"
   } else if(res.data.result.error === true){
     setBlock(false)
     toast.error(res.data.result.errorMsg)
+  } else if(res.error === "invalid_token"){
+    console.log("res err", res)
+    setBlock(false)
+    toast.error('invalid_token')
+    window.location.href = "/login"
   }
  })
  .catch(err => {
+  console.log("err err", err)
   setBlock(false)
     toast.error(err.data.result.errorMsg)
  })
@@ -175,7 +182,7 @@ console.log("send data", sendata)
               className="react-select"
               classNamePrefix="select"
               onChange={(e) => setSate({...state, gender: e.value})}
-              isDisabled={true}
+              // isDisabled={true}
             />
           </Col>
           <Col className="mb-1" xl="4" md="6" sm="12">

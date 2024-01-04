@@ -1,6 +1,6 @@
 import axios from 'axios'
 import jwtDefaultConfig from './jwtDefaultConfig'
-
+export const baseAPI_URL = globalThis.baseAPI_URL;
 export default class JwtService {
   // ** jwtConfig <= Will be used by this service
   jwtConfig = { ...jwtDefaultConfig }
@@ -14,7 +14,10 @@ export default class JwtService {
   constructor(jwtOverrideConfig) {
     this.jwtConfig = { ...this.jwtConfig, ...jwtOverrideConfig }
 
-    axios.defaults.baseURL = 'https://esign.digitalsignature.com.bd:8989/ecuser-1.0'
+    // axios.defaults.baseURL = 'https://esign.digitalsignature.com.bd:8989/ecuser-1.0'
+    // axios.defaults.baseURL = 'https://fvs.middleware.southeastbank.com.bd:8443/ecuser-1.0'
+    axios.defaults.baseURL = baseAPI_URL
+    // axios.defaults.baseURL = 'https://fvs.southeastbank.com.bd/apiserver'
 
     // ** Request Interceptor
     axios.interceptors.request.use(
@@ -75,6 +78,7 @@ export default class JwtService {
           }
           const retryOriginalRequest = new Promise(resolve => {
             console.log("originalRequest 3", originalRequest)
+            window.location.href = "/login"
             this.addSubscriber(accessToken => {
               // ** Make sure to assign accessToken according to your response.
               // ** Check: https://pixinvent.ticksy.com/ticket/2413870
