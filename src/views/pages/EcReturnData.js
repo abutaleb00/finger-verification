@@ -15,19 +15,21 @@ import Select, { components } from "react-select"; // eslint-disable-line
 import Flatpickr from "react-flatpickr";
 import { useState } from "react";
 import data from "../components/ec.json"
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import toast from 'react-hot-toast'
 import moment from "moment";
 import axios from 'axios'
 import UILoader from '@components/ui-loader'
 import { v4 as uuidv4 } from 'uuid'
+export const baseAPI_URL = globalThis.baseAPI_URL;
 
 const EcReturnData = (props) => {
+  const navigate = useNavigate()
   const location = useLocation()
   const [picker, setPicker] = useState(new Date());
   const [state, setSate] = useState(location.state?.userinfo)
   const [block, setBlock] = useState(false)
-  const [index, setIndex] = useState([1])
+  const [nidPhoto, setNidPhoto] = useState(null)
   const [permanentAddress, setPermanentAddress] = useState(location.state?.userinfo?.permanentAddress)
   const [presentAddress, setPresentAddress] = useState(location.state?.userinfo?.presentAddress)
   const genderOptions = [
@@ -35,19 +37,19 @@ const EcReturnData = (props) => {
     { value: "female", label: "Female", color: "#0052CC", isFixed: true },
     { value: "third", label: "Third Person" },
   ];
-  console.log("location", location.state)
-  console.log("location 2", location.state?.userinfo?.permanentAddress)
+  // console.log("location 2", JSON.parse(localStorage.getItem('userData')).branchName)
   const createLoanApplication = (e) =>{
 e.preventDefault()
 const sendata = {
   loanapplication: {
       loan_no: uuidv4().substring(0,13),
-      createdBy: "john_doe5",
-      branchName: "Main Branch",
+      // createdBy: "john_doe5",
+      branchName: JSON.parse(localStorage.getItem('userData')).branchName,
       status: 0
   },
   loanee: {
-      createdBy: "john_doe5",
+      ecjobid :location.state?.jobId,
+      nidphoto: nidPhoto,
       name: state?.name,
       nameEn: state?.nameEn,
       bloodGroup: state?.bloodGroup,
@@ -70,7 +72,8 @@ axios.post('/addloan', sendata).then(res => {
   if(res.data.result.error === false){
     setBlock(false)
     toast.success("Application Submit Succsfully")
-    window.location.href = "/new-applications"
+    navigate('/new-applications')
+    // window.location.href = "/new-applications"
   } else if(res.data.result.error === true){
     setBlock(false)
     toast.error(res.data.result.errorMsg)
@@ -88,6 +91,30 @@ axios.post('/addloan', sendata).then(res => {
  })
 console.log("send data", sendata)
   }
+  const getNidPhoto = () => {
+    let sendData = {
+      jobid: location.state?.jobId
+    }
+    setBlock(true)
+     axios.post('/callECData', sendData).then(res => {
+      if(res.data.result.error === false){
+        setBlock(false)
+        console.log("res.data.data", res.data.data)
+        setNidPhoto(res.data.data?.photolink)
+        // setData(res.data.data)
+      } else  if(res.data.result.error === false){
+        setBlock(false)
+        toast.error(res.data.result.errorMsg)
+      }
+     })
+     .catch((err) =>{
+      setBlock(false)
+        toast.error(err.data.result.errorMsg)
+     })
+   }
+useEffect(()=>{
+  getNidPhoto()
+},[])
   return (
     <UILoader blocking={block}>
     <Card>
@@ -98,7 +125,8 @@ console.log("send data", sendata)
       <CardBody>
         <form onSubmit={createLoanApplication}>
         <Row>
-          <Col className="mb-1" xl="4" md="6" sm="12">
+        <Col className="mb-1" xl="9" md="9" sm="12" style={{display:"inline-block"}}>
+        <Col className="mb-1" xl="6" md="6" sm="12" style={{display:"inline-block", paddingRight:"15px"}}>
             <Label className="form-label" for="basicInput">
              NID Number
             </Label>
@@ -110,7 +138,7 @@ console.log("send data", sendata)
               disabled
             />
           </Col>
-          <Col className="mb-1" xl="4" md="6" sm="12">
+          <Col className="mb-1" xl="6" md="6" sm="12" style={{display:"inline-block"}}>
             <Label className="form-label" for="basicInput">
               Full Name Bangla
             </Label>
@@ -122,7 +150,7 @@ console.log("send data", sendata)
               disabled
             />
           </Col>
-          <Col className="mb-1" xl="4" md="6" sm="12">
+          <Col className="mb-1" xl="6" md="6" sm="12" style={{display:"inline-block", paddingRight:"15px"}}>
             <Label className="form-label" for="basicInput">
               Full Name English
             </Label>
@@ -134,7 +162,7 @@ console.log("send data", sendata)
               disabled
             />
           </Col>
-          <Col className="mb-1" xl="4" md="6" sm="12">
+          <Col className="mb-1 mr-2" xl="6" md="6" sm="12" style={{display:"inline-block"}}>
             <Label className="form-label" for="basicInput">
              Date of Birth
             </Label>
@@ -146,7 +174,7 @@ console.log("send data", sendata)
               disabled
             />
           </Col>
-          <Col className="mb-1" xl="4" md="6" sm="12">
+          <Col className="mb-1" xl="6" md="6" sm="12" style={{display:"inline-block", paddingRight:"15px"}}>
             <Label className="form-label" for="basicInput">
               Father Name
             </Label>
@@ -158,7 +186,7 @@ console.log("send data", sendata)
               disabled
             />
           </Col>
-          <Col className="mb-1" xl="4" md="6" sm="12">
+          <Col className="mb-1" xl="6" md="6" sm="12" style={{display:"inline-block"}}>
             <Label className="form-label" for="basicInput">
               Mother Name
             </Label>
@@ -170,6 +198,15 @@ console.log("send data", sendata)
               disabled
             />
           </Col>
+        </Col>
+        <Col className="mb-1" xl="3" md="3" sm="12" style={{textAlign:"center"}}>
+          <div style={{}}>
+            <p style={{color:"black", fontWeight:"bold", marginBottom:"5px"}}>Applicant Photo</p>
+          <img src={`data:image/jpeg;base64,${nidPhoto}`} alt='nid photo' style={{width: 130, height: 160, border:"1px solid gray", borderRadius:"5px", padding:"5px"}} />
+          </div>
+        </Col>
+        </Row>
+        <Row>
           <Col className="mb-1" xl="4" md="6" sm="12">
             <Label className="form-label" for="basicInput">
               Gender

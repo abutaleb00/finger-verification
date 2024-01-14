@@ -103,7 +103,8 @@ const styles = StyleSheet.create({
   image2: {
     marginVertical: 0,
     marginHorizontal: 0,
-    width: "70%",
+    width: "80%",
+    height: 100
   },
   imageS: {
     marginVertical: 5,
@@ -308,6 +309,7 @@ const ApplicationForm = (props) => {
   const location = useLocation();
   const [applicantList, setApplicantList] = useState([]);
   const [nomineeList, setNomineeList] = useState([]);
+  const [branchname, setBranchname] = useState('');
   const [createdBy, setCreatedBy] = useState('');
   const [approvedBy, setApprovedBy] = useState('');
   const [createdByTime, setCreatedByTime] = useState('');
@@ -315,6 +317,7 @@ const ApplicationForm = (props) => {
 
   useEffect(() => {
     setApplicantList(location.state?.userinfo?.loanee);
+    setBranchname(location.state?.userinfo?.branchName);
     setNomineeList(location.state?.userinfo?.guarantors);
     setCreatedBy(location.state?.userinfo?.createdBy);
     setApprovedBy(location.state?.userinfo?.modifiedBy);
@@ -443,7 +446,7 @@ const ApplicationForm = (props) => {
           </View>
         </View>
         <View style={styles.cusView}>
-          <Text style={styles.textT}>LOAN APPLICATION FORM (INDIVIDUAL)</Text>
+          <Text style={styles.text}>LOAN APPLICATION FORM (INDIVIDUAL)</Text>
         </View>
         <View style={styles.container}>
           <View style={styles.leftColumn1}>
@@ -458,12 +461,12 @@ const ApplicationForm = (props) => {
                 style={{
                   display: "flex",
                   flexDirection: "row",
-                  width: "15%",
+                  width: "25%",
                   borderBottom: "1px solid #000000",
                   fontSize: "9px",
                 }}
               >
-                Gulshan
+                {branchname?.toUpperCase()}
               </Text>
               <Text style={styles.text}>Branch</Text>
             </View>
@@ -477,7 +480,7 @@ const ApplicationForm = (props) => {
             </View>
           </View>
           <View style={styles.rightColumn1}>
-            <Image style={styles.image2} src="/user-image.jpg" />
+            <Image style={styles.image2} height={50} src={applicantList?.nidphoto !== undefined ? `data:image/jpeg;base64,${applicantList?.nidphoto}` : "/user-image.jpg"} />
           </View>
         </View>
         <View style={[styles.cusView, { marginTop: "5px" }]}>
@@ -496,6 +499,17 @@ const ApplicationForm = (props) => {
             }}
           >
             APPLICANT RELATED INFORMATION
+          </Text>
+        </View>
+        <View style={styles.cusView}>
+          <Text
+            style={{
+              fontSize: "9px",
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+          >
+            EC Referance No: {applicantList?.ecjobid}
           </Text>
         </View>
         <View style={styles.table}>
@@ -679,17 +693,31 @@ const ApplicationForm = (props) => {
           </View>
         </View>
         <View style={[styles.cusView, { marginTop: "10px" }]}>
-          <Text style={styles.text}>Guarantor’s information below:</Text>
+          <Text style={styles.textT}>Guarantor’s information below:</Text>
         </View>
         {nomineeList?.length > 0 &&
           nomineeList?.map((v, i) => {
             return (
               <View key={i}>
-                <View style={[styles.cusView1, { width: "100%" }]}>
-                  <Text style={styles.text1}>
+                <View style={[styles.cusView1, { width: "100%", marginTop: 10, marginBottom: 10 }]}>
+                  <Text style={styles.textH}>
                     Guarantor {i + 1}
                   </Text>
                 </View>
+        <View style={[styles.cusView1, { width: "30%", marginBottom: 20, marginTop: 20 }]}>
+            <Image style={styles.image2} height={50} src={v?.nidphoto !== undefined ? `data:image/jpeg;base64,${v?.nidphoto}` : "/user-image.jpg"} />
+          </View>
+          <View style={[styles.cusView1, { width: "70%", flexDirection:"row", marginTop:50 }]}>
+            <Text
+              style={{
+                fontSize: "9px",
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+            >
+              EC Referance No: {v?.ecjobid}
+            </Text>
+        </View>
                 <View style={styles.table}>
                   <View style={styles.tableRow}>
                     <View
@@ -937,7 +965,7 @@ const ApplicationForm = (props) => {
             have I ever been adjudicated /insolvent.
           </Text>
         </View>
-        <View style={[styles.cusViewH2, { marginBottom: "10px" }]}>
+        <View style={[styles.cusViewH2, { marginBottom: "100px" }]}>
           <Text style={[styles.text, { textAlign: "left", fontSize: "10" }]}>
             I also agree to UCO Bank making enquiries in respect of the above
             statement/information made by me. I further agree as guarantor of
@@ -945,7 +973,7 @@ const ApplicationForm = (props) => {
             of UCO Bank which may be in force from time to time.
           </Text>
         </View>
-        <View style={[styles.cusViewH2, { marginTop: "40px" }]}>
+        {/* <View style={[styles.cusViewH2, { marginTop: "40px" }]}>
           <Text style={[styles.text, { textAlign: "left", fontSize: "12" }]}>
           </Text>
         </View>
@@ -982,7 +1010,7 @@ const ApplicationForm = (props) => {
           >
             Place:- Gulshan 1, Dhaka
           </Text>
-        </View>
+        </View> */}
         <View style={styles.container}>
           <View style={styles.leftColumn1}>
           <Text
@@ -992,7 +1020,7 @@ const ApplicationForm = (props) => {
             ]}
             break
           >
-            Created by:
+            Make by:
           </Text>
           <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{createdBy}</Text>
           <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{createdByTime}</Text>
@@ -1005,7 +1033,7 @@ const ApplicationForm = (props) => {
             ]}
             break
           >
-            Approved by:
+            Authorized by:
           </Text>
           <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{approvedBy}</Text>
           <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{approvedByTime}</Text>

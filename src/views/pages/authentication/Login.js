@@ -144,7 +144,7 @@ var requestOptions = {
 fetch(`${baseAPI_URL}/getloogedinuser`, requestOptions)
   .then(response => response.json())
   .then(result => {
-    const mapdata = result.data !== undefined && result.data?.pages?.map((v) =>{
+    const mapdata = result?.data !== undefined && result?.data?.pages?.map((v) =>{
       return v?.permissions?.map((k,i) =>{
         return ({action: k , subject: v.name})
       })

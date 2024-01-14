@@ -308,6 +308,7 @@ const PendingUser = () => {
                       trigger="hover"
                     > Complete</UncontrolledTooltip>
                   </div>
+                  {JSON.parse(localStorage.getItem('userData')).roleName === 'maker' || JSON.parse(localStorage.getItem('userData')).roleName === 'checker' &&
                   <div style={{padding:"2px"}} className="btn btn-sm" >
                   <Badge id="Approved" color={'success'} className="text-capitalize" style={{cursor:"pointer"}} >
                    <span ><Check /></span>
@@ -318,6 +319,7 @@ const PendingUser = () => {
                       trigger="hover"
                     > Approved</UncontrolledTooltip>
                   </div>
+                    }
                   <div style={{padding:"2px"}} className="btn btn-sm" >
                   <Badge id="Reject" color={'danger'} className="text-capitalize" style={{cursor:"pointer"}} >
                    <span ><X /></span>

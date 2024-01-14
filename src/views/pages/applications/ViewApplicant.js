@@ -11,14 +11,9 @@ import {
     Col,
   } from "reactstrap";
   import React, { useEffect } from 'react';
-  import Select from "react-select"; // eslint-disable-line
   import { useState } from "react";
   import { useLocation, Link, useNavigate } from "react-router-dom";
-  import toast from 'react-hot-toast'
-  import axios from 'axios'
   import UILoader from '@components/ui-loader'
-  import { v4 as uuidv4 } from 'uuid'
-  
   const ViewApplicant = (props) => {
     const location = useLocation()
     const navigate = useNavigate()
@@ -33,50 +28,7 @@ import {
     ];
     console.log("location", location.state)
     console.log("location 2", location.state?.userinfo?.permanentAddress)
-    const createLoanApplication = (e) =>{
-  e.preventDefault()
-  const sendata = {
-    loanapplication: {
-        loan_no: uuidv4().substring(0,13),
-        createdBy: "john_doe5",
-        branchName: "Main Branch",
-        status: 0
-    },
-    loanee: {
-        createdBy: "john_doe5",
-        name: state?.name,
-        nameEn: state?.nameEn,
-        bloodGroup: state?.bloodGroup,
-        dateOfBirth: state?.dateOfBirth,
-        father: state?.father,
-        mother: state?.mother,
-        spouse: state?.spouse,
-        mobile: state?.mobile,
-        designation: state?.designation,
-        email: state?.email,
-        nationalId: state?.nationalId,
-        occupation: state?.occupation,
-        permanentAddress: permanentAddress,
-        presentAddress: presentAddress
-    },
-    guarantors: []
-  }
-  setBlock(true)
-  axios.post('/addloan', sendata).then(res => {
-    if(res.data.result.error === false){
-      setBlock(false)
-      toast.success("Application Submit Succsfully")
-    } else if(res.data.result.error === true){
-      setBlock(false)
-      toast.error(res.data.result.errorMsg)
-    }
-   })
-   .catch(err => {
-    setBlock(false)
-      toast.error(err.data.result.errorMsg)
-   })
-  console.log("send data", sendata)
-    }
+
     return (
       <UILoader blocking={block}>
       <Card>
@@ -86,79 +38,89 @@ import {
         </CardHeader>
   
         <CardBody>
+        <Row>
+        <Col className="mb-1" xl="9" md="9" sm="12" style={{display:"inline-block"}}>
+        <Col className="mb-1" xl="6" md="6" sm="12" style={{display:"inline-block", paddingRight:"15px"}}>
+            <Label className="form-label" for="basicInput">
+             NID Number
+            </Label>
+            <Input
+              type="text"
+              id="basicInput"
+              placeholder="Enter NID Number"
+              value={state?.nationalId}
+              disabled
+            />
+          </Col>
+          <Col className="mb-1" xl="6" md="6" sm="12" style={{display:"inline-block"}}>
+            <Label className="form-label" for="basicInput">
+              Full Name Bangla
+            </Label>
+            <Input
+              type="text"
+              id="basicInput"
+              placeholder="Enter"
+              value={state?.name}
+              disabled
+            />
+          </Col>
+          <Col className="mb-1" xl="6" md="6" sm="12" style={{display:"inline-block", paddingRight:"15px"}}>
+            <Label className="form-label" for="basicInput">
+              Full Name English
+            </Label>
+            <Input
+              type="text"
+              id="basicInput"
+              placeholder="Enter"
+              value={state?.nameEn}
+              disabled
+            />
+          </Col>
+          <Col className="mb-1 mr-2" xl="6" md="6" sm="12" style={{display:"inline-block"}}>
+            <Label className="form-label" for="basicInput">
+             Date of Birth
+            </Label>
+            <Input
+              type="text"
+              id="basicInput"
+              placeholder="Enter"
+              value={state?.dateOfBirth}
+              disabled
+            />
+          </Col>
+          <Col className="mb-1" xl="6" md="6" sm="12" style={{display:"inline-block", paddingRight:"15px"}}>
+            <Label className="form-label" for="basicInput">
+              Father Name
+            </Label>
+            <Input
+              type="text"
+              id="basicInput"
+              placeholder="Enter"
+              value={state?.father}
+              disabled
+            />
+          </Col>
+          <Col className="mb-1" xl="6" md="6" sm="12" style={{display:"inline-block"}}>
+            <Label className="form-label" for="basicInput">
+              Mother Name
+            </Label>
+            <Input
+              type="text"
+              id="basicInput"
+              placeholder="Enter"
+              value={state?.mother}
+              disabled
+            />
+          </Col>
+        </Col>
+        <Col className="mb-1" xl="3" md="3" sm="12" style={{textAlign:"center"}}>
+          <div style={{}}>
+            <p style={{color:"black", fontWeight:"bold", marginBottom:"5px"}}>Applicant Photo</p>
+          <img src={`data:image/jpeg;base64,${state?.nidphoto}`} alt='nid photo' style={{width: 130, height: 160, border:"1px solid gray", borderRadius:"5px", padding:"5px"}} />
+          </div>
+        </Col>
+        </Row>
           <Row>
-            <Col className="mb-1" xl="4" md="6" sm="12">
-              <Label className="form-label" for="basicInput">
-               NID Number
-              </Label>
-              <Input
-                type="text"
-                id="basicInput"
-                placeholder="Enter NID Number"
-                value={state?.nationalId}
-                disabled
-              />
-            </Col>
-            <Col className="mb-1" xl="4" md="6" sm="12">
-              <Label className="form-label" for="basicInput">
-                Full Name Bangla
-              </Label>
-              <Input
-                type="text"
-                id="basicInput"
-                placeholder="Enter"
-                value={state?.name}
-                disabled
-              />
-            </Col>
-            <Col className="mb-1" xl="4" md="6" sm="12">
-              <Label className="form-label" for="basicInput">
-                Full Name English
-              </Label>
-              <Input
-                type="text"
-                id="basicInput"
-                placeholder="Enter"
-                value={state?.nameEn}
-                disabled
-              />
-            </Col>
-            <Col className="mb-1" xl="4" md="6" sm="12">
-              <Label className="form-label" for="basicInput">
-               Date of Birth
-              </Label>
-              <Input
-                type="text"
-                id="basicInput"
-                placeholder="Enter"
-                value={state?.dateOfBirth}
-                disabled
-              />
-            </Col>
-            <Col className="mb-1" xl="4" md="6" sm="12">
-              <Label className="form-label" for="basicInput">
-                Father Name
-              </Label>
-              <Input
-                type="text"
-                id="basicInput"
-                placeholder="Enter"
-                value={state?.father}
-                disabled
-              />
-            </Col>
-            <Col className="mb-1" xl="4" md="6" sm="12">
-              <Label className="form-label" for="basicInput">
-                Mother Name
-              </Label>
-              <Input
-                type="text"
-                id="basicInput"
-                placeholder="Enter"
-                value={state?.mother}
-                disabled
-              />
-            </Col>
             <Col className="mb-1" xl="4" md="6" sm="12">
               <Label className="form-label" for="basicInput">
                 Gender

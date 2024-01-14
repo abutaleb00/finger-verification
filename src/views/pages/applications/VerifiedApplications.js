@@ -25,9 +25,11 @@ import "cleave.js/dist/addons/cleave-phone.us";
 import MUIDataTable from "mui-datatables"
 import moment from "moment"
 import GrantorList from "../GrantorList";
+import DocumentList from "./DocumentList";
 import { Search, Trash, Eye, Edit, UserMinus, UserPlus, Check, X, CheckCircle, BarChart } from 'react-feather'
 import UILoader from '@components/ui-loader'
 import toast from 'react-hot-toast'
+import Swal from "sweetalert2"
 // ** Styles
 import "@styles/react/libs/react-select/_react-select.scss"
 
@@ -87,7 +89,44 @@ const VerifiedApplications = () => {
             toast.error(err.data.result.errorMsg)
          })
        }
-      
+       const rejectStatus = (e) => {
+        const sentdata = {
+            loanapplication: {
+                loan_no: e,
+                status: 0
+            }
+        }
+        Swal.fire({
+            title: `Are you sure ?`,
+            text: `You want to Reject this Application`,
+            type: "wanring",
+            icon: 'warning',
+            footer: "",
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            customClass: {
+                cancelButton: 'btn btn-danger ms-1',
+                confirmButton: 'btn btn-primary'
+            }
+        }).then((result) => {
+            if (result.isConfirmed === true) {
+                setBlock(true)
+                axios.put(`/updateloanstatus`, sentdata).then((res) => {
+                    if(res.data.result.error === false){
+                        setBlock(false)
+                        toast.success("Loan Application Update Successfully")
+                        searchEcData()
+                      } else if (res.data.result.error === true){
+                        setBlock(false)
+                        toast.error(res.data.result.errorMsg)
+                      }
+                }).catch((e) => {
+                    setBlock(false)
+                    toast.error(e.data.result.errorMsg)
+                })
+            }
+        })
+    }  
     const columns = [
       {
         name: "loan_no",
@@ -137,6 +176,23 @@ const VerifiedApplications = () => {
         },
       },
       {
+        name: "nidphoto",
+        label: "Photo",
+        searchable: true,
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRenderLite: (dataIndex) => {
+            const loanee = data[dataIndex]?.loanee
+            return (
+                <div style={{ width: "auto", textAlign:"center"}}>
+                <img src={`data:image/jpeg;base64,${loanee?.nidphoto}`} alt='img' style={{width: 30, height: 30, border:"1px solid gray", borderRadius:"2px"}} />
+              </div>
+            )
+          }
+        },
+      },
+      {
         name: "nationalId",
         label: "NID",
         searchable: true,
@@ -148,6 +204,23 @@ const VerifiedApplications = () => {
             return (
                 <div style={{ width: "auto"}}>
                 {loanee?.nationalId}
+              </div>
+            )
+          }
+        },
+      },
+      {
+        name: "ecjobid",
+        label: "EC Ref.",
+        searchable: true,
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRenderLite: (dataIndex) => {
+            const loanee = data[dataIndex]?.loanee
+            return (
+                <div style={{ width: "auto"}}>
+                {loanee?.ecjobid}
               </div>
             )
           }
@@ -265,6 +338,8 @@ const VerifiedApplications = () => {
           customBodyRenderLite: (dataIndex) => {
             const alldata = data[dataIndex]
             const guarantors = data[dataIndex]?.guarantors
+            const id = data[dataIndex]?.loan_no
+            const uniquereference = data[dataIndex]?.uniquereference
             return (
                 <div style={{ width: "auto"}}>
                 <div style={{ display: "inline-flex" }}>
@@ -288,6 +363,9 @@ const VerifiedApplications = () => {
                   <GrantorList guarantors={guarantors} />
                   </div>
                   <div style={{padding:"2px"}} className="btn btn-sm" >
+                  <DocumentList uniquereference={uniquereference} />
+                  </div>
+                  <div style={{padding:"2px"}} className="btn btn-sm" >
                   <Link
                     id='button2'
                       to={`/application-form`}
@@ -303,7 +381,18 @@ const VerifiedApplications = () => {
                       trigger="hover"
                     > Complete</UncontrolledTooltip>
                   </div>
-
+                  {((JSON.parse(localStorage.getItem('userData')).roleName)?.toLowerCase() === 'checker') &&
+                  <div style={{padding:"2px"}} className="btn btn-sm" >
+                  <Badge id="Reject" onClick={() => rejectStatus(id)}  color={'danger'} className="text-capitalize" style={{cursor:"pointer"}} >
+                   <span ><X /></span>
+                  </Badge>
+                  <UncontrolledTooltip
+                      placement="top"
+                      target="Reject"
+                      trigger="hover"
+                    > Reject</UncontrolledTooltip>
+                  </div>
+                  }
                 </div>
               </div>
             )
@@ -330,7 +419,7 @@ const VerifiedApplications = () => {
         <CardTitle tag="h4">Verified Application List</CardTitle>
       </CardHeader>
       <CardBody className="my-1 py-50">
-      <Row
+      {/* <Row
         style={{ marginBottom: "10px", paddingLeft: "30px", padding: "15px" }}
       >
         <Col md="6">
@@ -364,7 +453,7 @@ const VerifiedApplications = () => {
             <span className="align-middle ms-25">Search</span>
           </Button.Ripple>
         </Col>
-      </Row>
+      </Row> */}
       <MUIDataTable
         title={"Verified Application List"}
         data={data}

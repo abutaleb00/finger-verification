@@ -18,27 +18,27 @@ import {
   import axios from 'axios'
   import UILoader from '@components/ui-loader'
   import { v4 as uuidv4 } from 'uuid'
-  import { nidfield, presentAddressData, parmanentAddressData } from "../../components/localjs/data";
+  import { gnidfield, presentAddressData, parmanentAddressData } from "../../components/localjs/data";
   import TextBox from "../../components/TextBox"
   
-  const EditApplicant = (props) => {
+  const EditGuarantor = (props) => {
     const location = useLocation()
     const navigate = useNavigate()
     const [application, setApplication] = useState(location.state?.userinfo)
-    const [state, setState] = useState(location.state?.userinfo?.loanee)
+    const [state, setState] = useState(location.state?.userinfo)
     const [block, setBlock] = useState(false)
-    const [permanentAddress, setPermanentAddress] = useState(location.state?.userinfo?.loanee?.permanentAddress)
-    const [presentAddress, setPresentAddress] = useState(location.state?.userinfo?.loanee?.presentAddress)
+    const [permanentAddress, setPermanentAddress] = useState(location.state?.userinfo?.permanentAddress)
+    const [presentAddress, setPresentAddress] = useState(location.state?.userinfo?.presentAddress)
     console.log("location", location.state)
 
    const handleChange = (e) => {
         setState({ ...state, [e.target.name]: e.target.value })
       }
    const handlePresentChange = (e) => {
-    setPresentAddress({ ...presentAddress, [e.target.name]: e.target.value })
+    setPresentAddress({ ...state, [e.target.name]: e.target.value })
       }
    const handlePermanentChange = (e) => {
-    setPermanentAddress({ ...permanentAddress, [e.target.name]: e.target.value })
+    setPermanentAddress({ ...state, [e.target.name]: e.target.value })
       }
     const updateLoanApplication = (e) =>{
   e.preventDefault()
@@ -51,8 +51,6 @@ import {
         id: application?.id
     },
     loanee: {
-        ecjobid: state?.ecjobid,
-        nidphoto: state?.nidphoto,
         name: state?.name,
         nameEn: state?.nameEn,
         bloodGroup: state?.bloodGroup,
@@ -175,13 +173,13 @@ import {
         </Col>
         <Col className="mb-1" xl="3" md="3" sm="12" style={{textAlign:"center"}}>
           <div style={{}}>
-            <p style={{color:"black", fontWeight:"bold", marginBottom:"5px"}}>Applicant Photo</p>
-          <img src={`data:image/jpeg;base64,${state?.nidphoto}`} alt='nid photo' style={{width: 130, height: 160, border:"1px solid gray", borderRadius:"5px", padding:"5px"}} />
+            <p style={{color:"black", fontWeight:"bold", marginBottom:"5px"}}>Guarantor Photo</p>
+          <img src={`data:image/jpeg;base64,${nidPhoto}`} alt='nid photo' style={{width: 130, height: 160, border:"1px solid gray", borderRadius:"5px", padding:"5px"}} />
           </div>
         </Col>
         </Row>
           <Row>
-          {nidfield.map((v, k) => {
+          {gnidfield.map((v, k) => {
             return (
                 <TextBox
                     key={"tp_text" + k}
@@ -218,7 +216,6 @@ import {
                     placeholder={v.placeholder}
                     disable={v.disable}
                     val={presentAddress[v.id] !== undefined && presentAddress[v.id] !== null ? presentAddress[v.id] : "" }
-                    // val={presentAddress[v.id] !== undefined && presentAddress[v.id] !== null ? presentAddress[v.id] : "" }
                     ChangeHandler={(e) => handlePresentChange(e)}
                     />
                     );
@@ -263,4 +260,4 @@ import {
       </UILoader>
     );
   };
-  export default EditApplicant
+  export default EditGuarantor

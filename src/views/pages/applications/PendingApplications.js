@@ -25,6 +25,7 @@ import "cleave.js/dist/addons/cleave-phone.us";
 import MUIDataTable from "mui-datatables"
 import moment from "moment"
 import GrantorList from "../GrantorList";
+import DocumentList from "./DocumentList";
 import { Search, Trash, Eye, Edit, UserMinus, UserPlus, Check, X, CheckCircle } from 'react-feather'
 import UILoader from '@components/ui-loader'
 import toast from 'react-hot-toast'
@@ -213,6 +214,40 @@ const PendingApplications = () => {
         },
       },
       {
+        name: "nidphoto",
+        label: "Photo",
+        searchable: true,
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRenderLite: (dataIndex) => {
+            const loanee = data[dataIndex]?.loanee
+            return (
+                <div style={{ width: "auto", textAlign:"center"}}>
+                <img src={`data:image/jpeg;base64,${loanee?.nidphoto}`} alt='img' style={{width: 30, height: 30, border:"1px solid gray", borderRadius:"2px"}} />
+              </div>
+            )
+          }
+        },
+      },
+      {
+        name: "ecjobid",
+        label: "EC Ref.",
+        searchable: true,
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRenderLite: (dataIndex) => {
+            const loanee = data[dataIndex]?.loanee
+            return (
+                <div style={{ width: "auto"}}>
+                {loanee?.ecjobid}
+              </div>
+            )
+          }
+        },
+      },
+      {
         name: "nationalId",
         label: "NID",
         searchable: true,
@@ -342,6 +377,7 @@ const PendingApplications = () => {
             const alldata = data[dataIndex]
             const guarantors = data[dataIndex]?.guarantors
             const id = data[dataIndex]?.loan_no
+            const uniquereference = data[dataIndex]?.uniquereference
             return (
                 <div style={{ width: "auto"}}>
                 <div style={{ display: "inline-flex" }}>
@@ -365,6 +401,11 @@ const PendingApplications = () => {
                   <GrantorList guarantors={guarantors} />
                   </div>
                   <div style={{padding:"2px"}} className="btn btn-sm" >
+                  <DocumentList uniquereference={uniquereference} />
+                  </div>
+                  {((JSON.parse(localStorage.getItem('userData')).roleName)?.toLowerCase() === 'checker') &&
+                  <>
+                  <div style={{padding:"2px"}} className="btn btn-sm" >
                   <Badge  id="Approved" onClick={() => updateStatus(id)} color={'success'} className="text-capitalize" style={{cursor:"pointer"}} >
                    <span ><Check /></span>
                   </Badge>
@@ -374,6 +415,7 @@ const PendingApplications = () => {
                       trigger="hover"
                     > Approved</UncontrolledTooltip>
                   </div>
+                  
                   <div style={{padding:"2px"}} className="btn btn-sm" >
                   <Badge id="Reject" onClick={() => rejectStatus(id)}  color={'danger'} className="text-capitalize" style={{cursor:"pointer"}} >
                    <span ><X /></span>
@@ -384,6 +426,8 @@ const PendingApplications = () => {
                       trigger="hover"
                     > Reject</UncontrolledTooltip>
                   </div>
+                  </>
+          }
                 </div>
               </div>
             )
@@ -394,6 +438,7 @@ const PendingApplications = () => {
 
  useEffect(() => {
   allPendingApplicant()
+  console.log("first", JSON.parse(localStorage.getItem('userData')).roleName)
 }, [])  
     const options = {
     filterType: "checkbox",
@@ -410,7 +455,7 @@ const PendingApplications = () => {
         <CardTitle tag="h4">Pending Application List</CardTitle>
       </CardHeader>
       <CardBody className="my-1 py-50">
-      <Row
+      {/* <Row
         style={{ marginBottom: "10px", paddingLeft: "30px", padding: "15px" }}
       >
         <Col md="6">
@@ -444,7 +489,7 @@ const PendingApplications = () => {
             <span className="align-middle ms-25">Search</span>
           </Button.Ripple>
         </Col>
-      </Row>
+      </Row> */}
       <MUIDataTable
         title={"Pending Application List"}
         data={data}

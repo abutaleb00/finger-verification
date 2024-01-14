@@ -14,6 +14,8 @@ const ApplicationForm = lazy(() => import("../../views/pages/applications/Applic
 const NewGrantors = lazy(() => import("../../views/pages/NewGrantors"));
 const VerifiedUserList = lazy(() => import("../../views/pages/VerifiedUserList"));
 const GrantorEdit = lazy(() => import("../../views/pages/GrantorEdit"));
+const EditGuarantor = lazy(() => import("../../views/pages/applications/EditGuarantor"));
+const ViewGuarantor = lazy(() => import("../../views/pages/applications/ViewGuarantor"));
 const PendingUser = lazy(() => import("../../views/pages/PendingUser"));
 const Reports = lazy(() => import("../../views/pages/Reports"));
 const EcData = lazy(() => import("../../views/pages/ec/EcData"));
@@ -83,7 +85,15 @@ const OthersRoutes = [
       },
       {
         path: "/grantor-edit",
-        element: <GrantorEdit />,
+        element: <EditGuarantor />,
+        meta: {
+          action: 'read',
+          resource: 'Grantor'
+        }
+      },
+      {
+        path: "/grantor-view",
+        element: <ViewGuarantor />,
         meta: {
           action: 'read',
           resource: 'Grantor'

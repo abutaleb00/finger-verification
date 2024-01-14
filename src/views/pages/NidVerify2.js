@@ -316,8 +316,8 @@ export default class NidVerify2 extends Component {
                       ] = this.state.nid;
 
                       //console.log("datato send ", ecData.data.success.data);
-
-                      axios
+                      this.setState({block: true}, ()=>{
+                        axios
                         .post("/makethefulleccall", dataToSend)
                         .then((res) => {
                           if (res.data.result.error === false) {
@@ -336,7 +336,7 @@ export default class NidVerify2 extends Component {
                                     .then((res) => {
                                       if (res.data.result.error === false) {
                                         this.setState(
-                                          { ecresult: res.data?.data?.verificationResponse?.voterInfo,loaderText: res.data.data.result },
+                                          {block: false, ecresult: res.data?.data?.verificationResponse?.voterInfo, loaderText: res.data.data.result, jobId: res.data?.data?.jobId },
                                           () => {
                                             if (
                                               this.state.loaderText ===
@@ -347,6 +347,7 @@ export default class NidVerify2 extends Component {
                                               this.state.loaderText ===
                                               "NO MATCH FOUND"
                                             ) {
+                                              toast.error('NO MATCH FOUND')
                                               setTimeout(() => {
                                                 this.loaderHide();
                                               }, 1000);
@@ -360,21 +361,7 @@ export default class NidVerify2 extends Component {
                                             block: false,
                                           },
                                           () => {
-                                            confirmAlert({
-                                              title: "Error Message",
-                                              message: (
-                                                <p className="mod-p">
-                                                  {res.data.result.errMsg}
-                                                </p>
-                                              ),
-                                              buttons: [
-                                                {
-                                                  label: "Ok",
-                                                  onClick: () => {},
-                                                },
-                                              ],
-                                              closeOnClickOutside: false,
-                                            });
+                                            toast.error(res.data.result.errMsg)
                                           }
                                         );
                                       }
@@ -382,8 +369,14 @@ export default class NidVerify2 extends Component {
                                 }, 2000);
                               }
                             );
+                          } else if (res.data.result.error === true){
+                            this.setState({block: false}, ()=>{
+                              toast.error(res.data.result.errorMsg)
+                            })
                           }
-                        });
+                        });                     
+                      })
+
                     }}
                     //  onClick={(e) => {
                     //   this.callECServer()
@@ -406,7 +399,7 @@ export default class NidVerify2 extends Component {
                     id='button2'
                     style={{display:"none"}}
                       to={`/ec-data`}
-                      state={{ userinfo: this.state.ecresult }}
+                      state={{ userinfo: this.state.ecresult, jobId: this.state.jobId }}
                   >
                       redirect
                   </Link>

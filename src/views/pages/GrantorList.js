@@ -56,6 +56,7 @@ useEffect(() =>{
       <thead>
         <tr>
           <th>Name</th>
+          <th>Photo</th>
           <th>NID Number</th>
           <th>Father Name</th>
           <th>Mother Name</th>
@@ -71,15 +72,24 @@ useEffect(() =>{
             return (
             <tr key={i}>
               <td>{v.nameEn}</td>
+              <td><img src={`data:image/jpeg;base64,${v?.nidphoto}`} alt='img' style={{width: 30, height: 30, border:"1px solid gray", borderRadius:"2px"}} /></td>
               <td>{v.nationalId}</td>
               <td>{v.father}</td>
               <td>{v.mother}</td>
               <td>{v.mobile}</td>
               <td>{v.occupation}</td>
               <td>{v.createdBy}</td>
-              <td><Badge color={'primary'} className="text-capitalize" style={{cursor:"pointer"}} >
-                <span >Edit</span>
-              </Badge></td>
+              <td>
+              <Link
+                id='button2'
+                to={`/grantor-view`}
+                state={{ userinfo: v }}
+                >
+                  <Badge id="edit" color={'info'} className="text-capitalize" style={{cursor:"pointer"}} >
+                    <span >View</span>
+                  </Badge>
+                  </Link>
+                </td>
             </tr>)
           }) : <tr>
             <td colSpan="7"><p style={{textAlign:"center", marginTop:"15px"}}>No Guarantor Found</p></td>
