@@ -79,6 +79,7 @@ export default class JwtService {
           const retryOriginalRequest = new Promise(resolve => {
             console.log("originalRequest 3", originalRequest)
             window.location.href = "/login"
+            localStorage.removeItem('userData')
             this.addSubscriber(accessToken => {
               // ** Make sure to assign accessToken according to your response.
               // ** Check: https://pixinvent.ticksy.com/ticket/2413870

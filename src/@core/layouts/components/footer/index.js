@@ -7,7 +7,7 @@ const Footer = () => {
       <span className="float-md-start d-block d-md-inline-block mt-25">
         COPYRIGHT © {new Date().getFullYear()}{" "}
         <a
-          href="https://www.commlinkinfotech.com"
+          href="https://www.southeastbank.com.bd/"
           target="_blank"
           rel="noopener noreferrer"
         >

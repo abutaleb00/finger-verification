@@ -34,8 +34,7 @@ window.CallBackURL = window.location.href.startsWith(
   window.bankLogin = window.location.href.startsWith(
     "https://sebfvs.southeastbank.com.bd"
   )
-    ? "http://172.17.253.183/smartloginapplication/login.aspx"
-    // ? "http://smartlogin.southeastbank.com.bd/smartloginapplication/login.aspx"
+    ? "http://smartlogin.southeastbank.com.bd/smartloginapplication/login.aspx"
     : window.location.href.startsWith("https://localhost")
     ? "http://172.17.253.183/smartloginapplication/login.aspx"
     : "http://172.17.253.183/smartloginapplication/login.aspx";

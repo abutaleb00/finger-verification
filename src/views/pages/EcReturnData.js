@@ -21,8 +21,27 @@ import moment from "moment";
 import axios from 'axios'
 import UILoader from '@components/ui-loader'
 import { v4 as uuidv4 } from 'uuid'
+import SelectRequired from "../components/SelectRequired";
 export const baseAPI_URL = globalThis.baseAPI_URL;
 
+const styles = {
+  control: base => ({
+    ...base,
+    fontFamily: "Times New Roman"
+  }),
+  menu: base => ({
+    ...base,
+    fontSize: 11,
+    lineHeight: 1
+  })
+}
+const Selects = props => (
+  <SelectRequired
+    {...props}
+    SelectComponent={Select}
+    options={props.options || options}
+  />
+)
 const EcReturnData = (props) => {
   const navigate = useNavigate()
   const location = useLocation()
@@ -32,6 +51,7 @@ const EcReturnData = (props) => {
   const [nidPhoto, setNidPhoto] = useState(null)
   const [permanentAddress, setPermanentAddress] = useState(location.state?.userinfo?.permanentAddress)
   const [presentAddress, setPresentAddress] = useState(location.state?.userinfo?.presentAddress)
+  const [branchOption, setBranchOption] = useState([])
   const genderOptions = [
     { value: "male", label: "Male" },
     { value: "female", label: "Female", color: "#0052CC", isFixed: true },
@@ -44,7 +64,7 @@ const sendata = {
   loanapplication: {
       loan_no: uuidv4().substring(0,13),
       // createdBy: "john_doe5",
-      branchName: JSON.parse(localStorage.getItem('userData')).branchName,
+      branchName: state?.branchName,
       status: 0
   },
   loanee: {
@@ -112,8 +132,33 @@ console.log("send data", sendata)
         toast.error(err.data.result.errorMsg)
      })
    }
+  const getBranchList = () => {
+    setBlock(true)
+     axios.post('/getbranches?first=0&limit=200').then(res => {
+      if(res.data.result.error === false){
+        setBlock(false)
+        const branchOption = res.data?.data?.content?.map(
+          (item) => {
+            return { value: item.name, label: item.name }
+          }
+        )
+        setBranchOption([{ value: null, label: 'Select Branch'},...branchOption])
+        console.log("res.data.data", res.data.data)
+        // setNidPhoto(res.data.data?.photolink)
+        // setData(res.data.data)
+      } else  if(res.data.result.error === false){
+        setBlock(false)
+        toast.error(res.data.result.errorMsg)
+      }
+     })
+     .catch((err) =>{
+      setBlock(false)
+        toast.error(err.data.result.errorMsg)
+     })
+   }
 useEffect(()=>{
   getNidPhoto()
+  getBranchList()
 },[])
   return (
     <UILoader blocking={block}>
@@ -207,6 +252,31 @@ useEffect(()=>{
         </Col>
         </Row>
         <Row>
+          <Col className="mb-1" xl="4" md="6" sm="12">
+            <Label className="form-label" for="basicInput">
+              Branch Name <span style={{color:"red"}}>*</span>
+            </Label>
+            <Selects
+              className='react-select'
+              styles={styles}
+              options={branchOption}
+              placeholder="Select Branch"
+              onChange={(e) => setSate({...state, branchName: e.value})}
+              maxMenuHeight={140}
+              isSearchable
+              required 
+              />
+            {/* <Select
+              isClearable={false}
+              defaultValue={branchOption[1]}
+              name="colors"
+              options={branchOption}
+              className="react-select"
+              classNamePrefix="select"
+              onChange={(e) => setSate({...state, branchName: e.value})}
+              // isDisabled={true}
+            /> */}
+          </Col>
           <Col className="mb-1" xl="4" md="6" sm="12">
             <Label className="form-label" for="basicInput">
               Gender

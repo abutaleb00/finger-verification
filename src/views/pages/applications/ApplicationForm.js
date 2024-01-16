@@ -528,7 +528,7 @@ const ApplicationForm = (props) => {
               </Text>
             </View>
             <View style={[styles.tableColCus, { width: "70%" }]}>
-              <Text style={styles.tableCellCus}>{applicantList?.name} </Text>
+              <Text style={styles.tableCellCus}>{applicantList?.name} {" "} </Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -554,7 +554,7 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}>Father Name</Text>
             </View>
             <View style={[styles.tableColCus, { width: "70%" }]}>
-              <Text style={styles.tableCellCus}>{applicantList?.father} </Text>
+              <Text style={styles.tableCellCus}>{applicantList?.father} {" "} </Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -567,7 +567,7 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}>Mother Name</Text>
             </View>
             <View style={[styles.tableColCus, { width: "70%" }]}>
-              <Text style={styles.tableCellCus}>{applicantList?.mother} </Text>
+              <Text style={styles.tableCellCus}>{applicantList?.mother} {" "}</Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -954,23 +954,16 @@ const ApplicationForm = (props) => {
             style={[styles.text, { textAlign: "left", fontSize: "10" }]}
             break
           >
-            I declare that all particulars and information given in the above
-            form are true, correct and complete and that they shall form the
-            basis of loan to be availed from UCO Bank.
+            We the undersigned confirm that we have obtained the Thumb Impression(s) of the above
+            person(s) [borrower/co-borrower/guarantor/mortgagor, as applicable] and they have put their
+            Thumb Impression(s) as per guideline of BRPD Circular # 15 dated 02.08.2023 in front of us. The
+            above Thumb Impression(s) have been verified with the database preserved for National Identity
+            Card (NID) of Bangladesh.
           </Text>
         </View>
         <View style={[styles.cusViewH2, { marginBottom: "10px" }]}>
           <Text style={[styles.text, { textAlign: "left", fontSize: "10" }]}>
-            I confirm that I have had no insolvency proceedings against me nor
-            have I ever been adjudicated /insolvent.
-          </Text>
-        </View>
-        <View style={[styles.cusViewH2, { marginBottom: "100px" }]}>
-          <Text style={[styles.text, { textAlign: "left", fontSize: "10" }]}>
-            I also agree to UCO Bank making enquiries in respect of the above
-            statement/information made by me. I further agree as guarantor of
-            the above stated loan if sanctioned shall be governed by the rules
-            of UCO Bank which may be in force from time to time.
+          Date Time of obtaining Thumb Impression:
           </Text>
         </View>
         {/* <View style={[styles.cusViewH2, { marginTop: "40px" }]}>
@@ -1020,9 +1013,10 @@ const ApplicationForm = (props) => {
             ]}
             break
           >
-            Make by:
+            Made by:
           </Text>
           <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{createdBy}</Text>
+          <Text style={{fontSize: "13", fontWeight: "bold", color:"black", marginTop:"30px"}}>Signature with seal</Text>
           <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{createdByTime}</Text>
           </View>
           <View style={styles.rightColumn1}>
@@ -1036,6 +1030,7 @@ const ApplicationForm = (props) => {
             Authorized by:
           </Text>
           <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{approvedBy}</Text>
+          <Text style={{fontSize: "13", fontWeight: "bold", color:"black", marginTop:"30px"}}>Signature with seal</Text>
           <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{approvedByTime}</Text>
           </View>
         </View>

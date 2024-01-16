@@ -32,7 +32,9 @@ const UserDropdown = () => {
   const dispatch = useDispatch()
 
   const logoutapicall = () =>{
-      
+    localStorage.removeItem('userData')
+      localStorage.removeItem(config.storageTokenKeyName)
+      localStorage.removeItem(config.storageRefreshTokenKeyName)   
     axios.delete('/oauth/revoke').then(res => {
       if(res.data.result.error === false){
         localStorage.removeItem('userData')
@@ -43,10 +45,15 @@ const UserDropdown = () => {
       } else if(res.data.result.error === true){
         setBlock(false)
         toast.error(res.data.result.errorMsg)
+        localStorage.removeItem('userData')
+        localStorage.removeItem(config.storageTokenKeyName)
+        localStorage.removeItem(config.storageRefreshTokenKeyName)
+        navigate('/login')
       }
      })
      .catch(err => {
-        toast.error(err.data.result.errorMsg)
+      localStorage.removeItem('userData')
+        // toast.error(err.data.result.errorMsg)
      })
 
   }
@@ -72,15 +79,15 @@ const UserDropdown = () => {
         <Avatar img={userAvatar} imgHeight='40' imgWidth='40' status='online' />
       </DropdownToggle>
       <DropdownMenu end>
-        <DropdownItem tag={Link} to='/pages/profile'>
+        {/* <DropdownItem tag={Link} to='/pages/profile'>
           <User size={14} className='me-75' />
           <span className='align-middle'>Profile</span>
-        </DropdownItem>
-        <DropdownItem divider />
-        <DropdownItem tag={Link} to='/pages/account-settings'>
+        </DropdownItem> */}
+        {/* <DropdownItem divider /> */}
+        {/* <DropdownItem tag={Link} to='/pages/account-settings'>
           <Settings size={14} className='me-75' />
           <span className='align-middle'>Settings</span>
-        </DropdownItem>
+        </DropdownItem> */}
         <DropdownItem tag={Link} to='/login' onClick={() => logoutapicall()}>
           <Power size={14} className='me-75' />
           <span className='align-middle'>Logout</span>

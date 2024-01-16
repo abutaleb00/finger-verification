@@ -21,6 +21,7 @@ const VerticalMenuHeader = props => {
   // ** Reset open group
   useEffect(() => {
     if (!menuHover && menuCollapsed) setGroupOpen([])
+    console.log("user", user)
   }, [menuHover, menuCollapsed])
 
   // ** Menu toggler component
@@ -50,7 +51,7 @@ const VerticalMenuHeader = props => {
     <div className='navbar-header'>
       <ul className='nav navbar-nav flex-row'>
         <li className='nav-item me-auto'>
-          <NavLink to={user ? getHomeRouteForLoggedInUser(user.role) : '/'} className='navbar-brand'>
+          <NavLink to={user ? getHomeRouteForLoggedInUser(user.role) : '/dashboard'} className='navbar-brand'>
             <span className='brand-logo'>
               <img src={themeConfig.app.appLogoImage} alt='logo' />
             </span>

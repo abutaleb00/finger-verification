@@ -1,5 +1,5 @@
 // ** React Imports
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 // ** Custom Hooks
@@ -20,7 +20,6 @@ import { AbilityContext } from '@src/utility/context/Can'
 // ** Custom Components
 import Avatar from '@components/avatar'
 import InputPasswordToggle from '@components/input-password-toggle'
-
 // ** Utils
 import { getHomeRouteForLoggedInUser } from '@utils'
 import jwtDefaultConfig from '../../../@core/auth/jwt/jwtDefaultConfig'
@@ -46,7 +45,8 @@ import {
 // ** Illustrations Imports
 import illustrationsLight from '@src/assets/images/pages/login-v2.svg'
 import illustrationsDark from '@src/assets/images/pages/login-v2-dark.svg'
-
+import logo from '@src/assets/images/logo/logo.png'
+import { isUserLoggedIn } from '@utils'
 // ** Styles
 import '@styles/react/pages/page-authentication.scss'
 
@@ -91,7 +91,11 @@ const Login = () => {
   } = useForm({ defaultValues })
 
   const source = skin === 'dark' ? illustrationsDark : illustrationsLight
-
+  useEffect(() => {
+    if (isUserLoggedIn() !== null) {
+      navigate('/dashboard')
+    }
+  }, [])
   const onSubmit = data => {
     function getBasicToken() {
       let temp = "my-trusted-client" + ":" + "client_secret";
@@ -125,10 +129,16 @@ var requestOptions = {
 };
 
 fetch(`${baseAPI_URL}/oauth/token`, requestOptions)
-  .then(response => response.json())
+  .then(response => {
+    if(response.status === 405){
+      return toast.error("Your Account is inactive. Contact Admin to unlock it")
+    } else {
+      return response.json()
+    }
+    })
   .then(function (res) {
     // const data1 = JSON.stringify(res)
-    // console.log("res", data1)
+    console.log("res", JSON.stringify(res))
     const accessToken = res.access_token
    const refreshToken = res.refresh_token
     var myHeaders = new Headers();
@@ -177,6 +187,8 @@ fetch(`${baseAPI_URL}/getloogedinuser`, requestOptions)
     <div className='auth-wrapper auth-cover'>
       <Row className='auth-inner m-0'>
         <Link className='brand-logo' to='/' onClick={e => e.preventDefault()}>
+        <img style={{width:"25px", height:"auto"}} src={logo} alt='Login Cover' />
+        {/* <img style={{width:"25px", height:"auto"}} src={logo2} alt='Login Cover' /> */}
           <h2 className='brand-text text-primary ms-1'>Fingerprint Verification Solution</h2>
         </Link>
         <Col className='d-none d-lg-flex align-items-center p-5' lg='8' sm='12'>

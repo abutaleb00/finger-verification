@@ -81,15 +81,15 @@ export default [
         navLink: '/admin/audit-trail',
         action: 'read',
         resource: 'AdminSetting',
-      },
-      {
-        id: 'ecData',
-        title: 'EC Data',
-        icon: <Database />,
-        navLink: '/admin/ec-data',
-        action: 'read',
-        resource: 'AdminSetting',
       }
+      // {
+      //   id: 'ecData',
+      //   title: 'EC Data',
+      //   icon: <Database />,
+      //   navLink: '/admin/ec-data',
+      //   action: 'read',
+      //   resource: 'AdminSetting',
+      // }
     ]
   }
 ]
