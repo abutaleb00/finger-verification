@@ -35,10 +35,10 @@ import {
         setState({ ...state, [e.target.name]: e.target.value })
       }
    const handlePresentChange = (e) => {
-    setPresentAddress({ ...state, [e.target.name]: e.target.value })
+    setPresentAddress({ ...presentAddress, [e.target.name]: e.target.value })
       }
    const handlePermanentChange = (e) => {
-    setPermanentAddress({ ...state, [e.target.name]: e.target.value })
+    setPermanentAddress({ ...permanentAddress, [e.target.name]: e.target.value })
       }
     const updateLoanApplication = (e) =>{
   e.preventDefault()

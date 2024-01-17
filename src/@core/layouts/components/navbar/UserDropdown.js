@@ -19,7 +19,7 @@ import { User, Mail, CheckSquare, MessageSquare, Settings, CreditCard, HelpCircl
 import { UncontrolledDropdown, DropdownMenu, DropdownToggle, DropdownItem } from 'reactstrap'
 
 // ** Default Avatar Image
-import defaultAvatar from '@src/assets/images/portrait/small/avatar-s-11.jpg'
+import defaultAvatar from '@src/assets/images/portrait/small/profilepic.png'
 
 import useJwt from '@src/auth/jwt/useJwt'
 import toast from 'react-hot-toast'
@@ -76,7 +76,7 @@ const UserDropdown = () => {
           <span className='user-name fw-bold'>{(userData && userData['fullName']) || 'John Doe'}</span>
           <span className='user-status'>{(userData && userData['roleName']) || 'Admin'}</span>
         </div>
-        <Avatar img={userAvatar} imgHeight='40' imgWidth='40' status='online' />
+        <Avatar img={userAvatar} style={{background:"white"}} imgHeight='40' imgWidth='40' status='online' />
       </DropdownToggle>
       <DropdownMenu end>
         {/* <DropdownItem tag={Link} to='/pages/profile'>

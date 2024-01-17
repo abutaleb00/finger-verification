@@ -22,7 +22,7 @@ import img2 from '@src/assets/images/portrait/small/avatar-s-1.jpg'
 import img3 from '@src/assets/images/portrait/small/avatar-s-4.jpg'
 import img4 from '@src/assets/images/portrait/small/avatar-s-6.jpg'
 import img5 from '@src/assets/images/portrait/small/avatar-s-2.jpg'
-import img6 from '@src/assets/images/portrait/small/avatar-s-11.jpg'
+import img6 from '@src/assets/images/portrait/small/profilepic.png'
 
 // ** Styles Imports
 import '@styles/react/libs/editor/editor.scss'

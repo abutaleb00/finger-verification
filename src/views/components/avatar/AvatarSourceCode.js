@@ -164,7 +164,7 @@ const data = [
     img: require('@src/assets/images/portrait/small/avatar-s-10.jpg')
   },
   {
-    img: require('@src/assets/images/portrait/small/avatar-s-11.jpg')
+    img: require('@src/assets/images/portrait/small/profilepic.png')
   },
   {
     img: require('@src/assets/images/portrait/small/avatar-s-20.jpg')
@@ -203,7 +203,7 @@ const data = [
   },
   {
     title: 'Darcey Nooner',
-    img: require('@src/assets/images/portrait/small/avatar-s-11.jpg')
+    img: require('@src/assets/images/portrait/small/profilepic.png')
   },
   {
     title: 'Jenny Looper',

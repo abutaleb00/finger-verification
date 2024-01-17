@@ -356,7 +356,7 @@ import {
                 id="basicInput"
                 placeholder="Enter Union/Ward"
                 value={presentAddress?.postOffice}
-                onChange={(e) => setPresentAddress({...presentAddress, postalCode: e.target.value})}
+                onChange={(e) => setPresentAddress({...presentAddress, postOffice: e.target.value})}
               />
             </Col>
             <Col className="mb-1" xl="4" md="4" sm="12">
@@ -481,7 +481,7 @@ import {
                 id="basicInput"
                 placeholder="Enter Union/Ward"
                 value={permanentAddress?.postOffice}
-                onChange={(e) => setPermanentAddress({...permanentAddress, postalCode: e.target.value})}
+                onChange={(e) => setPermanentAddress({...permanentAddress, postOffice: e.target.value})}
               />
             </Col>
             <Col className="mb-1" xl="4" md="4" sm="12">

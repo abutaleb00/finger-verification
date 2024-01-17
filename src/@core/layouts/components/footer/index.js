@@ -5,13 +5,13 @@ const Footer = () => {
   return (
     <p className="clearfix mb-0">
       <span className="float-md-start d-block d-md-inline-block mt-25">
-        COPYRIGHT © {new Date().getFullYear()}{" "}
+        Copyright © {new Date().getFullYear()}{" "}
         <a
           href="https://www.southeastbank.com.bd/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Fingerprint Authentication Solution
+         SEBPLC. Fingerprint Authentication Solution
         </a>
         <span className="d-none d-sm-inline-block">, All rights Reserved</span>
       </span>

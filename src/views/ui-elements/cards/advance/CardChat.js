@@ -13,7 +13,7 @@ import { MoreVertical, Send, Image } from 'react-feather'
 import { Card, CardHeader, Form, Label, InputGroup, Input, InputGroupText, Button } from 'reactstrap'
 
 // ** Avatar Imports
-import profilePic from '@src/assets/images/portrait/small/avatar-s-11.jpg'
+import profilePic from '@src/assets/images/portrait/small/profilepic.png'
 import avatar20 from '@src/assets/images/portrait/small/avatar-s-20.jpg'
 
 // ** Styles

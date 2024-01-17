@@ -96,80 +96,75 @@ const Login = () => {
       navigate('/dashboard')
     }
   }, [])
-  const onSubmit = data => {
-    function getBasicToken() {
-      let temp = "my-trusted-client" + ":" + "client_secret";
-      let token = btoa(temp);
 
-      return token;
-    }
-    let reqData = `grant_type=password&username=${data.loginEmail}&password=${data.password}`;
-    let token = getBasicToken();
-    let config = {
-      headers: {
-        Authorization: `Basic ${token}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-    };
+  const getLogEnduser = (res) => {
+    const accessToken = res.access_token
+    const refreshToken = res.refresh_token
+     var myHeaders = new Headers();
+ myHeaders.append("Authorization", `Bearer ${res.access_token}`);
+ 
+ 
+ var requestOptions = {
+   method: 'GET',
+   headers: myHeaders,
+   redirect: 'follow'
+ };
+ if(res?.error_description !== undefined){
+  toast.error(res?.error_description)
+ } else {
+ fetch(`${baseAPI_URL}/getloogedinuser`, requestOptions)
+   .then(response => response.json())
+   .then(result => {
+     const mapdata = result?.data !== undefined && result?.data?.pages?.map((v) =>{
+       return v?.permissions?.map((k,i) =>{
+         return ({action: k , subject: v.name})
+       })
+     })
+     const abilityfor = mapdata.flat(1)
+     const role1 = 'admin'
+     const data = { ...result.data, accessToken: accessToken, refreshToken: refreshToken, ability: abilityfor, role: result?.roleName }
+     dispatch(handleLogin(data))
+     ability.update(abilityfor)
+       navigate(getHomeRouteForLoggedInUser(data.roleName))
+       toast(t => (
+         <ToastContent t={t} role={data.role || 'admin'} name={data.fullName || data.username || 'John Doe'} />
+       ))
+   })
+   .catch(error => console.log('error', error)); 
+  }
+  }
+
+  const onSubmit = data => {
     if (Object.values(data).every(field => field.length > 0)) {
       var myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-myHeaders.append("Authorization", "Basic bXktdHJ1c3RlZC1jbGllbnQ6c2VjcmV0");
+      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+      myHeaders.append("Authorization", "Basic bXktdHJ1c3RlZC1jbGllbnQ6c2VjcmV0");
+      var urlencoded = new URLSearchParams();
+      urlencoded.append("grant_type", "password");
+      urlencoded.append("username", data.loginEmail);
+      urlencoded.append("password", data.password);
 
-var urlencoded = new URLSearchParams();
-urlencoded.append("grant_type", "password");
-urlencoded.append("username", data.loginEmail);
-urlencoded.append("password", data.password);
-
-var requestOptions = {
-  method: 'POST',
-  headers: myHeaders,
-  body: urlencoded,
-  redirect: 'follow'
-};
-
-fetch(`${baseAPI_URL}/oauth/token`, requestOptions)
-  .then(response => {
-    if(response.status === 405){
-      return toast.error("Your Account is inactive. Contact Admin to unlock it")
-    } else {
-      return response.json()
-    }
-    })
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: urlencoded,
+        redirect: 'follow'
+      };
+    fetch(`${baseAPI_URL}/oauth/token`, requestOptions)
+      .then(response => {
+        if(response.status === 405){
+          console.log("response", response)
+          return response.json()
+          // return toast.error("Your Account is inactive. Contact Admin to unlock it")
+        } else {
+          return response.json()
+        }
+        })
   .then(function (res) {
     // const data1 = JSON.stringify(res)
+    getLogEnduser(res)
     console.log("res", JSON.stringify(res))
-    const accessToken = res.access_token
-   const refreshToken = res.refresh_token
-    var myHeaders = new Headers();
-myHeaders.append("Authorization", `Bearer ${res.access_token}`);
 
-
-var requestOptions = {
-  method: 'GET',
-  headers: myHeaders,
-  redirect: 'follow'
-};
-
-fetch(`${baseAPI_URL}/getloogedinuser`, requestOptions)
-  .then(response => response.json())
-  .then(result => {
-    const mapdata = result?.data !== undefined && result?.data?.pages?.map((v) =>{
-      return v?.permissions?.map((k,i) =>{
-        return ({action: k , subject: v.name})
-      })
-    })
-    const abilityfor = mapdata.flat(1)
-    const role1 = 'admin'
-    const data = { ...result.data, accessToken: accessToken, refreshToken: refreshToken, ability: abilityfor, role: result?.roleName }
-    dispatch(handleLogin(data))
-    ability.update(abilityfor)
-      navigate(getHomeRouteForLoggedInUser(data.roleName))
-      toast(t => (
-        <ToastContent t={t} role={data.role || 'admin'} name={data.fullName || data.username || 'John Doe'} />
-      ))
-  })
-  .catch(error => console.log('error', error));
   })
   .catch(error => console.log('error', error));
     } else {
@@ -189,7 +184,7 @@ fetch(`${baseAPI_URL}/getloogedinuser`, requestOptions)
         <Link className='brand-logo' to='/' onClick={e => e.preventDefault()}>
         <img style={{width:"25px", height:"auto"}} src={logo} alt='Login Cover' />
         {/* <img style={{width:"25px", height:"auto"}} src={logo2} alt='Login Cover' /> */}
-          <h2 className='brand-text text-primary ms-1'>Fingerprint Verification Solution</h2>
+          <h2 className='brand-text text-primary ms-1'>Fingerprint Verification Solution (Southeast Bank PLC.)</h2>
         </Link>
         <Col className='d-none d-lg-flex align-items-center p-5' lg='8' sm='12'>
           <div className='w-100 d-lg-flex align-items-center justify-content-center px-5'>
@@ -199,7 +194,7 @@ fetch(`${baseAPI_URL}/getloogedinuser`, requestOptions)
         <Col className='d-flex align-items-center auth-bg px-2 p-lg-5' lg='4' sm='12'>
           <Col className='px-xl-2 mx-auto' sm='8' md='6' lg='12'>
             <CardTitle tag='h2' className='fw-bold mb-1'>
-              Welcome to Fingerprint Verification Solution
+              Welcome to SEBPLC. Fingerprint Verification Solution
             </CardTitle>
             <CardText className='mb-2'>Please sign-in to your account and start the adventure</CardText>
             <Form className='auth-login-form mt-2' onSubmit={handleSubmit(onSubmit)}>

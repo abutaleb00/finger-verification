@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 
 // Avatar Imports
 import avatar1 from '@src/assets/images/avatars/1-small.png'
-import avatar11 from '@src/assets/images/portrait/small/avatar-s-11.jpg'
+import avatar11 from '@src/assets/images/portrait/small/profilepic.png'
 
 const data = {
   users: [

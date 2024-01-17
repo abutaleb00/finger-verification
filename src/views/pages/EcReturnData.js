@@ -361,7 +361,7 @@ useEffect(()=>{
               id="basicInput"
               placeholder="Enter Division"
               value={presentAddress?.division}
-              onChange={(e) => setPresentAddress({...state, division: e.target.value})}
+              onChange={(e) => setPresentAddress({...presentAddress, division: e.target.value})}
             />
           </Col>
           <Col className="mb-1" xl="4" md="4" sm="12">
@@ -373,7 +373,7 @@ useEffect(()=>{
               id="basicInput"
               placeholder="Enter District"
               value={presentAddress?.district}
-              onChange={(e) => setPresentAddress({...state, district: e.target.value})}
+              onChange={(e) => setPresentAddress({...presentAddress, district: e.target.value})}
             />
           </Col>
           <Col className="mb-1" xl="4" md="4" sm="12">
@@ -385,7 +385,7 @@ useEffect(()=>{
               id="basicInput"
               placeholder="Enter Upozila"
               value={presentAddress?.upozila}
-              onChange={(e) => setPresentAddress({...state, upozila: e.target.value})}
+              onChange={(e) => setPresentAddress({...presentAddress, upozila: e.target.value})}
             />
           </Col>
           <Col className="mb-1" xl="4" md="4" sm="12">
@@ -397,7 +397,7 @@ useEffect(()=>{
               id="basicInput"
               placeholder="Enter City/Municipality"
               value={presentAddress?.cityCorporationOrMunicipality}
-              onChange={(e) => setPresentAddress({...state, cityCorporationOrMunicipality: e.target.value})}
+              onChange={(e) => setPresentAddress({...presentAddress, cityCorporationOrMunicipality: e.target.value})}
             />
           </Col>
           <Col className="mb-1" xl="4" md="4" sm="12">
@@ -409,7 +409,7 @@ useEffect(()=>{
               id="basicInput"
               placeholder="Enter Union/Ward"
               value={presentAddress?.unionOrWard}
-              onChange={(e) => setPresentAddress({...state, unionOrWard: e.target.value})}
+              onChange={(e) => setPresentAddress({...presentAddress, unionOrWard: e.target.value})}
             />
           </Col>
           <Col className="mb-1" xl="4" md="4" sm="12">
@@ -421,7 +421,7 @@ useEffect(()=>{
               id="basicInput"
               placeholder="Enter Union/Ward"
               value={presentAddress?.postOffice}
-              onChange={(e) => setPresentAddress({...state, postalCode: e.target.value})}
+              onChange={(e) => setPresentAddress({...presentAddress, postOffice: e.target.value})}
             />
           </Col>
           <Col className="mb-1" xl="4" md="4" sm="12">
@@ -433,7 +433,7 @@ useEffect(()=>{
               id="basicInput"
               placeholder="Enter Postal Code"
               value={presentAddress?.postalCode}
-              onChange={(e) => setPresentAddress({...state, postalCode: e.target.value})}
+              onChange={(e) => setPresentAddress({...presentAddress, postalCode: e.target.value})}
             />
           </Col>
           <Col className="mb-1" xl="4" md="4" sm="12">
@@ -445,7 +445,7 @@ useEffect(()=>{
               id="basicInput"
               placeholder="Enter Mouza/Moholla"
               value={presentAddress?.additionalMouzaOrMoholla}
-              onChange={(e) => setPresentAddress({...state, additionalMouzaOrMoholla: e.target.value})}
+              onChange={(e) => setPresentAddress({...presentAddress, additionalMouzaOrMoholla: e.target.value})}
             />
           </Col>
           <Col className="mb-1" xl="4" md="4" sm="12">
@@ -457,7 +457,7 @@ useEffect(()=>{
               id="basicInput"
               placeholder="Enter Mouza/Moholla"
               value={presentAddress?.additionalVillageOrRoad}
-              onChange={(e) => setPresentAddress({...state, additionalVillageOrRoad: e.target.value})}
+              onChange={(e) => setPresentAddress({...presentAddress, additionalVillageOrRoad: e.target.value})}
             />
           </Col>
           <Col className="mb-1" xl="4" md="4" sm="12">
@@ -469,7 +469,7 @@ useEffect(()=>{
               id="basicInput"
               placeholder="Enter Mouza/Moholla"
               value={presentAddress?.homeOrHoldingNo}
-              onChange={(e) => setPresentAddress({...state, homeOrHoldingNo: e.target.value})}
+              onChange={(e) => setPresentAddress({...presentAddress, homeOrHoldingNo: e.target.value})}
             />
           </Col>
           <Col className="mb-1" xl="12" md="12" sm="12">
@@ -486,7 +486,7 @@ useEffect(()=>{
               id="basicInput"
               placeholder="Enter Division"
               value={permanentAddress?.division}
-              onChange={(e) => setPermanentAddress({...state, division: e.target.value})}
+              onChange={(e) => setPermanentAddress({...permanentAddress, division: e.target.value})}
             />
           </Col>
           <Col className="mb-1" xl="4" md="4" sm="12">
@@ -498,7 +498,7 @@ useEffect(()=>{
               id="basicInput"
               placeholder="Enter District"
               value={permanentAddress?.district}
-              onChange={(e) => setPermanentAddress({...state, district: e.target.value})}
+              onChange={(e) => setPermanentAddress({...permanentAddress, district: e.target.value})}
             />
           </Col>
           <Col className="mb-1" xl="4" md="4" sm="12">
@@ -510,7 +510,7 @@ useEffect(()=>{
               id="basicInput"
               placeholder="Enter Upozila"
               value={permanentAddress?.upozila}
-              onChange={(e) => setPermanentAddress({...state, upozila: e.target.value})}
+              onChange={(e) => setPermanentAddress({...permanentAddress, upozila: e.target.value})}
             />
           </Col>
           <Col className="mb-1" xl="4" md="4" sm="12">
@@ -522,7 +522,7 @@ useEffect(()=>{
               id="basicInput"
               placeholder="Enter City/Municipality"
               value={permanentAddress?.cityCorporationOrMunicipality}
-              onChange={(e) => setPermanentAddress({...state, cityCorporationOrMunicipality: e.target.value})}
+              onChange={(e) => setPermanentAddress({...permanentAddress, cityCorporationOrMunicipality: e.target.value})}
             />
           </Col>
           <Col className="mb-1" xl="4" md="4" sm="12">
@@ -534,7 +534,7 @@ useEffect(()=>{
               id="basicInput"
               placeholder="Enter Union/Ward"
               value={permanentAddress?.unionOrWard}
-              onChange={(e) => setPermanentAddress({...state, unionOrWard: e.target.value})}
+              onChange={(e) => setPermanentAddress({...permanentAddress, unionOrWard: e.target.value})}
             />
           </Col>
           <Col className="mb-1" xl="4" md="4" sm="12">
@@ -546,7 +546,7 @@ useEffect(()=>{
               id="basicInput"
               placeholder="Enter Union/Ward"
               value={permanentAddress?.postOffice}
-              onChange={(e) => setPermanentAddress({...state, postalCode: e.target.value})}
+              onChange={(e) => setPermanentAddress({...permanentAddress, postOffice: e.target.value})}
             />
           </Col>
           <Col className="mb-1" xl="4" md="4" sm="12">
@@ -557,8 +557,8 @@ useEffect(()=>{
               type="text"
               id="basicInput"
               placeholder="Enter Postal Code"
-              value={presentAddress?.postalCode}
-              onChange={(e) => setPresentAddress({...state, postalCode: e.target.value})}
+              value={permanentAddress?.postalCode}
+              onChange={(e) => setPermanentAddress({...permanentAddress, postalCode: e.target.value})}
             />
           </Col>
           <Col className="mb-1" xl="4" md="4" sm="12">
@@ -570,7 +570,7 @@ useEffect(()=>{
               id="basicInput"
               placeholder="Enter Mouza/Moholla"
               value={permanentAddress?.additionalMouzaOrMoholla}
-              onChange={(e) => setPermanentAddress({...state, additionalMouzaOrMoholla: e.target.value})}
+              onChange={(e) => setPermanentAddress({...permanentAddress, additionalMouzaOrMoholla: e.target.value})}
             />
           </Col>
           <Col className="mb-1" xl="4" md="4" sm="12">
@@ -582,7 +582,7 @@ useEffect(()=>{
               id="basicInput"
               placeholder="Enter Mouza/Moholla"
               value={permanentAddress?.additionalVillageOrRoad}
-              onChange={(e) => setPermanentAddress({...state, additionalVillageOrRoad: e.target.value})}
+              onChange={(e) => setPermanentAddress({...permanentAddress, additionalVillageOrRoad: e.target.value})}
             />
           </Col>
           <Col className="mb-1" xl="4" md="4" sm="12">
@@ -594,7 +594,7 @@ useEffect(()=>{
               id="basicInput"
               placeholder="Enter Mouza/Moholla"
               value={permanentAddress?.homeOrHoldingNo}
-              onChange={(e) => setPermanentAddress({...state, homeOrHoldingNo: e.target.value})}
+              onChange={(e) => setPermanentAddress({...permanentAddress, homeOrHoldingNo: e.target.value})}
             />
           </Col>
         </Row>

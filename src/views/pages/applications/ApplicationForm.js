@@ -106,6 +106,12 @@ const styles = StyleSheet.create({
     width: "80%",
     height: 100
   },
+  image3: {
+    marginVertical: 0,
+    marginHorizontal: 0,
+    width: "60%",
+    // height: 100,
+  },
   imageS: {
     marginVertical: 5,
     marginHorizontal: 5,
@@ -117,6 +123,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     padding: "7px 0px",
+  },
+  cusViewImage: {
+    flexDirection: "row",
+    paddingHorizontal: 10,
+    marginHorizontal: 35,
+    justifyContent:"center"
   },
   cusView2: {
     display: "flex",
@@ -328,6 +340,16 @@ const ApplicationForm = (props) => {
   const MyDoc = () => (
     <Document>
       <Page size="A4" style={styles.body}>
+      <View style={styles.container}>
+      <View style={[styles.cusViewImage,{textAlign:"center", width:"100%"}]}>
+          <Image style={styles.image3} src="/logo_sebplc.png" />
+      </View>
+      </View>
+      <View style={styles.container}>
+      <View style={[styles.cusView,{textAlign:"center"}]}>
+          <Text style={[styles.text,{fontSize: 18}]}>Fingerprint Verification Report</Text>
+        </View>
+      </View>
         <View style={styles.container}>
           <View style={styles.leftColumn}>
             <Image style={styles.image1} src="/verified.png" />
@@ -445,9 +467,6 @@ const ApplicationForm = (props) => {
             </View>
           </View>
         </View>
-        <View style={styles.cusView}>
-          <Text style={styles.text}>LOAN APPLICATION FORM (INDIVIDUAL)</Text>
-        </View>
         <View style={styles.container}>
           <View style={styles.leftColumn1}>
             <View style={styles.cusView}>
@@ -461,14 +480,14 @@ const ApplicationForm = (props) => {
                 style={{
                   display: "flex",
                   flexDirection: "row",
-                  width: "25%",
+                  width: "auto",
                   borderBottom: "1px solid #000000",
                   fontSize: "9px",
                 }}
               >
                 {branchname?.toUpperCase()}
               </Text>
-              <Text style={styles.text}>Branch</Text>
+              <Text style={[styles.text,{width:"auto", marginLeft:10}]}>Branch</Text>
             </View>
             <View
               style={[
@@ -920,6 +939,7 @@ const ApplicationForm = (props) => {
                     </View>
                   </View>
                 </View>
+                  <Text style={{fontSize: "11", fontWeight: "bold", color:"black"}}> Date Time of obtaining Thumb Impression: {v?.creationDate}</Text>
                 <View
                   style={[
                     styles.cusViewH2,
@@ -965,6 +985,7 @@ const ApplicationForm = (props) => {
           <Text style={[styles.text, { textAlign: "left", fontSize: "10" }]}>
           Date Time of obtaining Thumb Impression:
           </Text>
+          <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{createdByTime}</Text>
         </View>
         {/* <View style={[styles.cusViewH2, { marginTop: "40px" }]}>
           <Text style={[styles.text, { textAlign: "left", fontSize: "12" }]}>

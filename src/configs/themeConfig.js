@@ -6,7 +6,7 @@ import logo from '@src/assets/images/logo/logo.png'
 //Template config options
 const themeConfig = {
   app: {
-    appName: 'Fingerprint Verification Solution',
+    appName: 'Fingerprint Verification Solution (Southeast Bank PLC.)',
     appLogoImage: logo
   },
   layout: {

@@ -2,7 +2,7 @@ import mock from '../mock'
 
 // Avatar Images
 import avatar3 from '@src/assets/images/avatars/3-small.png'
-import avatar11 from '@src/assets/images/portrait/small/avatar-s-11.jpg'
+import avatar11 from '@src/assets/images/portrait/small/profilepic.png'
 
 const data = {
   accountSetting: {

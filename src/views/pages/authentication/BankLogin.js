@@ -76,39 +76,31 @@ const BankLogin = (props) => {
     console.log("baseAPI_URL", baseAPI_URL)
     const userId = new URLSearchParams(globalThis?.location?.search).get("userId");
     const bankultimus = new URLSearchParams(globalThis?.location?.search).get("bankultimus");
-    console.log("id", userId);
-    console.log("bankultimus", bankultimus);
-    function getBasicToken() {
-        let temp = "my-trusted-client" + ":" + "client_secret";
-        let token = btoa(temp);
-        return token;
-      }
-    //   let reqData = `grant_type=password&username=${userId}&password=${userId}`;
-      let token = getBasicToken();
-    //   let config = {
-    //     headers: {
-    //       Authorization: `Basic ${token}`,
-    //       'Content-Type': 'application/x-www-form-urlencoded'
-    //     },
-    //   };
+    // console.log("id", userId);
+    // console.log("bankultimus", bankultimus);
         var myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-  myHeaders.append("Authorization", "Basic bXktdHJ1c3RlZC1jbGllbnQ6c2VjcmV0");
-  
-  var urlencoded = new URLSearchParams();
-  urlencoded.append("grant_type", "password");
-  urlencoded.append("username", userId);
-  urlencoded.append("password", userId);
-  
-  var requestOptions = {
-    method: 'POST',
-    headers: myHeaders,
-    body: urlencoded,
-    redirect: 'follow'
-  };
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+        myHeaders.append("Authorization", "Basic bXktdHJ1c3RlZC1jbGllbnQ6c2VjcmV0");
+        
+        var urlencoded = new URLSearchParams();
+        urlencoded.append("grant_type", "password");
+        urlencoded.append("username", userId);
+        urlencoded.append("password", userId);
+        var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: urlencoded,
+          redirect: 'follow'
+        };
   
   fetch(`${baseAPI_URL}/oauth/token`, requestOptions)
-    .then(response => response.json())
+    .then(response => {
+      if(response.status === 405){
+        return response.json()
+      } else {
+        return response.json()
+      }
+    })
     .then(function (res) {
       const accessToken = res.access_token
      const refreshToken = res.refresh_token
@@ -121,7 +113,9 @@ const BankLogin = (props) => {
     headers: myHeaders,
     redirect: 'follow'
   };
-  
+  if(res?.error_description !== undefined){
+    toast.error(res?.error_description)
+   } else {
   fetch(`${baseAPI_URL}/getloogedinuser`, requestOptions)
     .then(response => response.json())
     .then(result => {
@@ -140,6 +134,7 @@ const BankLogin = (props) => {
         ))
     })
     .catch(error => console.log('error', error));
+  }
     })
     .catch(error => console.log('error', error));
 
