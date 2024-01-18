@@ -983,9 +983,8 @@ const ApplicationForm = (props) => {
         </View>
         <View style={[styles.cusViewH2, { marginBottom: "10px" }]}>
           <Text style={[styles.text, { textAlign: "left", fontSize: "10" }]}>
-          Date Time of obtaining Thumb Impression:
+          Date Time of obtaining Thumb Impression: {createdByTime}
           </Text>
-          <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{createdByTime}</Text>
         </View>
         {/* <View style={[styles.cusViewH2, { marginTop: "40px" }]}>
           <Text style={[styles.text, { textAlign: "left", fontSize: "12" }]}>
@@ -1026,7 +1025,7 @@ const ApplicationForm = (props) => {
           </Text>
         </View> */}
         <View style={styles.container}>
-          <View style={styles.leftColumn1}>
+          <View style={[styles.leftColumn1,{width:"60%"}]}>
           <Text
             style={[
               styles.text,
@@ -1034,9 +1033,9 @@ const ApplicationForm = (props) => {
             ]}
             break
           >
-            Made by:
+            Made by: {createdBy}
           </Text>
-          <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{createdBy}</Text>
+          {/* <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{createdBy}</Text> */}
           <Text style={{fontSize: "13", fontWeight: "bold", color:"black", marginTop:"30px"}}>Signature with seal</Text>
           <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{createdByTime}</Text>
           </View>
@@ -1048,9 +1047,9 @@ const ApplicationForm = (props) => {
             ]}
             break
           >
-            Authorized by:
+            Authorized by: {approvedBy}
           </Text>
-          <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{approvedBy}</Text>
+          {/* <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{approvedBy}</Text> */}
           <Text style={{fontSize: "13", fontWeight: "bold", color:"black", marginTop:"30px"}}>Signature with seal</Text>
           <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{approvedByTime}</Text>
           </View>

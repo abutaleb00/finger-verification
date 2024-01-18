@@ -492,7 +492,7 @@ import {
                 type="text"
                 id="basicInput"
                 placeholder="Enter Postal Code"
-                value={presentAddress?.postalCode}
+                value={permanentAddress?.postalCode}
                 onChange={(e) => setPresentAddress({...permanentAddress, postalCode: e.target.value})}
               />
             </Col>

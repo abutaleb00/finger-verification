@@ -94,18 +94,12 @@ const BankLogin = (props) => {
         };
   
   fetch(`${baseAPI_URL}/oauth/token`, requestOptions)
-    .then(response => {
-      if(response.status === 405){
-        return response.json()
-      } else {
-        return response.json()
-      }
-    })
+    .then(response =>response.json())
     .then(function (res) {
-      const accessToken = res.access_token
-     const refreshToken = res.refresh_token
+      const accessToken = res.data?.access_token
+     const refreshToken = res.data?.refresh_token
     var myHeaders = new Headers();
-     myHeaders.append("Authorization", `Bearer ${res.access_token}`);
+     myHeaders.append("Authorization", `Bearer ${res.data?.access_token}`);
   
   
   var requestOptions = {
@@ -113,12 +107,11 @@ const BankLogin = (props) => {
     headers: myHeaders,
     redirect: 'follow'
   };
-  if(res?.error_description !== undefined){
-    toast.error(res?.error_description)
-   } else {
+  if(res?.result.error === false){
   fetch(`${baseAPI_URL}/getloogedinuser`, requestOptions)
     .then(response => response.json())
     .then(result => {
+      if(result?.result.error === false){
       const mapdata = result.data !== undefined && result.data?.pages?.map((v) =>{
         return v?.permissions?.map((k,i) =>{
           return ({action: k , subject: v.name})
@@ -132,8 +125,13 @@ const BankLogin = (props) => {
         toast(t => (
           <ToastContent t={t} role={data.role || 'admin'} name={data.fullName || data.username || 'John Doe'} />
         ))
+      } else if(result?.result.error === true){
+        toast.error(result.result.errorMsg)
+      }
     })
     .catch(error => console.log('error', error));
+  } else if(res?.result.error === true){
+    toast.error(res.result.errorMsg)
   }
     })
     .catch(error => console.log('error', error));

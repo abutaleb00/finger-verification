@@ -98,10 +98,12 @@ const Login = () => {
   }, [])
 
   const getLogEnduser = (res) => {
-    const accessToken = res.access_token
-    const refreshToken = res.refresh_token
+    console.log("res", res)
+    console.log("res.data?.access_token", res.data?.access_token)
+    const accessToken = res.data?.access_token
+    const refreshToken = res.data?.refresh_token
      var myHeaders = new Headers();
- myHeaders.append("Authorization", `Bearer ${res.access_token}`);
+ myHeaders.append("Authorization", `Bearer ${accessToken}`);
  
  
  var requestOptions = {
@@ -109,29 +111,29 @@ const Login = () => {
    headers: myHeaders,
    redirect: 'follow'
  };
- if(res?.error_description !== undefined){
-  toast.error(res?.error_description)
- } else {
  fetch(`${baseAPI_URL}/getloogedinuser`, requestOptions)
    .then(response => response.json())
    .then(result => {
-     const mapdata = result?.data !== undefined && result?.data?.pages?.map((v) =>{
-       return v?.permissions?.map((k,i) =>{
-         return ({action: k , subject: v.name})
-       })
-     })
-     const abilityfor = mapdata.flat(1)
-     const role1 = 'admin'
-     const data = { ...result.data, accessToken: accessToken, refreshToken: refreshToken, ability: abilityfor, role: result?.roleName }
-     dispatch(handleLogin(data))
-     ability.update(abilityfor)
-       navigate(getHomeRouteForLoggedInUser(data.roleName))
-       toast(t => (
-         <ToastContent t={t} role={data.role || 'admin'} name={data.fullName || data.username || 'John Doe'} />
-       ))
+    if(result.result.error === false){
+      const mapdata = result?.data !== undefined && result?.data?.pages?.map((v) =>{
+        return v?.permissions?.map((k,i) =>{
+          return ({action: k , subject: v.name})
+        })
+      })
+      const abilityfor = mapdata.flat(1)
+      const role1 = 'admin'
+      const data = { ...result.data, accessToken: accessToken, refreshToken: refreshToken, ability: abilityfor, role: result?.roleName }
+      dispatch(handleLogin(data))
+      ability.update(abilityfor)
+        navigate(getHomeRouteForLoggedInUser(data.roleName))
+        toast(t => (
+          <ToastContent t={t} role={data.role || 'admin'} name={data.fullName || data.username || 'John Doe'} />
+        ))
+    } else if(result.result.error === true){
+      toast.error(result.result.errorMsg)
+    }
    })
    .catch(error => console.log('error', error)); 
-  }
   }
 
   const onSubmit = data => {
@@ -151,18 +153,15 @@ const Login = () => {
         redirect: 'follow'
       };
     fetch(`${baseAPI_URL}/oauth/token`, requestOptions)
-      .then(response => {
-        if(response.status === 405){
-          console.log("response", response)
-          return response.json()
-          // return toast.error("Your Account is inactive. Contact Admin to unlock it")
-        } else {
-          return response.json()
-        }
-        })
+      .then(response =>response.json())
   .then(function (res) {
-    // const data1 = JSON.stringify(res)
-    getLogEnduser(res)
+    const data1 = JSON.stringify(res)
+    console.log("first", JSON.stringify(res))
+    if(res.result.error === false){
+      getLogEnduser(res)
+    } else if(res.result.error === true){
+      toast.error(res.result.errorMsg)
+    }
     console.log("res", JSON.stringify(res))
 
   })
