@@ -31,7 +31,7 @@ const UserDropdown = () => {
   // ** Store Vars
   const dispatch = useDispatch()
 
-  const logoutapicall = () =>{
+  const logoutapicall = () => {
     localStorage.removeItem('userData')
       localStorage.removeItem(config.storageTokenKeyName)
       localStorage.removeItem(config.storageRefreshTokenKeyName)   

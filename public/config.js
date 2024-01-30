@@ -40,3 +40,8 @@ window.CallBackURL = window.location.href.startsWith(
     : "http://172.17.253.183/smartloginapplication/login.aspx";
   
     window.security_key ='9fdbf29e-bba8-4d19-bfdf-b2f956ff3f6c'
+
+    // window.SessionWarning = 600000
+    // window.SessionTimeOut = 900000
+    window.SessionWarning = 600000
+    window.SessionTimeOut = 900000
