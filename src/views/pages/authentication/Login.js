@@ -237,12 +237,12 @@ const Login = () => {
               <Button type='submit' color='primary' block>
                 Sign in
               </Button>
-              <p style={{textAlign:"center", marginBottom:"0px", marginTop:"10px"}}>or</p>
+              {/* <p style={{textAlign:"center", marginBottom:"0px", marginTop:"10px"}}>or</p>
               <a  href={`${bankLogin}?j_security_key=${security_key}`}>
               <Button type='button' color='success' style={{marginTop:"10px"}} block>
                 Sign in with Bank ID
               </Button>
-              </a>
+              </a> */}
             </Form>
             {/* <p className='text-center mt-2'>
               <span className='me-25'>New on our platform?</span>

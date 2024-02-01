@@ -96,30 +96,30 @@ import {
    })
   console.log("send data", sendata)
     }
-    const getNidPhoto = () => {
-      let sendData = {
-        jobid: location.state?.jobId
-      }
-      setBlock(true)
-       axios.post('/callECData', sendData).then(res => {
-        if(res.data.result.error === false){
-          setBlock(false)
-          console.log("res.data.data", res.data.data)
-          setNidPhoto(res.data.data?.photolink)
-          // setData(res.data.data)
-        } else if(res.data.result.error === true){
-          setBlock(false)
-          toast.error(res.data.result.errorMsg)
-        }
-       })
-       .catch((err) =>{
-        setBlock(false)
-          toast.error(err.data.result.errorMsg)
-       })
-     }
-  useEffect(()=>{
-    getNidPhoto()
-  },[])
+  //   const getNidPhoto = () => {
+  //     let sendData = {
+  //       jobid: location.state?.jobId
+  //     }
+  //     setBlock(true)
+  //      axios.post('/callECData', sendData).then(res => {
+  //       if(res.data.result.error === false){
+  //         setBlock(false)
+  //         console.log("res.data.data", res.data.data)
+  //         setNidPhoto(res.data.data?.photolink)
+  //         // setData(res.data.data)
+  //       } else if(res.data.result.error === true){
+  //         setBlock(false)
+  //         toast.error(res.data.result.errorMsg)
+  //       }
+  //      })
+  //      .catch((err) =>{
+  //       setBlock(false)
+  //         toast.error(err.data.result.errorMsg)
+  //      })
+  //    }
+  // useEffect(()=>{
+  //   getNidPhoto()
+  // },[])
     return (
       <UILoader blocking={block}>
       <Card>
