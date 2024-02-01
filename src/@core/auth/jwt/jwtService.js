@@ -16,7 +16,7 @@ export default class JwtService {
 
     // axios.defaults.baseURL = 'https://esign.digitalsignature.com.bd:8989/ecuser-1.0'
     // axios.defaults.baseURL = 'https://fvs.middleware.southeastbank.com.bd:8443/ecuser-1.0'
-    axios.defaults.baseURL = baseAPI_URL
+    axios.defaults.baseURL = "https://esign.digitalsignature.com.bd:8989/ecuser-1.0"
     // axios.defaults.baseURL = 'https://fvs.southeastbank.com.bd/apiserver'
 
     // ** Request Interceptor

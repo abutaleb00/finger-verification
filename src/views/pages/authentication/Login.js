@@ -24,7 +24,8 @@ import InputPasswordToggle from '@components/input-password-toggle'
 // ** Utils
 import { getHomeRouteForLoggedInUser } from '@utils'
 import jwtDefaultConfig from '../../../@core/auth/jwt/jwtDefaultConfig'
-export const baseAPI_URL = globalThis.baseAPI_URL;
+// export const baseAPI_URL = globalThis.baseAPI_URL;
+export const baseAPI_URL = "https://esign.digitalsignature.com.bd:8989/ecuser-1.0";
 export const baseURL = globalThis.baseURL;
 export const ADcallBack = globalThis.ADcallBack;
 export const bankLogin = globalThis.bankLogin;
