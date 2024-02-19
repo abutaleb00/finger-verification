@@ -133,6 +133,7 @@ const RoleCards = () => {
               arr2?.admin.find((item2) => item.name === item2.name) || item
           );
           setAdmin(admin);
+          console.log("admin", admin)
           const maker = arr1.map(
             (item) =>
               arr2.maker.find((item2) => item.name === item2.name) || item
@@ -208,16 +209,29 @@ const RoleCards = () => {
     setModalType("admin");
     setValue("roleName");
   };
-  const handleAdminCheck = (event) => {
-    let updatedList = [...checked];
-    console.log("updatedList", updatedList)
+  const handleAdminCheck = (event, v) => {
+    let updatedList = [...admin, {name: v.name,  permissions: v.permissions}];
+    console.log("updatedList", [...admin, {name: v.name,  permissions: v.permissions}])
     if (event.target.checked) {
-      updatedList = [...checked, event.target.value];
+      // role.permissions.includes(
+      //   "read"
+      // )
+      // let parmionlist = [...v.permissions]
+      // if(v.permissions.includes("read")){
+        updatedList = [...admin, {name: v.name,  permissions: v.permissions}];
+      // }else{
+      //   updatedList = [...admin, {name: v.name,  permissions: parmionlist.push(["read"])}];
+      // }
+      console.log("checked", [...admin, {name: v.name,  permissions: v.parmionlist}])
     } else {
-      updatedList.splice(checked.indexOf(event.target.value), 1);
-    }
-    setChecked(updatedList);
-    console.log("updatedList updatedList", updatedList)
+      const index = v.permissions.indexOf('read');
+      console.log("read index", index)
+      if (index > -1) {
+        console.log("un checked", [...admin, {name: v.name,  permissions: v.permissions.splice(index, 1)}])
+        // updatedList.push([...admin, {name: v.name,  permissions: v.permissions.splice(index, 1)}], 1)
+        }
+       }
+       setChecked(updatedList);
   };
   return (
     <UILoader blocking={block}>
@@ -311,15 +325,18 @@ const RoleCards = () => {
                                 <div className="form-check me-3 me-lg-5">
                                   <Input
                                     type="checkbox"
-                                    id={`read-${role.permissions}`}
+                                    id={`${role.permissions}`}
                                     defaultChecked={role.permissions.includes(
                                       "read"
                                     )}
-                                    onChange={handleAdminCheck}
+                                    value={role.permissions.includes(
+                                      "read"
+                                    )}
+                                    onChange={(e) =>handleAdminCheck(e, role)}
                                   />
                                   <Label
                                     className="form-check-label"
-                                    for={`read-${role.permissions}`}
+                                    for={`${role.permissions}`}
                                   >
                                     Read
                                   </Label>
