@@ -126,6 +126,43 @@ const UserList = () => {
             }
         })
     } 
+       const changeUser = (e) => {
+        const sentdata = {
+          ...e,
+          isLocked: true,
+          isDeleted: true,
+        }
+        Swal.fire({
+            title: `Are you sure ?`,
+            text: `You want to Delete this User?`,
+            type: "wanring",
+            icon: 'warning',
+            footer: "",
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            customClass: {
+                cancelButton: 'btn btn-danger ms-1',
+                confirmButton: 'btn btn-primary'
+            }
+        }).then((result) => {
+            if (result.isConfirmed === true) {
+                setBlock(true)
+                axios.post(`/updateuser`, sentdata).then((res) => {
+                    if(res.data.result.error === false){
+                        setBlock(false)
+                        toast.success("User Delete Successfully")
+                        searchEcData()
+                      } else if (res.data.result.error === true){
+                        setBlock(false)
+                        toast.error(res.data.result.errorMsg)
+                      }
+                }).catch((e) => {
+                    setBlock(false)
+                    toast.error(e.data.result.errorMsg)
+                })
+            }
+        })
+    } 
        const paymentOption = [
         {value: 'maker', label: "Maker"},
         {value: 'checker', label: "Checker"},
@@ -190,6 +227,15 @@ const UserList = () => {
         },
       },
       {
+        name: "employeeDesignation",
+        label: "Designation",
+        searchable: true,
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
         name: "branchName",
         label: "Branch",
         options: {
@@ -216,7 +262,7 @@ const UserList = () => {
         },
       },
       {
-        name: "lockStatus",
+        name: "isLocked",
         label: "Status",
         options: {
           filter: true,
@@ -236,6 +282,7 @@ const UserList = () => {
           sort: false,
           customBodyRenderLite: (dataIndex) => {
             const id = data[dataIndex]?.id
+            const isDeleted = data[dataIndex]?.isDeleted
             const fullName = data[dataIndex]?.fullName
             const roleName = data[dataIndex]?.roleName
             const lockStatus = data[dataIndex]?.lockStatus
@@ -283,14 +330,15 @@ const UserList = () => {
                       trigger="hover"
                     > Status Update</UncontrolledTooltip>
                   </div>
-                  {/* <div style={{padding:"2px"}} className="btn btn-sm" >
-                  <Trash id="delete" size={14} className='me-50' color="red" />
+                  <div style={{padding:"2px"}} className="btn btn-sm" >
+                  <span onClick={() => {
+                      changeUser(alldata)}}><Trash id="delete" size={14} className='me-50' color="red" /></span>
                   <UncontrolledTooltip
                       placement="top"
                       target="delete"
                       trigger="hover"
                     > Delete</UncontrolledTooltip>
-                  </div> */}
+                  </div>
                   
                 </div>
               </div>
@@ -304,12 +352,9 @@ const UserList = () => {
  useEffect(() => {
   searchEcData()
 }, [])
-    const branchOption = [
-        {value: null, label: "Select Branch"},
-        {value: 1, label: "Mirpur Branch"},
-        {value: 2, label: "Gulshan 1 Branch"},
-        {value: 3, label: "Dhanmondi Branch"},
-        {value: 4, label: "Rampura Branch"},
+    const userTypeOption = [
+        {value: "false", label: "Live User"},
+        {value: "true", label: "Deleted User"},
       ]    
     const roleOption = [
         {value: "false", label: "Select Role"},
@@ -335,7 +380,7 @@ const UserList = () => {
       <Row
         style={{ marginBottom: "10px", paddingLeft: "30px", padding: "15px" }}
       >
-        <Col md="4">
+        <Col md="3">
         <FormGroup className="mbb">
         <label>Search Data</label>
         <Input
@@ -353,7 +398,26 @@ const UserList = () => {
            />
         </FormGroup>
         </Col>
-        <Col md="4">
+        <Col md="2">
+        <FormGroup className="mbb">
+         <label>User Type</label>
+          <Select
+          className='react-select'
+          styles={styles}
+          classNamePrefix='select'
+          placeholder="Select Role"
+          defaultValue={userTypeOption[0]}
+          options={userTypeOption}
+          isClearable={false}
+          onChange={(e) => {
+            setPropertyValue(e.value)
+          }}
+          maxMenuHeight={140}
+          
+           />
+        </FormGroup>
+        </Col>
+        <Col md="3">
         <FormGroup className="mbb">
          <label>User Role</label>
           <Select
@@ -399,7 +463,7 @@ const UserList = () => {
           </Button.Ripple>
         </Col>
         <Col md="2" style={{textAlign:"right"}}>
-            {/* <Button style={{marginTop:"18px",}} tag={Link} to="/admin/create-user" color="primary" className=''> + Add New </Button> */}
+            <Button style={{marginTop:"18px",}} tag={Link} to="/admin/create-user" color="primary" className=''> + Add New </Button>
         </Col>
       </Row>
       <MUIDataTable
