@@ -15,10 +15,11 @@ import {
   import Select, { components } from "react-select"; // eslint-disable-line
   import { useState } from "react";
   import toast from 'react-hot-toast'
-  import { useLocation, Link } from "react-router-dom";
+  import { useLocation, Link, useNavigate } from "react-router-dom";
   import UILoader from '@components/ui-loader'
   const CreateUser = (props) => {
     const location = useLocation()
+    const navigate = useNavigate()
     const [picker, setPicker] = useState(new Date());
     const [block, setBlock] = useState(false)
     const [state, setSate] = useState({
@@ -27,31 +28,22 @@ import {
         email: "",
         phoneNo: "",
         branchName: "",
-        branchId: "1",
+        branchId: "",
         userType: 1,
         ownBankLimit: 1000000,
         rtgsLimit: 500000,
         bachLimit: 200000,
         fullName: "",
         cbsCustId: "CUST122",
-        isLocked: false,
-        roles: [
-            "Admin",
-            "Checker"
-        ],
+        isLocked: true,
+        passwordSt:"123456",
+        roles: ["User"],
         pages: [
             {
                 name: "Dashboard",
                 permissions: [
                     "view",
                     "read"
-                ]
-            },
-            {
-                name: "FingerPrintVerify",
-                permissions: [
-                    "read",
-                    "write"
                 ]
             }
         ]
@@ -63,7 +55,7 @@ import {
             if(res.data?.result?.error === false){
                 setBlock(false)
                 toast.success('Successfully Created!')
-                window.location.href = "/admin/user-list";
+                navigate('/admin/user-list')
             } else if(res.data?.result?.error === true) {
                 setBlock(false)
                 toast.error(res.data.result.errorMsg)
@@ -76,12 +68,13 @@ import {
        }
     const roleOptions = [
         {value: null, label: "Select Role"},
-        {value: "Admin", label: "Admin"},
-        {value: 'Maker', label: "Maker"},
-        {value: 'Checker', label: "Checker"},
+        {value: "admin", label: "Admin"},
+        {value: 'maker', label: "Maker"},
+        {value: 'checker', label: "Checker"},
+        {value: 'user', label: "User"},
     ];
     const branchOptions = [
-      { value: "Main Branch", label: "Main Branch" },
+      { value: "002", label: "Principal Branch" },
       { value: "Gulshan Granch", label: "Gulshan Granch"},
       { value: "Uttara Branch", label: "Uttara Branch" },
     ];
@@ -161,7 +154,7 @@ import {
                 options={branchOptions}
                 className="react-select"
                 classNamePrefix="select"
-                onChange={(e) => setSate({...state, branchName: e.value})}
+                onChange={(e) => setSate({...state, branchId: e.value,  branchName: e.label})}
               />
             </Col>
             <Col className="mb-1" xl="4" md="6" sm="12">
@@ -175,7 +168,7 @@ import {
                 options={roleOptions}
                 className="react-select"
                 classNamePrefix="select"
-                onChange={(e) => setSate({...state, roleName: e.value})}
+                onChange={(e) => setSate({...state, roleName: e.value, roles: [e.value]})}
               />
             </Col>
           </Row>
