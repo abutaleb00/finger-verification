@@ -72,15 +72,11 @@ const UserDropdown = () => {
         <Avatar img={userAvatar} imgHeight='40' imgWidth='40' status='online' />
       </DropdownToggle>
       <DropdownMenu end>
-        <DropdownItem tag={Link} to='/pages/profile'>
-          <User size={14} className='me-75' />
-          <span className='align-middle'>Profile</span>
+      <DropdownItem tag={Link} to='/user/change-password'>
+          <HelpCircle size={14} className='me-75' />
+          <span className='align-middle'>Change Password</span>
         </DropdownItem>
         <DropdownItem divider />
-        <DropdownItem tag={Link} to='/pages/account-settings'>
-          <Settings size={14} className='me-75' />
-          <span className='align-middle'>Settings</span>
-        </DropdownItem>
         <DropdownItem tag={Link} to='/login' onClick={() => logoutapicall()}>
           <Power size={14} className='me-75' />
           <span className='align-middle'>Logout</span>

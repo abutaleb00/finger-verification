@@ -22,11 +22,12 @@ import {
     const navigate = useNavigate()
     const [picker, setPicker] = useState(new Date());
     const [block, setBlock] = useState(false)
+    const [branchOptions, setBranchOptions] = useState([])
     const [state, setSate] = useState({
         username: "",
         roleName: "",
         email: "",
-        phoneNo: "",
+        mobile: "",
         branchName: "",
         branchId: "",
         userType: 1,
@@ -36,7 +37,9 @@ import {
         fullName: "",
         cbsCustId: "CUST122",
         isLocked: true,
-        passwordSt:"123456",
+        employeeTypeRef: 1,
+        passwordSt:"112233",
+        employeeDesignation:"",
         roles: ["User"],
         pages: [
             {
@@ -66,6 +69,27 @@ import {
             toast.error(err.data?.result?.errorMsg)
          })
        }
+       const getBranchList = () => {
+        setBlock(true)
+         axios.post('/getbranches?first=0&limit=200').then(res => {
+          if(res.data.result.error === false){
+            setBlock(false)
+            const branchOption = res.data?.data?.content?.map(
+              (item) => {
+                return { value: item.id, label: item.name }
+              }
+            )
+            setBranchOptions([{ value: null, label: 'Select Branch'},...branchOption])
+          } else  if(res.data.result.error === false){
+            setBlock(false)
+            toast.error(res.data.result.errorMsg)
+          }
+         })
+         .catch((err) =>{
+          setBlock(false)
+            toast.error(err.data.result.errorMsg)
+         })
+       }
     const roleOptions = [
         {value: null, label: "Select Role"},
         {value: "admin", label: "Admin"},
@@ -73,12 +97,19 @@ import {
         {value: 'checker', label: "Checker"},
         {value: 'user', label: "User"},
     ];
-    const branchOptions = [
-      { value: "002", label: "Principal Branch" },
-      { value: "Gulshan Granch", label: "Gulshan Granch"},
-      { value: "Uttara Branch", label: "Uttara Branch" },
+    const statusOptions = [
+        {value: false, label: "Active"},
+        {value: true, label: "Inactive"},
+    ];
+    const employeeOptions = [
+        {value: null, label: "Select Type"},
+        {value: 1, label: "Permanent"},
+        {value: 2, label: "Contractual"},
     ];
     console.log("props", location.state)
+useEffect(()=>{
+  getBranchList()
+},[])
     return (
         <UILoader blocking={block}>
       <Card>
@@ -93,13 +124,13 @@ import {
           <Row>
             <Col className="mb-1" xl="4" md="6" sm="12">
               <Label className="form-label required-field" htmlFor="username">
-              Username
+              User ID
               </Label>
               <Input
                 type="text"
                 id="username"
                 name="username"
-                placeholder="Enter username"
+                placeholder="Enter User ID"
                 required
                 onChange={(e) => setSate({...state, username: e.target.value})}
               />
@@ -118,7 +149,7 @@ import {
               />
             </Col>
             <Col className="mb-1" xl="4" md="6" sm="12">
-              <Label className="form-label" htmlFor="email">
+              <Label className="form-label required-field" htmlFor="email">
               Email
               </Label>
               <Input
@@ -131,20 +162,59 @@ import {
               />
             </Col>
             <Col className="mb-1" xl="4" md="6" sm="12">
-              <Label className="form-label" htmlFor="phoneNo">
+              <Label className="form-label required-field" htmlFor="mobile">
               Phone Number
               </Label>
               <Input
                 type="number"
-                id="phoneNo"
-                name="phoneNo"
+                id="mobile"
+                name="mobile"
                 placeholder="Enter phone number"
                 required
-                onChange={(e) => setSate({...state, phoneNo: e.target.value})}
+                onChange={(e) => setSate({...state, mobile: e.target.value})}
               />
             </Col>
             <Col className="mb-1" xl="4" md="6" sm="12">
-              <Label className="form-label" for="basicInput">
+              <Label className="form-label required-field" htmlFor="mobile">
+             Password
+              </Label>
+              <Input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter password"
+                required
+                onChange={(e) => setSate({...state, passwordSt: e.target.value})}
+              />
+            </Col>
+            <Col className="mb-1" xl="4" md="6" sm="12">
+              <Label className="form-label required-field" for="basicInput">
+                Employee Type
+              </Label>
+              <Select
+                isClearable={false}
+                defaultValue={employeeOptions[0]}
+                name="colors"
+                options={employeeOptions}
+                className="react-select"
+                classNamePrefix="select"
+                onChange={(e) => setSate({...state, employeeTypeRef: e.value})}
+              />
+            </Col>
+            <Col className="mb-1" xl="4" md="6" sm="12">
+              <Label className="form-label" htmlFor="mobile">
+             Designation
+              </Label>
+              <Input
+                type="text"
+                id="Designation"
+                name="Designation"
+                placeholder="Enter Designation"
+                onChange={(e) => setSate({...state, employeeDesignation: e.target.value})}
+              />
+            </Col>
+            <Col className="mb-1" xl="4" md="6" sm="12">
+              <Label className="form-label required-field" for="basicInput">
                 Branch Name
               </Label>
               <Select
@@ -158,7 +228,7 @@ import {
               />
             </Col>
             <Col className="mb-1" xl="4" md="6" sm="12">
-              <Label className="form-label" for="basicInput">
+              <Label className="form-label required-field" for="basicInput">
                 Role
               </Label>
               <Select
@@ -169,6 +239,20 @@ import {
                 className="react-select"
                 classNamePrefix="select"
                 onChange={(e) => setSate({...state, roleName: e.value, roles: [e.value]})}
+              />
+            </Col>
+            <Col className="mb-1" xl="4" md="6" sm="12">
+              <Label className="form-label required-field" for="basicInput">
+                Status
+              </Label>
+              <Select
+                isClearable={false}
+                defaultValue={statusOptions[0]}
+                name="colors"
+                options={statusOptions}
+                className="react-select"
+                classNamePrefix="select"
+                onChange={(e) => setSate({...state, isLocked: e.value})}
               />
             </Col>
           </Row>

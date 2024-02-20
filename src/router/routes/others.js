@@ -26,6 +26,7 @@ const UpdateUser = lazy(() => import("../../views/pages/admin/UpdateUser"));
 const Role = lazy(() => import("../../views/pages/admin/roles"));
 const CreateEcUser = lazy(() => import("../../views/pages/admin/CreateEcUser"));
 const EditEcUser = lazy(() => import("../../views/pages/ec/EditEcUser"));
+const ChangePassword = lazy(() => import("../../views/pages/users/ChangePassword"));
 const OthersRoutes = [
     {
         path: "/nid-verify",
@@ -225,6 +226,14 @@ const OthersRoutes = [
         meta: {
           action: 'read',
           resource: 'AdminSetting'
+        }
+      },
+      {
+        path: "/user/change-password",
+        element: <ChangePassword />,
+        meta: {
+          action: 'read',
+          resource: 'ChangePassword'
         }
       }
 ]

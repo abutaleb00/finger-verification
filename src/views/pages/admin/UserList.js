@@ -12,20 +12,24 @@ import {
   Button,
   FormGroup,
   Input,
-  UncontrolledTooltip
+  UncontrolledTooltip,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Label,
 } from "reactstrap";
-import Flatpickr from "react-flatpickr"
 import Select from 'react-select'
 import axios from 'axios'
-import { Tooltip as ReactTooltip } from "react-tooltip";
 import { Link, json } from "react-router-dom";
 import "flatpickr/dist/themes/airbnb.css";
 // ** Third Party Components
 import "cleave.js/dist/addons/cleave-phone.us";
 import MUIDataTable from "mui-datatables"
 import moment from "moment"
-import { Search, MoreVertical, Trash, Eye, Edit } from 'react-feather'
+import { Search, Settings, UserCheck, Eye, Edit } from 'react-feather'
 import UILoader from '@components/ui-loader'
+import Swal from "sweetalert2"
+import toast from 'react-hot-toast'
 // ** Styles
 import "@styles/react/libs/react-select/_react-select.scss"
 
@@ -47,24 +51,15 @@ const UserList = () => {
     const [last, setLast] = useState(100)
     const [filter, setFilter] = useState("")
     const [block, setBlock] = useState(false)
+    const [roleName, setRoleName] = useState(null)
+    const [fullName , setFullName ] = useState('')
+    const [basicModal, setBasicModal] = useState(false);
+    const [userId, setUserId] = useState(null)
+    const [userData , setUserData ] = useState(null)
     const [state, setState] = useState({
         branch: null,
         status: null
     })
-    const searchEcData = () => {
-        setBlock(true)
-         axios.post('/user-list',null, {
-          params: {
-            first: first,
-            last: last,
-            filter: filter,
-          },
-         }).then(res => {
-          setBlock(false)
-          setData(res.data.data)
-         })
-         .catch(err => console.log(err))
-       }
        const allEcData = () => {
         setBlock(true)
          axios.get('/user-list',null, {
@@ -78,7 +73,63 @@ const UserList = () => {
           setData(res.data.data)
          })
        }
-      
+       const callRoleUpdate = () => {
+        const datetosend = {
+          userId: userId,
+          roleNameUpdate: roleName
+
+        }
+        setBlock(true)
+         axios.put('/updaterolename', datetosend)
+         .then(res => {
+          setBlock(false)
+          toast.success('Role Update Successful')
+          setBasicModal(!basicModal)
+          allEcData()
+         })
+       }
+       const changeStatus = (e, id) => {
+        const sentdata = {
+          userId: id,
+          lockStatus: !e,
+        }
+        Swal.fire({
+            title: `Are you sure ?`,
+            text: `You want to Change User Status`,
+            type: "wanring",
+            icon: 'warning',
+            footer: "",
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            customClass: {
+                cancelButton: 'btn btn-danger ms-1',
+                confirmButton: 'btn btn-primary'
+            }
+        }).then((result) => {
+            if (result.isConfirmed === true) {
+                setBlock(true)
+                axios.put(`/updatelockstatus`, sentdata).then((res) => {
+                    if(res.data.result.error === false){
+                        setBlock(false)
+                        toast.success("Status Update Successfully")
+                        allEcData()
+                      } else if (res.data.result.error === true){
+                        setBlock(false)
+                        toast.error(res.data.result.errorMsg)
+                      }
+                }).catch((e) => {
+                    setBlock(false)
+                    toast.error(e.data.result.errorMsg)
+                })
+            }
+        })
+    } 
+    const paymentOption = [
+      {value: 'maker', label: "Maker"},
+      {value: 'checker', label: "Checker"},
+      {value: 'admin', label: "Admin"},
+      {value: 'user', label: "User"}
+    ]  
     const columns = [
       {
         name: "fullName",
@@ -138,6 +189,24 @@ const UserList = () => {
         },
       },
       {
+        name: "employeeTypeRef",
+        label: "Type",
+        searchable: true,
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
+        name: "employeeDesignation",
+        label: "Designation",
+        searchable: true,
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
         name: "branchName",
         label: "Branch",
         options: {
@@ -151,20 +220,7 @@ const UserList = () => {
         },
       },
       {
-        name: "creationDate",
-        label: "Create Date",
-        options: {
-          filter: true,
-          sort: true,
-          customBodyRender: (value) => {
-            return (
-              <div>{value !== null && value !== undefined ? value : "N/A"}</div>
-            );
-          },
-        },
-      },
-      {
-        name: "locked",
+        name: "isLocked",
         label: "Status",
         options: {
           filter: true,
@@ -183,17 +239,21 @@ const UserList = () => {
           filter: true,
           sort: false,
           customBodyRenderLite: (dataIndex) => {
+            const id = data[dataIndex]?.id
             const alldata = data[dataIndex]
+            const fullName = data[dataIndex]?.fullName
+            const roleName = data[dataIndex]?.roleName
+            const lockStatus = data[dataIndex]?.isLocked
             return (
-                <div style={{ width: "auto"}}>
+                <div style={{ width: "auto", textAlign:"center"}}>
                 <div style={{ display: "inline-flex" }}>
-                  <div style={{padding:"2px"}} className="btn btn-sm" >
+                  {/* <div style={{padding:"2px"}} className="btn btn-sm" >
                   <Eye id="details" size={14} className='me-50' color="green" />
                   <UncontrolledTooltip
                       placement="top"
                       target="details"
                     > View</UncontrolledTooltip>
-                  </div>
+                  </div> */}
                   <div style={{padding:"2px"}} className="btn btn-sm" >
                     <Link to="/admin/update-user" state={{ userinfo: alldata }}>
                   <Edit id="edit" size={14} className='me-50' color="blue" />
@@ -204,13 +264,37 @@ const UserList = () => {
                     > Edit</UncontrolledTooltip>
                   </div>
                   <div style={{padding:"2px"}} className="btn btn-sm" >
+                    <span onClick={() => {
+                      setUserId(id)
+                      setFullName(fullName)
+                      setUserData(roleName)
+                      setBasicModal(!basicModal)}}><Settings id="roleUpdate" size={14} className='me-50' color="green" /></span>
+                      <UncontrolledTooltip
+                      placement="top"
+                      target="roleUpdate"
+                      trigger="hover"
+                    > Role Update</UncontrolledTooltip>
+                  </div>
+                  <div style={{padding:"2px"}} className="btn btn-sm" >
+                    <span onClick={() => {
+                      setUserId(id)
+                      setFullName(fullName)
+                      setUserData(roleName)
+                      changeStatus(lockStatus, id)}}><UserCheck id="statusUpdate" size={14} className='me-50' color="red" /></span>
+                      <UncontrolledTooltip
+                      placement="top"
+                      target="statusUpdate"
+                      trigger="hover"
+                    > Status Update</UncontrolledTooltip>
+                  </div>
+                  {/* <div style={{padding:"2px"}} className="btn btn-sm" >
                   <Trash id="delete" size={14} className='me-50' color="red" />
                   <UncontrolledTooltip
                       placement="top"
                       target="delete"
                       trigger="hover"
                     > Delete</UncontrolledTooltip>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             )
@@ -222,19 +306,13 @@ const UserList = () => {
 
  useEffect(() => {
   allEcData()
-}, [])
-    const branchOption = [
-        {value: null, label: "Select Branch"},
-        {value: 1, label: "Mirpur Branch"},
-        {value: 2, label: "Gulshan 1 Branch"},
-        {value: 3, label: "Dhanmondi Branch"},
-        {value: 4, label: "Rampura Branch"},
-      ]    
+}, [])   
     const roleOption = [
         {value: null, label: "Select Role"},
         {value: "Admin", label: "Admin"},
         {value: 'Maker', label: "Maker"},
         {value: 'Checker', label: "Checker"},
+        {value: 'User', label: "User"},
       ]    
     const options = {
     filterType: "checkbox",
@@ -282,7 +360,7 @@ const UserList = () => {
           onChange={e => setFilter(e.target.value.trim())}
           onKeyDown={(e) => {
             if (e.keyCode === 13) {
-              searchEcData()
+              allEcData()
               }
            }}
            />
@@ -293,7 +371,7 @@ const UserList = () => {
             size="12"
             style={{marginTop:"18px", width:"100%"}}
             onClick={() => {
-              searchEcData()
+              allEcData()
             }}
             outline
             color="primary"
@@ -322,6 +400,53 @@ const UserList = () => {
       
       </CardBody>
     </Card>
+    <Modal
+          className="sm"
+          centered={true}
+          isOpen={basicModal}
+          backdrop={false}
+          toggle={() => setBasicModal(!basicModal)}
+        >
+          <ModalHeader toggle={() => setBasicModal(!basicModal)}>
+          Update Role
+          </ModalHeader>
+          <ModalBody>
+          <Row>
+            <Col className="mt-1" xl="12" md="12" sm="12" >
+            <FormGroup>
+            <Label for="selectDocument">User name</Label>
+                <Input value={fullName} disabled />
+            </FormGroup>
+             </Col>
+            <Col className="mt-1" xl="12" md="12" sm="12" >
+            <FormGroup>
+            <Label for="selectDocument">Select Role Type</Label>
+                <Select
+                    className='react-select'
+                    classNamePrefix='Select'
+                    id='label'
+                    options={paymentOption}
+                    defaultValue={paymentOption?.filter(option => option.value === userData)}
+                    placeholder="Select Role"
+                      onChange={(e) => {
+                        setRoleName(e.value)
+                        }}
+                    />
+            </FormGroup>
+             </Col>
+            <Col className="mb-1" xl="12" md="12" sm="12" style={{textAlign:"center"}}>
+            <FormGroup>
+            <Button onClick={()=> callRoleUpdate()} style={{marginRight:"10px"}} color='success' >
+                Update
+              </Button>
+              <Button style={{marginLeft:"10px"}} color='danger' onClick={() => setBasicModal(!basicModal)}>
+                Cancel
+              </Button>
+            </FormGroup>
+             </Col>
+        </Row>
+          </ModalBody>
+        </Modal>
     </UILoader>
   );
 };

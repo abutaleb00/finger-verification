@@ -100,6 +100,10 @@ const roleId = [
     name: "AdminSetting",
     permissions: [],
   },
+  {
+    name: "ChangePassword",
+    permissions: [],
+  },
 ];
 
 const RoleCards = () => {

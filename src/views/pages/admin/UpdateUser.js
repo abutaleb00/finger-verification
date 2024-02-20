@@ -22,10 +22,11 @@ import {
     const [picker, setPicker] = useState(new Date());
     const [block, setBlock] = useState(false)
     const [state, setSate] = useState(location?.state?.userinfo)
+    const [branchOptions, setBranchOptions] = useState([])
     const userCreate = (e) => {
         e.preventDefault()
         setBlock(true)
-         axios.post('/register', state).then(res => {
+         axios.post('/updateuser', state).then(res => {
             if(res.data?.result?.error === false){
                 setBlock(false)
                 toast.success('Successfully Created!')
@@ -40,17 +41,46 @@ import {
             toast.error(err.data?.result?.errorMsg)
          })
        }
+       const getBranchList = () => {
+        setBlock(true)
+         axios.post('/getbranches?first=0&limit=200').then(res => {
+          if(res.data.result.error === false){
+            setBlock(false)
+            const branchOption = res.data?.data?.content?.map(
+              (item) => {
+                return { value: item.id, label: item.name }
+              }
+            )
+            setBranchOptions([{ value: null, label: 'Select Branch'},...branchOption])
+          } else  if(res.data.result.error === false){
+            setBlock(false)
+            toast.error(res.data.result.errorMsg)
+          }
+         })
+         .catch((err) =>{
+          setBlock(false)
+            toast.error(err.data.result.errorMsg)
+         })
+       }
     const roleOptions = [
         {value: null, label: "Select Role"},
-        {value: "Admin", label: "Admin"},
-        {value: 'Maker', label: "Maker"},
-        {value: 'Checker', label: "Checker"},
+        {value: "admin", label: "Admin"},
+        {value: 'maker', label: "Maker"},
+        {value: 'checker', label: "Checker"},
+        {value: 'user', label: "User"},
     ];
-    const branchOptions = [
-      { value: "Main Branch", label: "Main Branch" },
-      { value: "Gulshan Granch", label: "Gulshan Granch"},
-      { value: "Uttara Branch", label: "Uttara Branch" },
-    ];
+    const statusOptions = [
+      {value: false, label: "Active"},
+      {value: true, label: "Inactive"},
+  ];
+  const employeeOptions = [
+      {value: null, label: "Select Type"},
+      {value: 1, label: "Permanent"},
+      {value: 2, label: "Contractual"},
+  ];
+    useEffect(()=>{
+      getBranchList()
+    },[])
     console.log("props", location?.state?.userinfo)
     return (
         <UILoader blocking={block}>
@@ -107,17 +137,43 @@ import {
               />
             </Col>
             <Col className="mb-1" xl="4" md="6" sm="12">
-              <Label className="form-label" htmlFor="phoneNo">
+              <Label className="form-label" htmlFor="mobile">
               Phone Number
               </Label>
               <Input
                 type="number"
-                id="phoneNo"
-                name="phoneNo"
+                id="mobile"
+                name="mobile"
                 placeholder="Enter phone number"
                 required
                 value={state?.mobile}
-                onChange={(e) => setSate({...state, phoneNo: e.target.value})}
+                onChange={(e) => setSate({...state, mobile: e.target.value})}
+              />
+            </Col>
+            <Col className="mb-1" xl="4" md="6" sm="12">
+              <Label className="form-label required-field" for="basicInput">
+                Employee Type
+              </Label>
+              <Select
+                isClearable={false}
+                defaultValue={employeeOptions[0]}
+                name="colors"
+                options={employeeOptions}
+                className="react-select"
+                classNamePrefix="select"
+                onChange={(e) => setSate({...state, employeeTypeRef: e.value})}
+              />
+            </Col>
+            <Col className="mb-1" xl="4" md="6" sm="12">
+              <Label className="form-label" htmlFor="mobile">
+             Designation
+              </Label>
+              <Input
+                type="text"
+                id="Designation"
+                name="Designation"
+                placeholder="Enter Designation"
+                onChange={(e) => setSate({...state, employeeDesignation: e.target.value})}
               />
             </Col>
             <Col className="mb-1" xl="4" md="6" sm="12">
@@ -131,7 +187,8 @@ import {
                 options={branchOptions}
                 className="react-select"
                 classNamePrefix="select"
-                onChange={(e) => setSate({...state, branchName: e.value})}
+                value = { branchOptions?.filter(option => option.value === state?.branchId)}
+                onChange={(e) => setSate({...state, branchId: e.value,  branchName: e.label})}
               />
             </Col>
             <Col className="mb-1" xl="4" md="6" sm="12">
@@ -145,7 +202,23 @@ import {
                 options={roleOptions}
                 className="react-select"
                 classNamePrefix="select"
-                onChange={(e) => setSate({...state, roleName: e.value})}
+                value = { roleOptions?.filter(option => option.value === state?.roleName)}
+                onChange={(e) => setSate({...state, roleName: e.value, roles: [e.value]})}
+              />
+            </Col>
+            <Col className="mb-1" xl="4" md="6" sm="12">
+              <Label className="form-label required-field" for="basicInput">
+                Status
+              </Label>
+              <Select
+                isClearable={false}
+                defaultValue={statusOptions[0]}
+                name="colors"
+                options={statusOptions}
+                className="react-select"
+                classNamePrefix="select"
+                value = { statusOptions?.filter(option => option.value === state?.isLocked)}
+                onChange={(e) => setSate({...state, isLocked: e.value})}
               />
             </Col>
           </Row>
@@ -153,9 +226,9 @@ import {
             <Col xl={12} style={{ textAlign: "center", marginTop: "20px" }}>
               <Button
                 type="submit"
-                color="primary"
+                color="success"
               >
-                Submit
+                Update
               </Button>
             </Col>
           </Row>
