@@ -32,10 +32,8 @@ const UserDropdown = () => {
   const dispatch = useDispatch()
 
   const logoutapicall = () => {
-    localStorage.removeItem('userData')
-      localStorage.removeItem(config.storageTokenKeyName)
-      localStorage.removeItem(config.storageRefreshTokenKeyName)   
-    axios.delete('/oauth/revoke').then(res => {
+    localStorage.removeItem('userData')  
+      axios.delete('/oauth/revoke').then(res => {
       if(res.data.result.error === false){
         localStorage.removeItem('userData')
       localStorage.removeItem(config.storageTokenKeyName)
@@ -53,6 +51,9 @@ const UserDropdown = () => {
      })
      .catch(err => {
       localStorage.removeItem('userData')
+      localStorage.removeItem(config.storageTokenKeyName)
+      localStorage.removeItem(config.storageRefreshTokenKeyName)
+      navigate('/login')
         // toast.error(err.data.result.errorMsg)
      })
 

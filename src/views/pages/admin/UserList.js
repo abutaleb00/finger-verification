@@ -58,6 +58,9 @@ const UserList = () => {
     const [userData , setUserData ] = useState(null)
     const [roleName, setRoleName] = useState(null)
     const [basicModal, setBasicModal] = useState(false);
+    const [basicModalPassword, setBasicModalPassword] = useState(false);
+    const [passworChangeData, setPassworChangeData] = useState(null);
+    const [newPassword, setNewPassword] = useState(null);
 
     const searchEcData = () => {
       const senddata ={
@@ -73,6 +76,27 @@ const UserList = () => {
          .catch(err => console.log(err))
        }
 
+       const changePassword = () => {
+        const datetosend = {
+          ...passworChangeData,
+          passwordSt: newPassword
+
+        }
+        setBlock(true)
+         axios.post('/updateuser', datetosend)
+         .then(res => {
+          setBlock(false)
+          toast.success('Password Update Successful')
+          setBasicModalPassword(!basicModalPassword)
+          searchEcData()
+          // setData(res.data.data)
+          console.log("res.data", res.data)
+         })
+         .catch(err => {
+          setBlock(false)
+          toast.error(err.data?.result?.errorMsg)
+       })
+       }
        const callRoleUpdate = () => {
         const datetosend = {
           userId: userId,
@@ -290,13 +314,13 @@ const UserList = () => {
             return (
                 <div style={{ width: "auto"}}>
                 <div style={{ display: "inline-flex" }}>
-                  <div style={{padding:"2px"}} className="btn btn-sm" >
+                  {/* <div style={{padding:"2px"}} className="btn btn-sm" >
                   <Eye id="details" size={14} className='me-50' color="green" />
                   <UncontrolledTooltip
                       placement="top"
                       target="details"
                     > View</UncontrolledTooltip>
-                  </div>
+                  </div> */}
                   <div style={{padding:"2px"}} className="btn btn-sm" >
                     <Link to="/admin/update-user" state={{ userinfo: alldata }}>
                   <Edit id="edit" size={14} className='me-50' color="blue" />
@@ -329,6 +353,16 @@ const UserList = () => {
                       target="statusUpdate"
                       trigger="hover"
                     > Status Update</UncontrolledTooltip>
+                  </div>
+                  <div style={{padding:"2px"}} className="btn btn-sm" >
+                  <span onClick={() => {
+                    setPassworChangeData(alldata)
+                    setBasicModalPassword(!basicModalPassword)}}><Eye id="changePassword" size={14} className='me-50' color="orange" /></span>
+                  <UncontrolledTooltip
+                      placement="top"
+                      target="changePassword"
+                      trigger="hover"
+                    > Change Password</UncontrolledTooltip>
                   </div>
                   <div style={{padding:"2px"}} className="btn btn-sm" >
                   <span onClick={() => {
@@ -515,6 +549,37 @@ const UserList = () => {
                 Update
               </Button>
               <Button style={{marginLeft:"10px"}} color='danger' onClick={() => setBasicModal(!basicModal)}>
+                Cancel
+              </Button>
+            </FormGroup>
+             </Col>
+        </Row>
+          </ModalBody>
+        </Modal>
+    <Modal
+          className="sm"
+          centered={true}
+          isOpen={basicModalPassword}
+          backdrop={false}
+          toggle={() => setBasicModal(!basicModalPassword)}
+        >
+          <ModalHeader toggle={() => setBasicModalPassword(!basicModalPassword)}>
+          Change Password
+          </ModalHeader>
+          <ModalBody>
+          <Row>
+            <Col className="mt-1" xl="12" md="12" sm="12" >
+            <FormGroup>
+            <Label htmlFor="NewPassword">New Password</Label>
+                <Input placeholder="Enter New password" onChange={(e) => setNewPassword(e.target.value)} />
+            </FormGroup>
+             </Col>
+            <Col className="mb-1" xl="12" md="12" sm="12" style={{textAlign:"center"}}>
+            <FormGroup>
+            <Button onClick={()=> changePassword()} style={{marginRight:"10px"}} color='success' >
+                Update
+              </Button>
+              <Button style={{marginLeft:"10px"}} color='danger' onClick={() => setBasicModalPassword(!basicModalPassword)}>
                 Cancel
               </Button>
             </FormGroup>

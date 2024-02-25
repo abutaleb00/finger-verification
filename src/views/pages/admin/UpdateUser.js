@@ -15,22 +15,24 @@ import axios from 'axios'
 import Select, { components } from "react-select"; // eslint-disable-line
 import { useState } from "react";
 import toast from 'react-hot-toast'
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import UILoader from '@components/ui-loader'
 const UpdateUser = (props) => {
   const location = useLocation()
+  const navigate = useNavigate()
   const [picker, setPicker] = useState(new Date());
   const [block, setBlock] = useState(false)
   const [state, setSate] = useState(location?.state?.userinfo)
   const [branchOptions, setBranchOptions] = useState([])
   const userCreate = (e) => {
+    let senddata = {...state, passwordSt: null}
       e.preventDefault()
       setBlock(true)
-       axios.post('/updateuser', state).then(res => {
+       axios.post('/updateuser', senddata).then(res => {
           if(res.data?.result?.error === false){
               setBlock(false)
               toast.success('Successfully Created!')
-              window.location.href = "/admin/user-list";
+              navigate('/admin/user-list')
           } else if(res.data?.result?.error === true) {
               setBlock(false)
               toast.error(res.data.result.errorMsg)
