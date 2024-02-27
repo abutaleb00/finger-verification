@@ -16,7 +16,7 @@ import {
 } from "reactstrap";
 import finger from "@src/assets/images/pages/fingerprint.svg";
 import fingerapp from "@src/assets/images/pages/fingerprint-app.png";
-import { Users, File, Trash } from 'react-feather'
+import { Users, File, FilePlus } from 'react-feather'
 import UILoader from '@components/ui-loader'
 import toast from 'react-hot-toast'
 import { Tooltip as ReactTooltip } from "react-tooltip";
@@ -29,6 +29,8 @@ const DocumentList = (props) => {
   const [data, setData] = useState([])
   // ** States
   const [basicModal, setBasicModal] = useState(false);
+  const [basicModalPdf, setBasicModalPdf] = useState(false);
+  const [pdfData, setPdfData] = useState(null);
   const [guarantorList, setGuarantorList] = useState(props?.guarantors);
 
 const getAllDocument =() =>{
@@ -98,9 +100,12 @@ useEffect(() =>{
                             <table className="table table-bordered" style={{with:"100%", border:"1px solid gray"}}>
                                 <tr>
                                     <td colSpan={2}>
-                                    <img className='img-thumbnail' src={`data:image/jpeg;base64,${v.base64Content}`} alt='photo'
-                                     style={{ border:"1px solid gray", borderRadius:"5px", padding:"5px"}} />
+                                    {v.fileName.includes("pdf") ? <embed src={`data:application/pdf;base64,${v.base64Content}`}  type="application/pdf" width="100%"></embed> : <img className='img-thumbnail' src={`data:image/jpeg;base64,${ v.base64Content}`} alt='photo'
+                                     style={{ border:"1px solid gray", borderRadius:"5px", padding:"5px"}} />}
                                     </td>
+                                    {/* {v.fileName.includes("pdf") ? <img src="/pdf.png" alt="pdf" width={100} /> : <img className='img-thumbnail' src={`data:image/jpeg;base64,${ v.base64Content}`} alt='photo'
+                                     style={{ border:"1px solid gray", borderRadius:"5px", padding:"5px"}} />}
+                                    </td> */}
                                 </tr>
                                 <tr>
                                     <td style={{textAlign:"left", fontWeight:"bold"}}>Name:</td>
@@ -117,6 +122,23 @@ useEffect(() =>{
                                      v.documentType === 6 ? "Birth Certificate" : v.documentType === 7 ? "TIN Certificate" : v.documentType === 9 ?
                                       "Driving License" : v.documentType === 10 ? "Nominee Photo" :"Others" }</td>
                                 </tr>
+                                <tr>
+                                    <td colSpan={2} style={{textAlign:"left", fontWeight:"bold"}}>
+                                      {v.fileName.includes("pdf") && 
+                                      <div style={{textAlign:"center", padding:"2px"}}>
+                                      <button 
+                                      className="btn btn-primary"
+                                      onClick={()=> {
+                                        setBasicModalPdf(true)
+                                        setBasicModal(false)
+                                        setPdfData(v.base64Content)
+                                      }}
+                                      >
+                                        Large View
+                                      </button>
+                                      </div>}
+                                    </td>
+                                </tr>
                             </table>
                     </Col>
                 )
@@ -126,6 +148,27 @@ useEffect(() =>{
           </ModalBody>
           <ModalFooter>
             <Button color='danger' onClick={() => setBasicModal(!basicModal)}>
+                Close
+              </Button>
+          </ModalFooter>
+        </Modal>
+        <Modal
+          className="modal-fullscreen"
+          isOpen={basicModalPdf}
+          toggle={() => setBasicModalPdf(!basicModalPdf)}
+        >
+          <ModalHeader toggle={() => setBasicModalPdf(!basicModalPdf)}>
+          Document
+          </ModalHeader>
+          <ModalBody>
+          <Row style={{height:"100%"}}>
+            <Col className="mb-1" xl="12" md="12" sm="12" style={{textAlign:"center"}} >
+            <embed src={`data:application/pdf;base64,${pdfData}`}  type="application/pdf" height="100%" width="100%"></embed>               
+            </Col>     
+        </Row>
+          </ModalBody>
+          <ModalFooter>
+            <Button color='danger' onClick={() => setBasicModalPdf(!basicModalPdf)}>
                 Close
               </Button>
           </ModalFooter>
