@@ -49,7 +49,7 @@ const sendata = {
   },
   loanee: {
       ecjobid :location.state?.jobId,
-      nidphoto: nidPhoto,
+      nidphoto: state?.photo,
       name: state?.name,
       nameEn: state?.nameEn,
       bloodGroup: state?.bloodGroup,
@@ -203,7 +203,7 @@ console.log("send data", sendata)
         <Col className="mb-1" xl="3" md="3" sm="12" style={{textAlign:"center"}}>
           <div style={{}}>
             <p style={{color:"black", fontWeight:"bold", marginBottom:"5px"}}>Applicant Photo</p>
-          <img src={`data:image/jpeg;base64,${nidPhoto}`} alt='nid photo' style={{width: 130, height: 160, border:"1px solid gray", borderRadius:"5px", padding:"5px"}} />
+          <img src={`data:image/jpeg;base64,${state?.photo}`} alt='nid photo' style={{width: 130, height: 160, border:"1px solid gray", borderRadius:"5px", padding:"5px"}} />
           </div>
         </Col>
         </Row>

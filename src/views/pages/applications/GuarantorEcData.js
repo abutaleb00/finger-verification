@@ -42,7 +42,7 @@ import {
   e.preventDefault()
   const sendata = {
     ecjobid :location.state?.jobId,
-    nidphoto: nidPhoto,
+    nidphoto: state?.photo,
     name: state?.name,
     nameEn: state?.nameEn,
     bloodGroup: state?.bloodGroup,
