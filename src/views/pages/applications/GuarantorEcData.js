@@ -67,7 +67,8 @@ import {
         id: loanee?.id
     },
     loanee: loanee?.loanee,
-    guarantors: [...loanee?.guarantors, sendata]
+    guarantors: [...loanee?.guarantors, sendata],
+    coBorrowers: []
   }
 
     let gg = [loanee]

@@ -65,7 +65,8 @@ const sendata = {
       permanentAddress: permanentAddress,
       presentAddress: presentAddress
   },
-  guarantors: []
+  guarantors: [],
+  coBorrowers: []
 }
 setBlock(true)
 axios.post('/addloan', sendata).then(res => {
