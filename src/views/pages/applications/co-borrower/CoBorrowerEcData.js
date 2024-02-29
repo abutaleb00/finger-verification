@@ -25,7 +25,7 @@ import {
     const location = useLocation()
     const navigate = useNavigate()
     const [picker, setPicker] = useState(new Date());
-    const [state, setSate] = useState(location.state?.guarantor)
+    const [state, setSate] = useState(location.state?.coBorrowers)
     const [coBorrowers, setCoBorrowers] = useState(location.state?.coBorrowers)
     const [loanee, setLoanee] = useState(location.state?.loanee)
     const [block, setBlock] = useState(false)

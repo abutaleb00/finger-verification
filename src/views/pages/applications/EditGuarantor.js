@@ -66,7 +66,8 @@ import {
         permanentAddress: permanentAddress,
         presentAddress: presentAddress
     },
-    guarantors: application?.guarantors
+    guarantors: application?.guarantors,
+    coBorrowers: [...application?.coBorrowers]
   }
   setBlock(true)
   axios.post('/addloan', sendata).then(res => {
