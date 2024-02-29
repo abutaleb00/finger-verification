@@ -25,13 +25,13 @@ import {
     const location = useLocation()
     const navigate = useNavigate()
     const [picker, setPicker] = useState(new Date());
-    const [state, setSate] = useState(location.state?.guarantor)
+    const [state, setSate] = useState(location.state?.coBorrowers)
     const [coBorrowers, setCoBorrowers] = useState(location.state?.coBorrowers)
     const [loanee, setLoanee] = useState(location.state?.loanee)
     const [block, setBlock] = useState(false)
     const [nidPhoto, setNidPhoto] = useState(null)
-    const [permanentAddress, setPermanentAddress] = useState(location.state?.guarantor?.permanentAddress)
-    const [presentAddress, setPresentAddress] = useState(location.state?.guarantor?.presentAddress)
+    const [permanentAddress, setPermanentAddress] = useState(location.state?.coBorrowers?.permanentAddress)
+    const [presentAddress, setPresentAddress] = useState(location.state?.coBorrowers?.presentAddress)
     const genderOptions = [
       { value: "male", label: "Male" },
       { value: "female", label: "Female", color: "#0052CC", isFixed: true },
@@ -43,7 +43,7 @@ import {
   e.preventDefault()
   const sendata = {
     ecjobid :location.state?.jobId,
-    nidphoto: nidPhoto,
+    nidphoto: state?.photo,
     name: state?.name,
     nameEn: state?.nameEn,
     bloodGroup: state?.bloodGroup,
@@ -98,30 +98,30 @@ import {
    })
   console.log("send data", sendata)
     }
-    const getNidPhoto = () => {
-      let sendData = {
-        jobid: location.state?.jobId
-      }
-      setBlock(true)
-       axios.post('/callECData', sendData).then(res => {
-        if(res.data.result.error === false){
-          setBlock(false)
-          console.log("res.data.data", res.data.data)
-          setNidPhoto(res.data.data?.photolink)
-          // setData(res.data.data)
-        } else if(res.data.result.error === true){
-          setBlock(false)
-          toast.error(res.data.result.errorMsg)
-        }
-       })
-       .catch((err) =>{
-        setBlock(false)
-          toast.error(err.data.result.errorMsg)
-       })
-     }
-  useEffect(()=>{
-    getNidPhoto()
-  },[])
+  //   const getNidPhoto = () => {
+  //     let sendData = {
+  //       jobid: location.state?.jobId
+  //     }
+  //     setBlock(true)
+  //      axios.post('/callECData', sendData).then(res => {
+  //       if(res.data.result.error === false){
+  //         setBlock(false)
+  //         console.log("res.data.data", res.data.data)
+  //         setNidPhoto(res.data.data?.photolink)
+  //         // setData(res.data.data)
+  //       } else if(res.data.result.error === true){
+  //         setBlock(false)
+  //         toast.error(res.data.result.errorMsg)
+  //       }
+  //      })
+  //      .catch((err) =>{
+  //       setBlock(false)
+  //         toast.error(err.data.result.errorMsg)
+  //      })
+  //    }
+  // useEffect(()=>{
+  //   getNidPhoto()
+  // },[])
     return (
       <UILoader blocking={block}>
       <Card>
@@ -208,9 +208,9 @@ import {
         </Col>
         <Col className="mb-1" xl="3" md="3" sm="12" style={{textAlign:"center"}}>
           <div style={{}}>
-            <p style={{color:"black", fontWeight:"bold", marginBottom:"5px"}}>Guarantor Photo</p>
-          {/* <img src={`data:image/jpeg;base64,${nidPhoto}`} alt='nid photo' style={{width: 130, height: 160, border:"1px solid gray", borderRadius:"5px", padding:"5px"}} /> */}
-          <img src={state?.photo} alt='nid photo' style={{width: 130, height: 160, border:"1px solid gray", borderRadius:"5px", padding:"5px"}} />
+            <p style={{color:"black", fontWeight:"bold", marginBottom:"5px"}}>Co-Borrower Photo</p>
+          <img src={`data:image/jpeg;base64,${state?.photo}`} alt='nid photo' style={{width: 130, height: 160, border:"1px solid gray", borderRadius:"5px", padding:"5px"}} />
+          {/* <img src={state?.photo} alt='nid photo' style={{width: 130, height: 160, border:"1px solid gray", borderRadius:"5px", padding:"5px"}} /> */}
           </div>
         </Col>
         </Row>

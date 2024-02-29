@@ -369,7 +369,7 @@ export default class CoBorrowerNidVerify extends Component {
                     id='button2'
                     style={{display:"none"}}
                       to={`/coborrower-ec-data`}
-                      state={{ guarantor: this.state.ecresult, loanee: this.state.loanee, jobId: this.state.jobId }}
+                      state={{ coBorrowers: this.state.ecresult, loanee: this.state.loanee, jobId: this.state.jobId }}
                   >
                       redirect
                   </Link>
