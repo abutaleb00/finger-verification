@@ -80,6 +80,9 @@ export default class JwtService {
             console.log("originalRequest 3", originalRequest)
             window.location.href = "/login"
             localStorage.removeItem('userData')
+            localStorage.removeItem('individual')
+            localStorage.removeItem('company')
+            localStorage.removeItem('type')
             this.addSubscriber(accessToken => {
               // ** Make sure to assign accessToken according to your response.
               // ** Check: https://pixinvent.ticksy.com/ticket/2413870

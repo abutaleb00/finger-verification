@@ -36,6 +36,9 @@ const UserDropdown = () => {
       axios.delete('/oauth/revoke').then(res => {
       if(res.data.result.error === false){
         localStorage.removeItem('userData')
+        localStorage.removeItem('individual')
+        localStorage.removeItem('company')
+        localStorage.removeItem('type')
       localStorage.removeItem(config.storageTokenKeyName)
       localStorage.removeItem(config.storageRefreshTokenKeyName)
         navigate('/login')
@@ -44,6 +47,9 @@ const UserDropdown = () => {
         setBlock(false)
         toast.error(res.data.result.errorMsg)
         localStorage.removeItem('userData')
+        localStorage.removeItem('individual')
+        localStorage.removeItem('company')
+        localStorage.removeItem('type')
         localStorage.removeItem(config.storageTokenKeyName)
         localStorage.removeItem(config.storageRefreshTokenKeyName)
         navigate('/login')

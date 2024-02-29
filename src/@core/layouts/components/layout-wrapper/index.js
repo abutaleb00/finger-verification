@@ -32,11 +32,17 @@ const LayoutWrapper = (props) => {
   const store = useSelector((state) => state);
   const handleLogout = () => {
     localStorage.removeItem('userData')
-      localStorage.removeItem(config.storageTokenKeyName)
-      localStorage.removeItem(config.storageRefreshTokenKeyName)   
+    localStorage.removeItem('individual')
+    localStorage.removeItem('company')
+    localStorage.removeItem('type')
+    ocalStorage.removeItem(config.storageTokenKeyName)
+    localStorage.removeItem(config.storageRefreshTokenKeyName)   
     axios.delete('/oauth/revoke').then(res => {
       if(res.data.result.error === false){
         localStorage.removeItem('userData')
+        localStorage.removeItem('individual')
+        localStorage.removeItem('company')
+        localStorage.removeItem('type')
       localStorage.removeItem(config.storageTokenKeyName)
       localStorage.removeItem(config.storageRefreshTokenKeyName)
         navigate('/login')

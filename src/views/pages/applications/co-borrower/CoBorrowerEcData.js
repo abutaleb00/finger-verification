@@ -21,11 +21,12 @@ import {
   import UILoader from '@components/ui-loader'
   import { v4 as uuidv4 } from 'uuid'
   
-  const GuarantorEcData = (props) => {
+  const CoBorrowerEcData = (props) => {
     const location = useLocation()
     const navigate = useNavigate()
     const [picker, setPicker] = useState(new Date());
     const [state, setSate] = useState(location.state?.guarantor)
+    const [coBorrowers, setCoBorrowers] = useState(location.state?.coBorrowers)
     const [loanee, setLoanee] = useState(location.state?.loanee)
     const [block, setBlock] = useState(false)
     const [nidPhoto, setNidPhoto] = useState(null)
@@ -67,8 +68,8 @@ import {
         id: loanee?.id
     },
     loanee: loanee?.loanee,
-    guarantors: [...loanee?.guarantors, sendata],
-    coBorrowers: [...loanee?.coBorrowers]
+    guarantors: [...loanee?.guarantors],
+    coBorrowers: [...loanee?.coBorrowers, sendata]
   }
 
     let gg = [loanee]
@@ -81,7 +82,7 @@ import {
             Object.assign(senddata, newObj[i]);
         }
   setBlock(true)
-  axios.post('/addloan', sendata2).then(res => {
+  axios.put('/updateloanee', sendata2).then(res => {
     if(res.data.result.error === false){
       setBlock(false)
       toast.success("Application Submit Succsfully")
@@ -125,7 +126,7 @@ import {
       <UILoader blocking={block}>
       <Card>
         <CardHeader>
-          <CardTitle tag="h4">Personal Information</CardTitle>
+          <CardTitle tag="h4">Co-Borrower Personal Information</CardTitle>
         </CardHeader>
   
         <CardBody>
@@ -555,4 +556,4 @@ import {
       </UILoader>
     );
   };
-  export default GuarantorEcData;  
+  export default CoBorrowerEcData;  

@@ -17,10 +17,34 @@ import {
   import Flatpickr from 'react-flatpickr'
   import { useDropzone } from 'react-dropzone'
   import { FileText, X, DownloadCloud } from 'react-feather'
-  
+  import UILoader from '@components/ui-loader'
+  import axios from 'axios'
+  import toast from 'react-hot-toast'
+  import moment from "moment";
+  import '@styles/react/libs/flatpickr/flatpickr.scss'
+  import Swal from 'sweetalert2'
+  import withReactContent from 'sweetalert2-react-content'
+  import { v4 as uuidv4 } from 'uuid'
+  import { useNavigate } from "react-router-dom";
+
+  const MySwal = withReactContent(Swal)
+
   const CompanyProfile = () => {
-    const [picker, setPicker] = useState(new Date())
+    const navigate = useNavigate()
     const [files, setFiles] = useState([])
+    const [block, setBlock] = useState(false)
+    const [state, setState] = useState({
+      companyInfo: "",
+      companyName: "",
+      companyType: 1,
+      companyTypeRef: "",
+      companyRegNo: "",
+      companyRegDate: moment(new Date()).format("DD/MM/YYYY"),
+      companyPhone: "",
+      companyAddress: "",
+      uniquereference: null
+
+    })
 
     const { getRootProps, getInputProps } = useDropzone({
       multiple: false,
@@ -65,26 +89,147 @@ import {
         </Button>
       </ListGroupItem>
     ))
-  
+    const companyExitOrApplication = (e) => {
+      const sentdata = {
+          companyProfile: {
+              ...state
+          },
+          loanee: null,
+          guarantors: [],
+          coBorrowers: []
+      }
+      e.preventDefault()
+      setBlock(true)
+       axios.post('/doescompanyexisits', sentdata).then(res => {
+          if(res.data?.result?.error === false){
+              setBlock(false)
+              companyApplication()
+          } else if(res.data?.result?.error === true) {
+              setBlock(false)
+              handleExitCompany(res.data?.data)
+              toast.error(res.data.result.errorMsg)
+          }
+       })
+       .catch(err => {
+          setBlock(false)
+          console.log("first", err)
+          toast.error(err.data?.result?.errorMsg)
+       })
+     }
+    const companyApplication = (e) => {
+      const sentdata = {
+          companyProfile: {
+              ...state
+          },
+          loanee: null,
+          guarantors: [],
+          coBorrowers: []
+      }
+      // e.preventDefault()
+      setBlock(true)
+       axios.post('/addcompany', sentdata).then(res => {
+          if(res.data?.result?.error === false){
+            console.log("res.data", res.data)
+             localStorage.setItem("company", JSON.stringify(res.data?.data))
+             localStorage.setItem("type", 2)
+             navigate('/nid-verify')
+              setBlock(false)
+              toast.success('Successfully Created!')
+              setUserinfo(res.data)
+          } else if(res.data?.result?.error === true) {
+              setBlock(false)
+              toast.error(res.data.result.errorMsg)
+          }
+       })
+       .catch(err => {
+          setBlock(false)
+          toast.error(err.data?.result?.errorMsg)
+       })
+     }
+    const addloanCompany = (e) => {
+      const sentdata = {
+        loanapplication: {
+          loan_no: uuidv4().substring(0,13),
+          branchName: null,
+          status: 5
+      },
+          companyProfile: {
+              ...e
+          },
+          loanee: null,
+          guarantors: [],
+          coBorrowers: []
+      }
+      // e.preventDefault()
+      setBlock(true)
+       axios.post('/addloan', sentdata).then(res => {
+          if(res.data?.result?.error === false){
+              setBlock(false)
+              localStorage.setItem("company", JSON.stringify(res.data?.data))
+              localStorage.setItem("type", 2)
+              navigate('/nid-verify')
+              toast.success('Successfully Created!')
+              setUserinfo(res.data)
+          } else if(res.data?.result?.error === true) {
+              setBlock(false)
+              toast.error(res.data.result.errorMsg)
+          }
+       })
+       .catch(err => {
+          setBlock(false)
+          toast.error(err.data?.result?.errorMsg)
+       })
+     }
+     const handleExitCompany = (e) => {
+      return MySwal.fire({
+        title: 'Company Profile Exists',
+        text: "Want to continue loan application?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        customClass: {
+          confirmButton: 'btn btn-primary',
+          cancelButton: 'btn btn-outline-danger ms-1'
+        },
+        buttonsStyling: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          console.log("clicked", result)
+          addloanCompany(e)
+        }
+      })
+    }
     const handleRemoveAllFiles = () => {
       setFiles([])
     }
     const companyOptions = [
-      { value: "1", label: "Private Limited Company" },
-      { value: "2", label: "Public Limited Company" },
-      { value: "3", label: "One-person Company" },
-      { value: "4", label: "Companies limited by guarantee" },
-      { value: "5", label: "Companies with unlimited liabilities" },
-      { value: "6", label: "Sole Proprietorship" },
+      { value: 1, label: "Proprietorship" },
+      { value: 2, label: "Private Limited Company" },
+      { value: 3, label: "Public Limited Company" },
+      { value: 4, label: "Foreign Owned Company" },
+      { value: 5, label: "Micro Finance Organization" },
+      { value: 6, label: "NBFI" },
+      { value: 7, label: "Others" },
     ];
     return (
+      <UILoader blocking={block}>
       <Card>
-        <CardHeader>
-          <CardTitle tag="h4">Company Information</CardTitle>
-        </CardHeader>
-  
         <CardBody>
-          <Row>
+        <form onSubmit={companyExitOrApplication}>
+          <Row style={{marginBottom:"20px", marginTop:"30px", paddingTop:"25px", borderTop:"1px dashed gray"}}>
+            <Col className="mb-1" xl="12" md="12" sm="12">
+              <Label className="form-label" htmlFor="companyInfo">
+              Company Info
+              </Label>
+              <Input
+                type="text"
+                id="companyInfo"
+                placeholder="Enter Company Info"
+                onChange={(e) => {
+                  setState({...state, companyInfo: e.target.value})
+                  }}
+              />
+            </Col>
             <Col className="mb-1" xl="6" md="6" sm="12">
               <Label className="form-label" for="basicInput">
                 Company Name
@@ -93,6 +238,9 @@ import {
                 type="text"
                 id="basicInput"
                 placeholder="Enter Company Name"
+                onChange={(e) => {
+                  setState({...state, companyName: e.target.value})
+                  }}
               />
             </Col>
             <Col className="mb-1" xl="6" md="6" sm="12">
@@ -106,54 +254,66 @@ import {
                 options={companyOptions}
                 className="react-select"
                 classNamePrefix="select"
+                onChange={(e) => {
+                  setState({...state, companyType: e.value, companyTypeRef: e.label})
+                  }}
               />
             </Col>
             <Col className="mb-1" xl="6" md="6" sm="12">
-              <Label className="form-label" for="basicInput">
+              <Label className="form-label required-field" for="basicInput">
                 Registration Number
               </Label>
               <Input
                 type="text"
                 id="basicInput"
-                placeholder="Enter Company Name"
+                placeholder="Enter Registration Number"
+                onChange={(e) => {
+                  setState({...state, companyRegNo: e.target.value})
+                  }}
               />
             </Col>
             <Col className="mb-1" xl="6" md="6" sm="12">
-              <Label className="form-label" for="basicInput">
+              <Label className="form-label required-field" for="basicInput">
               Registration Date
               </Label>
               <Flatpickr
-                value={picker}
+                value={state?.companyRegDate}
                 id='range-picker'
-                className='form-control'
-                onChange={date => setPicker(date)}
-                options={{
-                mode: 'range',
-                defaultDate: ['2020-02-01', '2020-02-15']
-                }}
+                className='form-control invoice-edit-input date-picker'
+                onChange={(date) => setState({...state, companyRegDate: moment(date[0]).format("DD/MM/YYYY")})}
+                // options={{
+                // mode: 'range',
+                // defaultDate: ['2020-02-01', '2020-02-15']
+                // }}
             />
             </Col>
             <Col className="mb-1" xl="6" md="6" sm="12">
-              <Label className="form-label" for="basicInput">
+              <Label className="form-label required-field" for="basicInput">
                 Phone Number
               </Label>
               <Input
-                type="text"
+                type="number"
                 id="basicInput"
                 placeholder="Enter Phone Number"
+                onChange={(e) => {
+                  setState({...state, companyPhone: e.target.value})
+                  }}
               />
             </Col>
             <Col className="mb-1" xl="6" md="6" sm="12">
-              <Label className="form-label" for="basicInput">
+              <Label className="form-label required-field" for="basicInput">
                 Company Address
               </Label>
               <Input
                 type="text"
                 id="basicInput"
                 placeholder="Enter Address"
+                onChange={(e) => {
+                  setState({...state, companyAddress: e.value})
+                  }}
               />
             </Col>
-            <Col className="mb-1" xl="12" md="12" sm="12">
+            {/* <Col className="mb-1" xl="12" md="12" sm="12">
             <Label className="form-label" for="basicInput">
               Upload Documents
               </Label>
@@ -184,24 +344,22 @@ import {
                 </Fragment>
                 ) : null}
                 </>
-            </Col>
+            </Col> */}
           </Row>
           <Row>
             <Col xl={12} style={{ textAlign: "center", marginTop: "20px" }}>
               <Button
                 type="submit"
                 color="primary"
-                onClick={() => {
-                    localStorage.setItem("accountType", "3")
-                    window.location.href = "/nid-verify";
-                }}
               >
                 Submit
               </Button>
             </Col>
           </Row>
+          </form>
         </CardBody>
       </Card>
+      </UILoader>
     );
   };
   export default CompanyProfile;  

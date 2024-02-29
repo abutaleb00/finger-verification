@@ -14,6 +14,9 @@ const ApplicationForm = lazy(() => import("../../views/pages/applications/Applic
 const NewGrantors = lazy(() => import("../../views/pages/NewGrantors"));
 const VerifiedUserList = lazy(() => import("../../views/pages/VerifiedUserList"));
 const GrantorEdit = lazy(() => import("../../views/pages/GrantorEdit"));
+const ApplicationInit = lazy(() => import("../../views/pages/applications/application-init/ApplicationInit"));
+const IndividualApplicationList = lazy(() => import("../../views/pages/applications/application-init/IndividualApplicationList"));
+const CompanyApplicationList = lazy(() => import("../../views/pages/applications/application-init/CompanyApplicationList"));
 const EditGuarantor = lazy(() => import("../../views/pages/applications/EditGuarantor"));
 const ViewGuarantor = lazy(() => import("../../views/pages/applications/ViewGuarantor"));
 const PendingUser = lazy(() => import("../../views/pages/PendingUser"));
@@ -27,7 +30,17 @@ const Role = lazy(() => import("../../views/pages/admin/roles"));
 const CreateEcUser = lazy(() => import("../../views/pages/admin/CreateEcUser"));
 const EditEcUser = lazy(() => import("../../views/pages/ec/EditEcUser"));
 const ChangePassword = lazy(() => import("../../views/pages/users/ChangePassword"));
+const CoBorrowerNidVerify = lazy(() => import("../../views/pages/applications/co-borrower/CoBorrowerNidVerify"));
+const CoBorrowerEcData = lazy(() => import("../../views/pages/applications/co-borrower/CoBorrowerEcData"));
 const OthersRoutes = [
+    {
+        path: "/application-initiate",
+        element: <ApplicationInit />,
+        meta: {
+          action: 'read',
+          resource: 'FingerPrintVerify'
+        }
+      },
     {
         path: "/nid-verify",
         element: <NidVerify2 />,
@@ -74,6 +87,22 @@ const OthersRoutes = [
         meta: {
           action: 'read',
           resource: 'Grantor'
+        }
+      },
+      {
+        path: "/coborrower-nid-verify",
+        element: <CoBorrowerNidVerify />,
+        meta: {
+          action: 'read',
+          resource: 'Grantor'
+        }
+      },
+      {
+        path: "/coborrower-ec-data",
+        element: <CoBorrowerEcData />,
+        meta: {
+          action: 'read',
+          resource: 'EcReturnData'
         }
       },
       {
@@ -234,6 +263,22 @@ const OthersRoutes = [
         meta: {
           action: 'read',
           resource: 'ChangePassword'
+        }
+      },
+      {
+        path: "/initiate-individual-application",
+        element: <IndividualApplicationList />,
+        meta: {
+          action: 'read',
+          resource: 'FingerPrintVerify'
+        }
+      },
+      {
+        path: "/initiate-company-application",
+        element: <CompanyApplicationList />,
+        meta: {
+          action: 'read',
+          resource: 'FingerPrintVerify'
         }
       }
 ]

@@ -45,6 +45,7 @@ const Selects = props => (
 const EcReturnData = (props) => {
   const navigate = useNavigate()
   const location = useLocation()
+  const broweerType = location.state?.broweerType
   const [picker, setPicker] = useState(new Date());
   const [state, setSate] = useState(location.state?.userinfo)
   const [block, setBlock] = useState(false)
@@ -52,6 +53,7 @@ const EcReturnData = (props) => {
   const [permanentAddress, setPermanentAddress] = useState(location.state?.userinfo?.permanentAddress)
   const [presentAddress, setPresentAddress] = useState(location.state?.userinfo?.presentAddress)
   const [branchOption, setBranchOption] = useState([])
+  console.log("broweerType", broweerType)
   const genderOptions = [
     { value: "male", label: "Male" },
     { value: "female", label: "Female", color: "#0052CC", isFixed: true },
@@ -60,35 +62,51 @@ const EcReturnData = (props) => {
   // console.log("location 2", JSON.parse(localStorage.getItem('userData')).branchName)
   const createLoanApplication = (e) =>{
 e.preventDefault()
+const ecdata = {
+  ecjobid :location.state?.jobId,
+  nidphoto: nidPhoto,
+  name: state?.name,
+  nameEn: state?.nameEn,
+  bloodGroup: state?.bloodGroup,
+  dateOfBirth: state?.dateOfBirth,
+  father: state?.father,
+  mother: state?.mother,
+  spouse: state?.spouse,
+  mobile: state?.mobile,
+  designation: state?.designation,
+  email: state?.email,
+  nationalId: state?.nationalId,
+  occupation: state?.occupation,
+  permanentAddress: permanentAddress,
+  presentAddress: presentAddress
+}
+const individualLonee =  {
+  loan_no: localStorage.getItem('type') === "1" ? JSON.parse(localStorage?.getItem('individual'))?.loan_no : JSON.parse(localStorage?.getItem('company'))?.loan_no,
+  branchName: state?.branchName,
+  applicantInfo: localStorage.getItem('type') === "1" ? JSON.parse(localStorage?.getItem('individual'))?.applicantInfo : null,
+  applicantName: localStorage.getItem('type') === "1" ? JSON.parse(localStorage?.getItem('individual'))?.applicantName : null,
+  applicantFatherName: localStorage.getItem('type') === "1" ? JSON.parse(localStorage?.getItem('individual'))?.fatherName : null,
+  applicantMobile: localStorage.getItem('type') === "1" ? JSON.parse(localStorage?.getItem('individual'))?.applicantMobile : null,
+  status: 0
+}
+const companyLonee = {
+  loan_no: localStorage.getItem('type') === "1" ? JSON.parse(localStorage?.getItem('individual'))?.loan_no : JSON.parse(localStorage?.getItem('company'))?.loan_no,
+  // createdBy: "john_doe5",
+  branchName: state?.branchName,
+  status: 0
+}
 const sendata = {
-  loanapplication: {
-      loan_no: uuidv4().substring(0,13),
-      // createdBy: "john_doe5",
-      branchName: state?.branchName,
-      status: 0
-  },
-  loanee: {
-      ecjobid :location.state?.jobId,
-      nidphoto: nidPhoto,
-      name: state?.name,
-      nameEn: state?.nameEn,
-      bloodGroup: state?.bloodGroup,
-      dateOfBirth: state?.dateOfBirth,
-      father: state?.father,
-      mother: state?.mother,
-      spouse: state?.spouse,
-      mobile: state?.mobile,
-      designation: state?.designation,
-      email: state?.email,
-      nationalId: state?.nationalId,
-      occupation: state?.occupation,
-      permanentAddress: permanentAddress,
-      presentAddress: presentAddress
-  },
-  guarantors: []
+  loanapplication: localStorage.getItem('type') === "1" ? individualLonee : companyLonee,
+  companyProfile: localStorage?.getItem('type') === "1" ? null : {
+    ...JSON.parse(localStorage.getItem('company'))?.companyProfile
+},
+  loanee: broweerType === 1 ? ecdata : null,
+  guarantors: broweerType === 3 ? [ecdata] :  [],
+  coBorrowers: broweerType === 2 ? [ecdata] :  []
+
 }
 setBlock(true)
-axios.post('/addloan', sendata).then(res => {
+axios.put('/updateloanee', sendata).then(res => {
   if(res.data.result.error === false){
     setBlock(false)
     toast.success("Application Submit Succsfully")

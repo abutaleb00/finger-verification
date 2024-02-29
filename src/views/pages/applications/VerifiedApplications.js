@@ -1,50 +1,28 @@
-// ** Reactstrap Imports
-// ** React Imports
 import { useState, useEffect } from "react";
 import {
-  Row,
-  Col,
   Badge,
   Card,
   CardHeader,
   CardTitle,
   CardBody,
-  Button,
-  FormGroup,
-  Input,
   UncontrolledTooltip
 } from "reactstrap";
-import Flatpickr from "react-flatpickr"
-import Select from 'react-select'
 import axios from 'axios'
-import { Tooltip as ReactTooltip } from "react-tooltip";
-import { Link, json } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "flatpickr/dist/themes/airbnb.css";
 // ** Third Party Components
 import "cleave.js/dist/addons/cleave-phone.us";
 import MUIDataTable from "mui-datatables"
-import moment from "moment"
 import GrantorList from "../GrantorList";
 import DocumentList from "./DocumentList";
-import { Search, Trash, Eye, Edit, UserMinus, UserPlus, Check, X, CheckCircle, BarChart } from 'react-feather'
+import CoBorrowerList from "./co-borrower/CoBorrowerList";
+import { Eye, BarChart, X } from 'react-feather'
 import UILoader from '@components/ui-loader'
 import toast from 'react-hot-toast'
 import Swal from "sweetalert2"
 // ** Styles
 import "@styles/react/libs/react-select/_react-select.scss"
 
-
-const styles = {
-    control: base => ({
-      ...base,
-      fontFamily: "Times New Roman"
-    }),
-    menu: base => ({
-      ...base,
-      fontSize: 11,
-      lineHeight: 1
-    })
-  }
 const VerifiedApplications = () => {
   const [data, setData] = useState([])
     const [first, setFirst] = useState(0)
@@ -338,6 +316,7 @@ const VerifiedApplications = () => {
           customBodyRenderLite: (dataIndex) => {
             const alldata = data[dataIndex]
             const guarantors = data[dataIndex]?.guarantors
+            const coBorrower = data[dataIndex]?.coBorrowers
             const id = data[dataIndex]?.loan_no
             const uniquereference = data[dataIndex]?.uniquereference
             return (
@@ -358,6 +337,9 @@ const VerifiedApplications = () => {
                       placement="top"
                       target="details"
                     > View</UncontrolledTooltip>
+                  </div>
+                  <div style={{padding:"2px"}} className="btn btn-sm" >
+                  <CoBorrowerList coBorrower={coBorrower} />
                   </div>
                   <div style={{padding:"2px"}} className="btn btn-sm" >
                   <GrantorList guarantors={guarantors} />

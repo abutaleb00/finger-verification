@@ -2,13 +2,21 @@
 import {  CheckCircle, PlusCircle, Users, UserX,BarChart,Database, Share2, Globe, Clock, PieChart, Settings, Circle } from 'react-feather'
 
 export default [
+  // {
+  //   id: "nidverify",
+  //   title: "Finger Verification",
+  //   icon: <Globe size={20} />,
+  //   action: 'read',
+  //   resource: 'FingerPrintVerify',
+  //   navLink: "/nid-verify",
+  // },
   {
     id: "nidverify",
-    title: "Finger Verification",
+    title: "Application Initiate",
     icon: <Globe size={20} />,
     action: 'read',
     resource: 'FingerPrintVerify',
-    navLink: "/nid-verify",
+    navLink: "/application-initiate",
   },
   {
     id: "applications",
@@ -17,6 +25,22 @@ export default [
     action: 'read',
     resource: 'ViewApplicant',
     children: [
+      {
+        id: 'IndividualApplicationList',
+        title: 'Initiate Individual Application',
+        icon: <Circle />,
+        navLink: '/initiate-individual-application',
+        action: 'read',
+        resource: 'NewApplications',
+      },
+      {
+        id: 'CompanyApplicationList',
+        title: 'Initiate Company Application',
+        icon: <Circle />,
+        navLink: '/initiate-company-application',
+        action: 'read',
+        resource: 'NewApplications',
+      },
       {
         id: 'NewApplications',
         title: 'New Applications',

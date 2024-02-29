@@ -18,6 +18,9 @@ import "flatpickr/dist/themes/airbnb.css";
 import "cleave.js/dist/addons/cleave-phone.us";
 import Flatpickr from "react-flatpickr";
 import Select from "react-select"; 
+import CompanyProfile from "../../CompanyProfile";
+import CompanyProfileProcess from "../../CompanyProfileProcess";
+import GuarantorsProfile from "../../GuarantorsProfile";
 import finger from "@src/assets/images/pages/fingerprint.svg";
 import Swal from 'sweetalert2'
 import moment from "moment";
@@ -27,14 +30,14 @@ import toast from 'react-hot-toast'
   
 // ** Styles
 import "@styles/react/libs/react-select/_react-select.scss";
-export default class GuarantorNidVerify extends Component {
+export default class CoBorrowerNidVerify extends Component {
     constructor(props) {
         super(props);
         window.fingerComponent = this;
         //let nidPics = this.props.history.location.state.nidPics;
         this.state = {
         ...props?.location?.state,
-          accountType: "3",
+          accountType: "2",
           dob: "1990-07-10",
           nid: "",
           colorButton: "red",
@@ -88,7 +91,7 @@ export default class GuarantorNidVerify extends Component {
         didOpen: () => {
           Swal.showLoading()
           timerInterval = setInterval(() => {
-            b.textContent = Swal.getTimerLeft()
+            // b.textContent = Swal.getTimerLeft()
             // document.getElementById("button2").click();
           }, 100)
         },
@@ -111,7 +114,7 @@ export default class GuarantorNidVerify extends Component {
         didOpen: () => {
           Swal.showLoading()
           timerInterval = setInterval(() => {
-            b.textContent = Swal.getTimerLeft()
+            // b.textContent = Swal.getTimerLeft()
             // document.getElementById("button2").click();
           }, 100)
         },
@@ -146,8 +149,6 @@ export default class GuarantorNidVerify extends Component {
           })
     }
   render() {
-    console.log("color", this.state)
-    console.log("props", this.props)
     const accountOption = [
       { value: "0", label: "Select Type" },
       { value: "1", label: "Borrower" },
@@ -174,7 +175,7 @@ export default class GuarantorNidVerify extends Component {
               </Label>
               <Select
                 isClearable={false}
-                defaultValue={accountOption[0]}
+                defaultValue={accountOption[1]}
                 name="accountOption"
                 options={accountOption}
                 className="react-select"
@@ -182,7 +183,6 @@ export default class GuarantorNidVerify extends Component {
                 value={accountOption.filter((p) => p.value === this.state?.accountType)}
                 onChange={(e) => {
                   this.setState({accountType: e.value})
-                  // localStorage.setItem("accountType", e.value)
                 }}
               />
             </Col>
@@ -368,7 +368,7 @@ export default class GuarantorNidVerify extends Component {
                     <Link
                     id='button2'
                     style={{display:"none"}}
-                      to={`/guarantor-ec-data`}
+                      to={`/coborrower-ec-data`}
                       state={{ guarantor: this.state.ecresult, loanee: this.state.loanee, jobId: this.state.jobId }}
                   >
                       redirect

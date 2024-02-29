@@ -25,9 +25,10 @@ import "cleave.js/dist/addons/cleave-phone.us";
 import MUIDataTable from "mui-datatables"
 import moment from "moment"
 import GrantorList from "../GrantorList";
+import CoBorrowerList from "./co-borrower/CoBorrowerList";
 import DocumentList from "./DocumentList";
 import AddDocument from "./AddDocument";
-import { Search, Eye, Edit, UserPlus, X, CheckCircle } from 'react-feather'
+import { Search, Eye, Edit, UserPlus, X, CheckCircle, UserCheck } from 'react-feather'
 import UILoader from '@components/ui-loader'
 import toast from 'react-hot-toast'
 // ** Styles
@@ -59,7 +60,7 @@ const NewApplications = () => {
     const searchEcData = () => {
       const send = {
         loanapplication: {
-            status: 0
+            status: 4
         }
     }
         setBlock(true)
@@ -139,6 +140,21 @@ const NewApplications = () => {
             return (
               <div style={{ width: "auto" }}>
                 {value !== null && value !== undefined ? value : "N/A"}
+              </div>
+            );
+          },
+        },
+      },
+      {
+        name: "isCompany",
+        label: "Borrower Type",
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRender: (value) => {
+            return (
+              <div style={{ width: "auto" }}>
+                {value === false ? "Individual" : "Company"}
               </div>
             );
           },
@@ -325,20 +341,44 @@ const NewApplications = () => {
           sort: false,
           customBodyRenderLite: (dataIndex) => {
             const alldata = data[dataIndex]
+            const isCompany = data[dataIndex]?.isCompany
+            const loanee = data[dataIndex]?.loanee
             const guarantors = data[dataIndex]?.guarantors
+            const coBorrower = data[dataIndex]?.coBorrowers
             const id = data[dataIndex]?.loan_no
             const uniquereference = data[dataIndex]?.uniquereference
             console.log("alldata", alldata)
             return (
                 <div style={{ width: "auto"}}>
                 <div style={{ display: "inline-flex" }}>
+                {loanee === null &&
+                  <div style={{padding:"2px"}} className="btn btn-sm" >
+                  <Badge 
+                  onClick={() => {
+                    if(isCompany === true ){
+                      localStorage.setItem("company", JSON.stringify(alldata))
+                      localStorage.setItem("type", 2)
+                    }else{
+                    localStorage.setItem("individual", JSON.stringify(alldata))
+                    localStorage.setItem("type", 1)
+                    }
+                    navigate('/nid-verify')}} id="addBorrower" color={'secondary'} className="text-capitalize" style={{cursor:"pointer"}} >
+                   <span ><UserPlus /></span>
+                  </Badge>
+                  <UncontrolledTooltip
+                      placement="top"
+                      target="addBorrower"
+                      trigger="hover"
+                    > Add Borrower</UncontrolledTooltip>
+                  </div>
+                    }
                   <div style={{padding:"2px"}} className="btn btn-sm" >
                   <Link
                     id='button2'
                       to={`/view-application`}
                       state={{ userinfo: alldata }}
                   >
-                    <Badge id="details" color={'secondary'} className="text-capitalize" style={{cursor:"pointer"}} >
+                    <Badge id="details" color={'info'} className="text-capitalize" style={{cursor:"pointer"}} >
                     <span ><Eye /></span>
                     </Badge>
                   </Link>
@@ -364,14 +404,10 @@ const NewApplications = () => {
                     > Edit</UncontrolledTooltip>
                   </div>
                   <div style={{padding:"2px"}} className="btn btn-sm" >
-                  {/* <Link
-                      to={`/guarantor-nid-verify`}
-                      state={{ loanee: alldata }}
-                  > */}
                   <Badge 
                   onClick={() => {
                     localStorage.setItem("lonee", JSON.stringify(alldata))
-                    navigate('/guarantor-nid-verify')}} id="adduser" color={'warning'} className="text-capitalize" style={{cursor:"pointer"}} >
+                    navigate('/guarantor-nid-verify')}} id="adduser" color={'primary'} className="text-capitalize" style={{cursor:"pointer"}} >
                    <span ><UserPlus /></span>
                   </Badge>
                   <UncontrolledTooltip
@@ -379,10 +415,30 @@ const NewApplications = () => {
                       target="adduser"
                       trigger="hover"
                     > Add Guarantor</UncontrolledTooltip>
-                    {/* </Link> */}
                   </div>
                   <div style={{padding:"2px"}} className="btn btn-sm" >
                   <GrantorList guarantors={guarantors} />
+                  </div>
+                  <div style={{padding:"2px"}} className="btn btn-sm" >
+                  {/* <Link
+                      to={`/guarantor-nid-verify`}
+                      state={{ loanee: alldata }}
+                  > */}
+                  <Badge 
+                  onClick={() => {
+                    localStorage.setItem("lonee", JSON.stringify(alldata))
+                    navigate('/coborrower-nid-verify')}} id="addCoBorrower" color={'warning'} className="text-capitalize" style={{cursor:"pointer"}} >
+                   <span ><UserCheck /></span>
+                  </Badge>
+                  <UncontrolledTooltip
+                      placement="top"
+                      target="addCoBorrower"
+                      trigger="hover"
+                    > Add Co-Borrower</UncontrolledTooltip>
+                    {/* </Link> */}
+                  </div>
+                  <div style={{padding:"2px"}} className="btn btn-sm" >
+                  <CoBorrowerList coBorrower={coBorrower} />
                   </div>
                   <div style={{padding:"2px"}} className="btn btn-sm" >
                   <AddDocument uniquereference={uniquereference} />

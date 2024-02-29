@@ -11,22 +11,42 @@ import {
     Col,
   } from "reactstrap";
   import React, { useEffect } from 'react';
-  import Select from "react-select"; // eslint-disable-line
   import { useState } from "react";
   import { useLocation, Link, useNavigate } from "react-router-dom";
   import toast from 'react-hot-toast'
   import axios from 'axios'
   import UILoader from '@components/ui-loader'
+  import Select, { components } from "react-select";
+  import SelectRequired from "../../components/SelectRequired";
   import { v4 as uuidv4 } from 'uuid'
   import { nidfield, presentAddressData, parmanentAddressData } from "../../components/localjs/data";
   import TextBox from "../../components/TextBox"
-  
+  const styles = {
+    control: base => ({
+      ...base,
+      fontFamily: "Times New Roman"
+    }),
+    menu: base => ({
+      ...base,
+      fontSize: 11,
+      lineHeight: 1
+    })
+  }
+  const Selects = props => (
+    <SelectRequired
+      {...props}
+      SelectComponent={Select}
+      options={props.options || options}
+    />
+  )
   const EditApplicant = (props) => {
     const location = useLocation()
     const navigate = useNavigate()
     const [application, setApplication] = useState(location.state?.userinfo)
     const [state, setState] = useState(location.state?.userinfo?.loanee)
     const [block, setBlock] = useState(false)
+    const [branchOption, setBranchOption] = useState([])
+    const [branchName, setBranchName] = useState(location.state?.userinfo?.branchName)
     const [permanentAddress, setPermanentAddress] = useState(location.state?.userinfo?.loanee?.permanentAddress)
     const [presentAddress, setPresentAddress] = useState(location.state?.userinfo?.loanee?.presentAddress)
     console.log("location", location.state)
@@ -46,7 +66,7 @@ import {
     loanapplication: {
         loan_no: application?.loan_no,
         createdBy: application?.createdBy,
-        branchName: application?.branchName,
+        branchName: branchName,
         status: application?.status,
         id: application?.id
     },
@@ -68,7 +88,8 @@ import {
         permanentAddress: permanentAddress,
         presentAddress: presentAddress
     },
-    guarantors: application?.guarantors
+    guarantors: application?.guarantors,
+    coBorrowers: [...application?.coBorrowers]
   }
   setBlock(true)
   axios.post('/addloan', sendata).then(res => {
@@ -87,6 +108,33 @@ import {
    })
   console.log("send data", sendata)
     }
+    useEffect(()=>{
+      getBranchList()
+    },[])
+    const getBranchList = () => {
+      setBlock(true)
+       axios.post('/getbranches?first=0&limit=200').then(res => {
+        if(res.data.result.error === false){
+          setBlock(false)
+          const branchOption = res.data?.data?.content?.map(
+            (item) => {
+              return { value: item.name, label: item.name }
+            }
+          )
+          setBranchOption([{ value: null, label: 'Select Branch'},...branchOption])
+          console.log("res.data.data", res.data.data)
+          // setNidPhoto(res.data.data?.photolink)
+          // setData(res.data.data)
+        } else  if(res.data.result.error === false){
+          setBlock(false)
+          toast.error(res.data.result.errorMsg)
+        }
+       })
+       .catch((err) =>{
+        setBlock(false)
+          toast.error(err.data.result.errorMsg)
+       })
+}
     return (
       <UILoader blocking={block}>
       <Card>
@@ -171,6 +219,21 @@ import {
               value={state?.mother}
               disabled
             />
+          </Col>
+          <Col className="mb-1" xl="4" md="6" sm="12">
+            <Label className="form-label" for="basicInput">
+              Branch Name <span style={{color:"red"}}>*</span>
+            </Label>
+            <Selects
+              className='react-select'
+              styles={styles}
+              options={branchOption}
+              placeholder="Select Branch"
+              onChange={(e) => setBranchName(e.value)}
+              maxMenuHeight={140}
+              isSearchable
+              required 
+              />
           </Col>
         </Col>
         <Col className="mb-1" xl="3" md="3" sm="12" style={{textAlign:"center"}}>

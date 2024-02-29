@@ -12,7 +12,7 @@ import {
     CardTitle,
     CardBody,
   } from "reactstrap";
-  import { Link } from 'react-router-dom'
+  import { Link, useLocation } from 'react-router-dom'
 import "flatpickr/dist/themes/airbnb.css";
   // ** Third Party Components
 import "cleave.js/dist/addons/cleave-phone.us";
@@ -37,8 +37,8 @@ export default class NidVerify2 extends Component {
         window.fingerComponent = this;
         //let nidPics = this.props.history.location.state.nidPics;
         this.state = {
-        //   ...props.location.state,
-          accountType: localStorage.getItem("accountType") !== undefined ? localStorage.getItem("accountType") : "0",
+        ...props.location,
+          accountType: 1,
           dob: "1990-07-10",
           nid: "",
           colorButton: "red",
@@ -116,7 +116,7 @@ export default class NidVerify2 extends Component {
         didOpen: () => {
           Swal.showLoading()
           timerInterval = setInterval(() => {
-            b.textContent = Swal.getTimerLeft()
+            // b.textContent = Swal.getTimerLeft()
             // document.getElementById("button2").click();
           }, 100)
         },
@@ -139,7 +139,7 @@ export default class NidVerify2 extends Component {
         didOpen: () => {
           Swal.showLoading()
           timerInterval = setInterval(() => {
-            b.textContent = Swal.getTimerLeft()
+            // b.textContent = Swal.getTimerLeft()
             // document.getElementById("button2").click();
           }, 100)
         },
@@ -173,12 +173,13 @@ export default class NidVerify2 extends Component {
             text: 'Please input NID & Date of Birth',
           })
     }
-  render() {
-    console.log("color", this.state)
+    render() {
+    console.log("color", this.props)
     const accountOption = [
-        { value: "0", label: "Select Borrower" },
-        { value: "1", label: "Individual" },
-        { value: "2", label: "Corporate" },
+        { value: "0", label: "Select Type" },
+        { value: "1", label: "Borrower" },
+        { value: "2", label: "Co-borrower" },
+        { value: "3", label: "Guarantor" },
       ];
     return (
       <UILoader blocking={this.state.block}>
@@ -187,7 +188,6 @@ export default class NidVerify2 extends Component {
           <CardTitle tag="h4">Fingerprint Verification</CardTitle>
         </CardHeader>
         <CardBody className="my-2 py-50">
-          {this.state.accountType === "3" || this.state.accountType === "4" || this.state.accountType === "5" ? "" :
           <Row style={{marginBottom:"10px"}}>
           <Col
             sm={{
@@ -197,7 +197,7 @@ export default class NidVerify2 extends Component {
             }}
               >
               <Label className="form-label" for="basicInput">
-              Borrower Type
+              Finger Verification
               </Label>
               <Select
                 isClearable={false}
@@ -208,15 +208,11 @@ export default class NidVerify2 extends Component {
                 classNamePrefix="select"
                 onChange={(e) => {
                   this.setState({accountType: e.value})
-                  localStorage.setItem("accountType", e.value)
+                  // localStorage.setItem("accountType", e.value)
                 }}
               />
             </Col>
           </Row>
-          }
-           {this.state.accountType === "3" || this.state.accountType ==="4" || this.state.accountType ==="5" ? <CompanyProfileProcess /> : ""}
-           {this.state.accountType === "5" &&  <GuarantorsProfile />}
-          {this.state.accountType === "1" || this.state.accountType === "4" ?
           <Form>
             <hr />
             <Row>
@@ -293,104 +289,104 @@ export default class NidVerify2 extends Component {
                     // style={{display:"none"}}
                      id='button1'
                      color='primary'
-                     onClick={() => {
-                      let dataToSend = {
-                        dateOfBirth: this.state.dob,
-                        fingerEnums: [
-                          "RIGHT_THUMB",
-                          "RIGHT_INDEX",
-                          "LEFT_THUMB",
-                          "LEFT_INDEX",
-                        ],
-                        listoffingers: this.state.listoffingers,
-                        mobileNumber:
-                          this.state.mobileNumber === undefined ||
-                          this.state.mobileNumber === null
-                            ? ""
-                            : this.state.mobileNumber,
-                      };
-                      dataToSend[
-                        this.state.nid.length === 17
-                          ? "nid17Digit"
-                          : "nid10Digit"
-                      ] = this.state.nid;
+                    //  onClick={() => {
+                    //   let dataToSend = {
+                    //     dateOfBirth: this.state.dob,
+                    //     fingerEnums: [
+                    //       "RIGHT_THUMB",
+                    //       "RIGHT_INDEX",
+                    //       "LEFT_THUMB",
+                    //       "LEFT_INDEX",
+                    //     ],
+                    //     listoffingers: this.state.listoffingers,
+                    //     mobileNumber:
+                    //       this.state.mobileNumber === undefined ||
+                    //       this.state.mobileNumber === null
+                    //         ? ""
+                    //         : this.state.mobileNumber,
+                    //   };
+                    //   dataToSend[
+                    //     this.state.nid.length === 17
+                    //       ? "nid17Digit"
+                    //       : "nid10Digit"
+                    //   ] = this.state.nid;
 
-                      //console.log("datato send ", ecData.data.success.data);
-                      this.setState({block: true}, ()=>{
-                        axios
-                        .post("/makethefulleccall", dataToSend)
-                        .then((res) => {
-                          if (res.data.result.error === false) {
-                            this.setState(
-                              {
-                                block: true,
-                                loaderText: "Processing.....",
-                              },
-                              () => {
-                                setTimeout(() => {
-                                  let dataSend = {
-                                    ...res.data.data,
-                                  };
-                                  axios
-                                    .post("/callECVerify", dataSend)
-                                    .then((res) => {
-                                      if (res.data.result.error === false) {
-                                        this.setState(
-                                          {block: false, ecresult: res.data?.data?.verificationResponse?.voterInfo, loaderText: res.data.data.result, jobId: res.data?.data?.jobId },
-                                          () => {
-                                            if (
-                                              this.state.loaderText ===
-                                              "MATCH FOUND"
-                                            ) {
-                                              document.getElementById("button2").click()
-                                            } else if (
-                                              this.state.loaderText ===
-                                              "NO MATCH FOUND"
-                                            ) {
-                                              toast.error('NO MATCH FOUND')
-                                              setTimeout(() => {
-                                                this.loaderHide();
-                                              }, 1000);
-                                            }
-                                          }
-                                        );
-                                      } else {
-                                        this.setState(
-                                          {
-                                            loaderText: res.data.result.errMsg,
-                                            block: false,
-                                          },
-                                          () => {
-                                            toast.error(res.data.result.errMsg)
-                                          }
-                                        );
-                                      }
-                                    });
-                                }, 2000);
-                              }
-                            );
-                          } else if (res.data.result.error === true){
-                            this.setState({block: false}, ()=>{
-                              toast.error(res.data.result.errorMsg)
-                            })
-                          }
-                        });                     
-                      })
+                    //   //console.log("datato send ", ecData.data.success.data);
+                    //   this.setState({block: true}, ()=>{
+                    //     axios
+                    //     .post("/makethefulleccall", dataToSend)
+                    //     .then((res) => {
+                    //       if (res.data.result.error === false) {
+                    //         this.setState(
+                    //           {
+                    //             block: true,
+                    //             loaderText: "Processing.....",
+                    //           },
+                    //           () => {
+                    //             setTimeout(() => {
+                    //               let dataSend = {
+                    //                 ...res.data.data,
+                    //               };
+                    //               axios
+                    //                 .post("/callECVerify", dataSend)
+                    //                 .then((res) => {
+                    //                   if (res.data.result.error === false) {
+                    //                     this.setState(
+                    //                       {block: false, ecresult: res.data?.data?.verificationResponse?.voterInfo, loaderText: res.data.data.result, jobId: res.data?.data?.jobId },
+                    //                       () => {
+                    //                         if (
+                    //                           this.state.loaderText ===
+                    //                           "MATCH FOUND"
+                    //                         ) {
+                    //                           document.getElementById("button2").click()
+                    //                         } else if (
+                    //                           this.state.loaderText ===
+                    //                           "NO MATCH FOUND"
+                    //                         ) {
+                    //                           toast.error('NO MATCH FOUND')
+                    //                           setTimeout(() => {
+                    //                             this.loaderHide();
+                    //                           }, 1000);
+                    //                         }
+                    //                       }
+                    //                     );
+                    //                   } else {
+                    //                     this.setState(
+                    //                       {
+                    //                         loaderText: res.data.result.errMsg,
+                    //                         block: false,
+                    //                       },
+                    //                       () => {
+                    //                         toast.error(res.data.result.errMsg)
+                    //                       }
+                    //                     );
+                    //                   }
+                    //                 });
+                    //             }, 2000);
+                    //           }
+                    //         );
+                    //       } else if (res.data.result.error === true){
+                    //         this.setState({block: false}, ()=>{
+                    //           toast.error(res.data.result.errorMsg)
+                    //         })
+                    //       }
+                    //     });                     
+                    //   })
 
-                    }}
-                    //  onClick={(e) => {
-                    //   this.callECServer()
-                      //   const ecresult = data.filter((obj) => obj.nationalId === this.state.nid);
-                      //  if(ecresult?.length > 0){
-                      //   this.setState({ecresult: ecresult}, ()=> {
-                      //     // document.getElementById("button2").click();
-                      //     this.dataAlert()
-                      //   })
-                      //  } else {
-                      //   this.dataAlert()
-                      //   // this.successAlert()
-                      //  }
                     // }}
+                     onClick={(e) => {
+                      this.callECServer()
+                        const ecresult = data.filter((obj) => obj.nationalId === this.state.nid);
+                       if(ecresult?.length > 0){
+                        this.setState({ecresult: ecresult}, ()=> {
+                          // document.getElementById("button2").click();
+                          this.dataAlert()
+                        })
+                       } else {
+                        this.dataAlert()
+                        // this.successAlert()
+                       }
+                    }}
                     disabled={this.state.nid === ''}
                         >
                         Submit
@@ -399,16 +395,13 @@ export default class NidVerify2 extends Component {
                     id='button2'
                     style={{display:"none"}}
                       to={`/ec-data`}
-                      state={{ userinfo: this.state.ecresult, jobId: this.state.jobId }}
+                      state={{ userinfo: this.state.ecresult, jobId: this.state.jobId, broweerType: Number(this.state.accountType) }}
                   >
                       redirect
                   </Link>
               </Col>
             </Row>
           </Form>
-          : ""
-          }
-          {this.state.accountType === "2" &&  <CompanyProfile />}
         </CardBody>
       </Card>
       </UILoader>

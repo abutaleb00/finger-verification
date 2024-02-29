@@ -25,6 +25,7 @@ import "cleave.js/dist/addons/cleave-phone.us";
 import MUIDataTable from "mui-datatables"
 import moment from "moment"
 import GrantorList from "../GrantorList";
+import CoBorrowerList from "./co-borrower/CoBorrowerList";
 import DocumentList from "./DocumentList";
 import { Search, Trash, Eye, Edit, UserMinus, UserPlus, Check, X, CheckCircle } from 'react-feather'
 import UILoader from '@components/ui-loader'
@@ -376,6 +377,7 @@ const PendingApplications = () => {
           customBodyRenderLite: (dataIndex) => {
             const alldata = data[dataIndex]
             const guarantors = data[dataIndex]?.guarantors
+            const coBorrower = data[dataIndex]?.coBorrowers
             const id = data[dataIndex]?.loan_no
             const uniquereference = data[dataIndex]?.uniquereference
             return (
@@ -396,6 +398,9 @@ const PendingApplications = () => {
                       placement="top"
                       target="details"
                     > View</UncontrolledTooltip>
+                  </div>
+                  <div style={{padding:"2px"}} className="btn btn-sm" >
+                  <CoBorrowerList coBorrower={coBorrower} />
                   </div>
                   <div style={{padding:"2px"}} className="btn btn-sm" >
                   <GrantorList guarantors={guarantors} />

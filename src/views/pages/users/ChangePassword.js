@@ -51,6 +51,9 @@ import {
           if(res.data.result.error === false){
             console.log("res.data", res.data)
             localStorage.removeItem('userData')
+            localStorage.removeItem('individual')
+          localStorage.removeItem('company')
+          localStorage.removeItem('type')
           localStorage.removeItem(config.storageTokenKeyName)
           localStorage.removeItem(config.storageRefreshTokenKeyName)
             navigate('/login')

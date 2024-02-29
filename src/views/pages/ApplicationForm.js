@@ -379,7 +379,7 @@ class ApplicationForm extends Component {
           <View style={styles.leftColumn}>
             <Image style={styles.image1} src="/logo1.png" />
           </View>
-          <View style={styles.rightColumn}>
+          {/* <View style={styles.rightColumn}>
             <View style={styles.table}>
               <View style={styles.tableRow}>
                 <View style={styles.tableCol1}>
@@ -490,7 +490,7 @@ class ApplicationForm extends Component {
                 </View>
               </View>
             </View>
-          </View>
+          </View> */}
         </View>
         <View style={styles.cusView}>
           <Text style={styles.textT}>LOAN APPLICATION FORM (INDIVIDUAL)</Text>
