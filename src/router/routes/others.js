@@ -32,6 +32,7 @@ const EditEcUser = lazy(() => import("../../views/pages/ec/EditEcUser"));
 const ChangePassword = lazy(() => import("../../views/pages/users/ChangePassword"));
 const CoBorrowerNidVerify = lazy(() => import("../../views/pages/applications/co-borrower/CoBorrowerNidVerify"));
 const CoBorrowerEcData = lazy(() => import("../../views/pages/applications/co-borrower/CoBorrowerEcData"));
+const ViewCoBorrower = lazy(() => import("../../views/pages/applications/co-borrower/ViewCoBorrower"));
 const OthersRoutes = [
     {
         path: "/application-initiate",
@@ -92,6 +93,14 @@ const OthersRoutes = [
       {
         path: "/coborrower-nid-verify",
         element: <CoBorrowerNidVerify />,
+        meta: {
+          action: 'read',
+          resource: 'Grantor'
+        }
+      },
+      {
+        path: "/coborrower-view",
+        element: <ViewCoBorrower />,
         meta: {
           action: 'read',
           resource: 'Grantor'

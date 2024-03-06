@@ -702,13 +702,13 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}>In Fig</Text>
             </View>
             <View style={[styles.tableColCus, { width: "18%" }]}>
-              <Text style={styles.tableCellCus}>5,00,000</Text>
+              <Text style={styles.tableCellCus}></Text>
             </View>
             <View style={[styles.tableColCus, { width: "10%" }]}>
               <Text style={styles.tableCellCus}>In Word</Text>
             </View>
             <View style={[styles.tableColCus, { width: "35%" }]}>
-              <Text style={styles.tableCellCus}>Five Lac Taka</Text>
+              <Text style={styles.tableCellCus}></Text>
             </View>
           </View>
         </View>

@@ -82,8 +82,8 @@ useEffect(() =>{
               <td>
               <Link
                 id='button2'
-                // to={`/grantor-view`}
-                // state={{ userinfo: v }}
+                to={`/coborrower-view`}
+                state={{ userinfo: v }}
                 >
                   <Badge id="edit" color={'info'} className="text-capitalize" style={{cursor:"pointer"}} >
                     <span >View</span>

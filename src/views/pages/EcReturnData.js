@@ -64,7 +64,7 @@ const EcReturnData = (props) => {
 e.preventDefault()
 const ecdata = {
   ecjobid :location.state?.jobId,
-  nidphoto:state?.photo,
+  nidphoto: state?.photo,
   name: state?.name,
   nameEn: state?.nameEn,
   bloodGroup: state?.bloodGroup,

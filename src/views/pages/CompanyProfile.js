@@ -119,7 +119,7 @@ import {
     const companyApplication = (e) => {
       const sentdata = {
           companyProfile: {
-              ...state
+              ...state, companyRegDate: moment(state?.companyRegDate).format("DD/MM/YYYY")
           },
           loanee: null,
           guarantors: [],
@@ -277,15 +277,25 @@ import {
               Registration Date
               </Label>
               <Flatpickr
+                className="form-control"
                 value={state?.companyRegDate}
+                onChange={(date) => {
+                  setState({...state, companyRegDate: date[0]})}}
+                id="default-picker"
+              />
+              {/* <Flatpickr
+                // value={state?.companyRegDate}
                 id='range-picker'
                 className='form-control invoice-edit-input date-picker'
-                onChange={(date) => setState({...state, companyRegDate: moment(date[0]).format("DD/MM/YYYY")})}
+                onChange={(date) => {
+                  console.log("date", date[0])
+                  setState({...state, companyRegDate: date[0]})}}
+                  options={{ dateFormat: 'Y-m-d' }}
                 // options={{
                 // mode: 'range',
                 // defaultDate: ['2020-02-01', '2020-02-15']
                 // }}
-            />
+            /> */}
             </Col>
             <Col className="mb-1" xl="6" md="6" sm="12">
               <Label className="form-label required-field" for="basicInput">
