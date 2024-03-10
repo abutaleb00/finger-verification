@@ -92,7 +92,8 @@ import {
     const companyExitOrApplication = (e) => {
       const sentdata = {
           companyProfile: {
-              ...state
+              ...state,
+              companyRegDate: moment(state?.companyRegDate).format("DD/MM/YYYY")
           },
           loanee: null,
           guarantors: [],
@@ -119,7 +120,7 @@ import {
     const companyApplication = (e) => {
       const sentdata = {
           companyProfile: {
-              ...state
+              ...state, companyRegDate: moment(state?.companyRegDate).format("DD/MM/YYYY")
           },
           loanee: null,
           guarantors: [],
@@ -132,7 +133,7 @@ import {
             console.log("res.data", res.data)
              localStorage.setItem("company", JSON.stringify(res.data?.data))
              localStorage.setItem("type", 2)
-             navigate('/nid-verify')
+             navigate('/nid-verify', {state:{userData: res.data?.data, type: 2}})
               setBlock(false)
               toast.success('Successfully Created!')
               setUserinfo(res.data)
@@ -219,7 +220,7 @@ import {
           <Row style={{marginBottom:"20px", marginTop:"30px", paddingTop:"25px", borderTop:"1px dashed gray"}}>
             <Col className="mb-1" xl="12" md="12" sm="12">
               <Label className="form-label" htmlFor="companyInfo">
-              Company Info
+              Enterprise Info
               </Label>
               <Input
                 type="text"
@@ -277,15 +278,25 @@ import {
               Registration Date
               </Label>
               <Flatpickr
+                className="form-control"
                 value={state?.companyRegDate}
+                onChange={(date) => {
+                  setState({...state, companyRegDate: date[0]})}}
+                id="default-picker"
+              />
+              {/* <Flatpickr
+                // value={state?.companyRegDate}
                 id='range-picker'
                 className='form-control invoice-edit-input date-picker'
-                onChange={(date) => setState({...state, companyRegDate: moment(date[0]).format("DD/MM/YYYY")})}
+                onChange={(date) => {
+                  console.log("date", date[0])
+                  setState({...state, companyRegDate: date[0]})}}
+                  options={{ dateFormat: 'Y-m-d' }}
                 // options={{
                 // mode: 'range',
                 // defaultDate: ['2020-02-01', '2020-02-15']
                 // }}
-            />
+            /> */}
             </Col>
             <Col className="mb-1" xl="6" md="6" sm="12">
               <Label className="form-label required-field" for="basicInput">
@@ -362,4 +373,4 @@ import {
       </UILoader>
     );
   };
-  export default CompanyProfile;  
+  export default CompanyProfile;

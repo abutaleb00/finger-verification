@@ -268,9 +268,9 @@ const CompanyApplicationList = () => {
                 <div style={{padding:"2px"}} className="btn btn-sm" >
                   <Badge 
                   onClick={() => {
-                    localStorage.setItem("company", JSON.stringify(alldata))
-                    localStorage.setItem("type", 2)
-                    navigate('/nid-verify')}} id="addCoBorrower" color={'success'} className="text-capitalize" style={{cursor:"pointer"}} >
+                    // localStorage.setItem("company", JSON.stringify(alldata))
+                    // localStorage.setItem("type", 2)
+                    navigate('/nid-verify', {state:{userData: alldata, type: 2}})}} id="addCoBorrower" color={'success'} className="text-capitalize" style={{cursor:"pointer"}} >
                    <span ><CheckCircle /></span>
                   </Badge>
                   <UncontrolledTooltip
@@ -301,7 +301,7 @@ const CompanyApplicationList = () => {
     <UILoader blocking={block}>
     <Card>
       <CardHeader className="border-bottom">
-        <CardTitle tag="h4">Company Initiate Application List</CardTitle>
+        <CardTitle tag="h4">Enterprise Initiate Application List</CardTitle>
       </CardHeader>
       <CardBody className="my-1 py-50">
       {/* <Row
@@ -340,7 +340,7 @@ const CompanyApplicationList = () => {
         </Col>
       </Row> */}
       <MUIDataTable
-        title={"Company Initiate Application List"}
+        title={"Enterprise Initiate Application List"}
         data={data}
         columns={columns}
         options={options}

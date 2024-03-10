@@ -160,13 +160,13 @@ export default class NidVerify2 extends Component {
         }
       })
     }
-    receiveFingerData = (data) => {
-      console.log(data);
-    //  if( data?.extraData?.colorButton === "green"){
-    //   this.dataAlert()
-    //  }
-      this.setState({ ...data });
-    };
+    // receiveFingerData = (data) => {
+    //   console.log(data);
+    // //  if( data?.extraData?.colorButton === "green"){
+    // //   this.dataAlert()
+    // //  }
+    //   this.setState({ ...data });
+    // };
     errorAlert = () => {
         Swal.fire({
             icon: 'error',

@@ -5,6 +5,7 @@ window.baseAPI_URL = window.location.href.startsWith(
     : window.location.href.startsWith("https://localhost")
     ? "http://fvs.middleware.southeastbank.com.bd:8080/ecuser-1.0"
     : "http://fvs.middleware.southeastbank.com.bd:8080/ecuser-1.0";
+    // : "https://esign.digitalsignature.com.bd:8989/ecuser-1.0";
 
 window.baseURL = window.location.href.startsWith(
     "https://sebfvs.southeastbank.com.bd"

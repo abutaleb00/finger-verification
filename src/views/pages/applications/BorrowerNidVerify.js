@@ -27,12 +27,12 @@ import { useLocation, Link, useNavigate } from "react-router-dom";
 
 // ** Styles
 import "@styles/react/libs/react-select/_react-select.scss";
-const GuarantorNidVerify = (props) => {
+const BorrowerNidVerify = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [state, setState] = useState({
     // ...location?.state?.userinfo,
-    accountType: 3,
+    accountType: 1,
     dob: "1990-07-10",
     nid: "",
     colorButton: "red",
@@ -87,7 +87,7 @@ console.log("location", location)
                 options={accountOption}
                 className="react-select"
                 classNamePrefix="select"
-                value={accountOption?.filter((v) => v.value === "3")}
+                value={accountOption?.filter((v) => v.value === "1")}
                 onChange={(e) => {
                   setState({ ...state, accountType: e.value });
                   // localStorage.setItem("accountType", e.value)
@@ -213,7 +213,7 @@ console.log("location", location)
                                 jobId: res.data?.data?.jobId,
                               });
                               if (res.data.data.result === "MATCH FOUND") {
-                                navigate("/guarantor-ec-data", {
+                                navigate("/borrower-ec-data", {
                                   state: {
                                     userinfo: res.data?.data?.verificationResponse?.voterInfo,
                                     jobId: res.data?.data?.jobId,
@@ -285,4 +285,4 @@ console.log("location", location)
   );
 };
 
-export default GuarantorNidVerify;
+export default BorrowerNidVerify;

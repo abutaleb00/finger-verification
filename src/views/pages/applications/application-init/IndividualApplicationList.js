@@ -211,7 +211,7 @@ const IndividualApplicationList = () => {
                   onClick={() => {
                     localStorage.setItem("individual", JSON.stringify(alldata))
                     localStorage.setItem("type", 1)
-                    navigate('/nid-verify')}} id="addCoBorrower" color={'success'} className="text-capitalize" style={{cursor:"pointer"}} >
+                    navigate('/nid-verify', {state:{userData: alldata, type: 1}})}} id="addCoBorrower" color={'success'} className="text-capitalize" style={{cursor:"pointer"}} >
                    <span ><CheckCircle /></span>
                   </Badge>
                   <UncontrolledTooltip

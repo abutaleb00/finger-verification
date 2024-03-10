@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     marginVertical: 0,
     marginHorizontal: 0,
     width: "80%",
-    height: 100
+    height: 100,
   },
   image3: {
     marginVertical: 0,
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingHorizontal: 10,
     marginHorizontal: 35,
-    justifyContent:"center"
+    justifyContent: "center",
   },
   cusView2: {
     display: "flex",
@@ -322,16 +322,18 @@ const ApplicationForm = (props) => {
   const [applicantList, setApplicantList] = useState([]);
   const [nomineeList, setNomineeList] = useState([]);
   const [coBorrowerList, setCoBorrowerList] = useState([]);
-  const [branchname, setBranchname] = useState('');
-  const [createdBy, setCreatedBy] = useState('');
-  const [approvedBy, setApprovedBy] = useState('');
-  const [createdByTime, setCreatedByTime] = useState('');
-  const [approvedByTime, setApprovedByTime] = useState('');
+  const [company, setCompany] = useState({});
+  const [branchname, setBranchname] = useState("");
+  const [createdBy, setCreatedBy] = useState("");
+  const [approvedBy, setApprovedBy] = useState("");
+  const [createdByTime, setCreatedByTime] = useState("");
+  const [approvedByTime, setApprovedByTime] = useState("");
 
   useEffect(() => {
     setApplicantList(location.state?.userinfo?.loanee);
     setBranchname(location.state?.userinfo?.branchName);
     setNomineeList(location.state?.userinfo?.guarantors);
+    setCompany(location.state?.userinfo?.companyProfile);
     setCoBorrowerList(location.state?.userinfo?.coBorrowers);
     setCreatedBy(location.state?.userinfo?.createdBy);
     setApprovedBy(location.state?.userinfo?.modifiedBy);
@@ -342,21 +344,28 @@ const ApplicationForm = (props) => {
   const MyDoc = () => (
     <Document>
       <Page size="A4" style={styles.body}>
-      <View style={styles.container}>
-      <View style={[styles.cusViewImage,{textAlign:"center", width:"100%"}]}>
-          <Image style={styles.image3} src="/logo_sebplc.png" />
-      </View>
-      </View>
-      <View style={styles.container}>
-      <View style={[styles.cusView,{textAlign:"center"}]}>
-          <Text style={[styles.text,{fontSize: 18}]}>Fingerprint Verification Report</Text>
+        <View style={styles.container}>
+          <View
+            style={[
+              styles.cusViewImage,
+              { textAlign: "center", width: "100%" },
+            ]}
+          >
+            <Image style={styles.image3} src="/logo_sebplc.png" />
+          </View>
         </View>
-      </View>
+        <View style={styles.container}>
+          <View style={[styles.cusView, { textAlign: "center" }]}>
+            <Text style={[styles.text, { fontSize: 18 }]}>
+              Fingerprint Verification Report
+            </Text>
+          </View>
+        </View>
         {/* <View style={styles.container}>
           <View style={styles.leftColumn}>
             <Image style={styles.image1} src="/verified.png" />
           </View> */}
-          {/* <View style={styles.rightColumn}>
+        {/* <View style={styles.rightColumn}>
             <View style={styles.table}>
               <View style={styles.tableRow}>
                 <View style={styles.tableCol1}>
@@ -491,22 +500,41 @@ const ApplicationForm = (props) => {
               </Text>
               {/* <Text style={[styles.text,{width:"auto", marginLeft:10}]}>Branch</Text> */}
             </View>
+            {location.state?.userinfo?.isCompany === true && (
+              <View
+                style={[
+                  styles.cusView,
+                  { marginTop: "5px", marginBottom: "-10px" },
+                ]}
+              >
+                <Text style={styles.text}>{company?.companyName}</Text>
+              </View>
+            )}
             <View
               style={[
                 styles.cusView,
-                { marginTop: "10px", marginBottom: "-10px" },
+                { marginTop: "0px", marginBottom: "-10px" },
               ]}
             >
               <Text style={styles.text}>Dear Sir,</Text>
             </View>
           </View>
           <View style={styles.rightColumn1}>
-            <Image style={styles.image2} height={50} src={applicantList?.nidphoto !== undefined ? `data:image/jpeg;base64,${applicantList?.nidphoto}` : "/user-image.jpg"} />
+            <Image
+              style={styles.image2}
+              height={50}
+              src={
+                applicantList?.nidphoto !== undefined
+                  ? `data:image/jpeg;base64,${applicantList?.nidphoto}`
+                  : "/user-image.jpg"
+              }
+            />
           </View>
         </View>
         <View style={[styles.cusView, { marginTop: "5px" }]}>
           <Text style={styles.text}>
-          I/We am/are applying for a loan from your Branch. I/We furnish below mentioned information regarding the loan and personal details:
+            I/We am/are applying for a loan from your Branch. I/We furnish below
+            mentioned information regarding the loan and personal details:
           </Text>
         </View>
         <View style={styles.cusView}>
@@ -548,7 +576,7 @@ const ApplicationForm = (props) => {
               </Text>
             </View>
             <View style={[styles.tableColCus, { width: "70%" }]}>
-              <Text style={styles.tableCellCus}>{applicantList?.name} {" "} </Text>
+              <Text style={styles.tableCellCus}>{applicantList?.name} </Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -574,7 +602,7 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}>Father Name</Text>
             </View>
             <View style={[styles.tableColCus, { width: "70%" }]}>
-              <Text style={styles.tableCellCus}>{applicantList?.father} {" "} </Text>
+              <Text style={styles.tableCellCus}>{applicantList?.father} </Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -587,7 +615,7 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}>Mother Name</Text>
             </View>
             <View style={[styles.tableColCus, { width: "70%" }]}>
-              <Text style={styles.tableCellCus}>{applicantList?.mother} {" "}</Text>
+              <Text style={styles.tableCellCus}>{applicantList?.mother} </Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -702,44 +730,65 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}>In Fig</Text>
             </View>
             <View style={[styles.tableColCus, { width: "18%" }]}>
-              <Text style={styles.tableCellCus}>5,00,000</Text>
+              <Text style={styles.tableCellCus}></Text>
             </View>
             <View style={[styles.tableColCus, { width: "10%" }]}>
               <Text style={styles.tableCellCus}>In Word</Text>
             </View>
             <View style={[styles.tableColCus, { width: "35%" }]}>
-              <Text style={styles.tableCellCus}>Five Lac Taka</Text>
+              <Text style={styles.tableCellCus}></Text>
             </View>
           </View>
         </View>
-        {coBorrowerList?.length > 0 &&
-        <View style={[styles.cusView, { marginTop: "10px" }]}>
-          <Text style={styles.textT}>Co-Borrowers information below:</Text>
-        </View>
-        }
+        {coBorrowerList?.length > 0 && (
+          <View style={[styles.cusView, { marginTop: "10px" }]}>
+            <Text style={styles.textT}>Co-Borrowers information below:</Text>
+          </View>
+        )}
         {coBorrowerList?.length > 0 &&
           coBorrowerList?.map((v, i) => {
             return (
               <View key={i}>
-                <View style={[styles.cusView1, { width: "100%", marginTop: 10, marginBottom: 10 }]}>
-                  <Text style={styles.text}>
-                  Co-Borrowers {i + 1}
+                <View
+                  style={[
+                    styles.cusView1,
+                    { width: "100%", marginTop: 10, marginBottom: 10 },
+                  ]}
+                >
+                  <Text style={styles.text}>Co-Borrowers {i + 1}</Text>
+                </View>
+                <View
+                  style={[
+                    styles.cusView1,
+                    { width: "30%", marginBottom: 20, marginTop: 20 },
+                  ]}
+                >
+                  <Image
+                    style={styles.image2}
+                    height={50}
+                    src={
+                      v?.nidphoto !== undefined
+                        ? `data:image/jpeg;base64,${v?.nidphoto}`
+                        : "/user-image.jpg"
+                    }
+                  />
+                </View>
+                <View
+                  style={[
+                    styles.cusView1,
+                    { width: "70%", flexDirection: "row", marginTop: 50 },
+                  ]}
+                >
+                  <Text
+                    style={{
+                      fontSize: "9px",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                    }}
+                  >
+                    EC Referance No: {v?.ecjobid}
                   </Text>
                 </View>
-        <View style={[styles.cusView1, { width: "30%", marginBottom: 20, marginTop: 20 }]}>
-            <Image style={styles.image2} height={50} src={v?.nidphoto !== undefined ? `data:image/jpeg;base64,${v?.nidphoto}` : "/user-image.jpg"} />
-          </View>
-          <View style={[styles.cusView1, { width: "70%", flexDirection:"row", marginTop:50 }]}>
-            <Text
-              style={{
-                fontSize: "9px",
-                fontWeight: "bold",
-                textAlign: "center",
-              }}
-            >
-              EC Referance No: {v?.ecjobid}
-            </Text>
-        </View>
                 <View style={styles.table}>
                   <View style={styles.tableRow}>
                     <View
@@ -752,7 +801,7 @@ const ApplicationForm = (props) => {
                     </View>
                     <View style={[styles.tableColCus, { width: "27%" }]}>
                       <Text style={styles.tableCellCus}>
-                      Co-Borrowers Name (In Bangla)
+                        Co-Borrowers Name (In Bangla)
                       </Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "70%" }]}>
@@ -928,21 +977,42 @@ const ApplicationForm = (props) => {
                   <View style={styles.tableRow}>
                     <View style={[styles.tableColCus, { width: "49%" }]}>
                       <Text style={styles.tableCellCus}>
-                        {v?.presentAddress?.additionalVillageOrRoad}{" ,"}{v?.presentAddress?.postOffice}{" - "}
-                        {v?.presentAddress?.postalCode}{" ,"}{v?.presentAddress?.upozila}{" ,"}
-                        {v?.presentAddress?.district}{" ,"}{v?.presentAddress?.division}
+                        {v?.presentAddress?.additionalVillageOrRoad}
+                        {" ,"}
+                        {v?.presentAddress?.postOffice}
+                        {" - "}
+                        {v?.presentAddress?.postalCode}
+                        {" ,"}
+                        {v?.presentAddress?.upozila}
+                        {" ,"}
+                        {v?.presentAddress?.district}
+                        {" ,"}
+                        {v?.presentAddress?.division}
                       </Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "51%" }]}>
                       <Text style={styles.tableCellCus}>
-                      {v?.permanentAddress?.additionalVillageOrRoad}{" ,"}{v?.permanentAddress?.postOffice}{" -"}
-                        {v?.permanentAddress?.postalCode}{" ,"}{v?.permanentAddress?.upozila}{" ,"}
-                        {v?.permanentAddress?.district}{" ,"}{v?.permanentAddress?.division}
+                        {v?.permanentAddress?.additionalVillageOrRoad}
+                        {" ,"}
+                        {v?.permanentAddress?.postOffice}
+                        {" -"}
+                        {v?.permanentAddress?.postalCode}
+                        {" ,"}
+                        {v?.permanentAddress?.upozila}
+                        {" ,"}
+                        {v?.permanentAddress?.district}
+                        {" ,"}
+                        {v?.permanentAddress?.division}
                       </Text>
                     </View>
                   </View>
                 </View>
-                  <Text style={{fontSize: "11", fontWeight: "bold", color:"black"}}> Date Time of obtaining Thumb Impression: {v?.creationDate}</Text>
+                <Text
+                  style={{ fontSize: "11", fontWeight: "bold", color: "black" }}
+                >
+                  {" "}
+                  Date Time of obtaining Thumb Impression: {v?.creationDate}
+                </Text>
                 <View
                   style={[
                     styles.cusViewH2,
@@ -952,34 +1022,55 @@ const ApplicationForm = (props) => {
               </View>
             );
           })}
-          {nomineeList?.length > 0 &&
-        <View style={[styles.cusView, { marginTop: "10px" }]}>
-          <Text style={styles.textT}>Guarantor’s information below:</Text>
-        </View>
-            }
+        {nomineeList?.length > 0 && (
+          <View style={[styles.cusView, { marginTop: "10px" }]}>
+            <Text style={styles.textT}>Guarantor’s information below:</Text>
+          </View>
+        )}
         {nomineeList?.length > 0 &&
           nomineeList?.map((v, i) => {
             return (
               <View key={i}>
-                <View style={[styles.cusView1, { width: "100%", marginTop: 10, marginBottom: 10 }]}>
-                  <Text style={styles.text}>
-                    Guarantor {i + 1}
+                <View
+                  style={[
+                    styles.cusView1,
+                    { width: "100%", marginTop: 10, marginBottom: 10 },
+                  ]}
+                >
+                  <Text style={styles.text}>Guarantor {i + 1}</Text>
+                </View>
+                <View
+                  style={[
+                    styles.cusView1,
+                    { width: "30%", marginBottom: 20, marginTop: 20 },
+                  ]}
+                >
+                  <Image
+                    style={styles.image2}
+                    height={50}
+                    src={
+                      v?.nidphoto !== undefined
+                        ? `data:image/jpeg;base64,${v?.nidphoto}`
+                        : "/user-image.jpg"
+                    }
+                  />
+                </View>
+                <View
+                  style={[
+                    styles.cusView1,
+                    { width: "70%", flexDirection: "row", marginTop: 50 },
+                  ]}
+                >
+                  <Text
+                    style={{
+                      fontSize: "9px",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                    }}
+                  >
+                    EC Referance No: {v?.ecjobid}
                   </Text>
                 </View>
-        <View style={[styles.cusView1, { width: "30%", marginBottom: 20, marginTop: 20 }]}>
-            <Image style={styles.image2} height={50} src={v?.nidphoto !== undefined ? `data:image/jpeg;base64,${v?.nidphoto}` : "/user-image.jpg"} />
-          </View>
-          <View style={[styles.cusView1, { width: "70%", flexDirection:"row", marginTop:50 }]}>
-            <Text
-              style={{
-                fontSize: "9px",
-                fontWeight: "bold",
-                textAlign: "center",
-              }}
-            >
-              EC Referance No: {v?.ecjobid}
-            </Text>
-        </View>
                 <View style={styles.table}>
                   <View style={styles.tableRow}>
                     <View
@@ -1168,21 +1259,42 @@ const ApplicationForm = (props) => {
                   <View style={styles.tableRow}>
                     <View style={[styles.tableColCus, { width: "49%" }]}>
                       <Text style={styles.tableCellCus}>
-                        {v?.presentAddress?.additionalVillageOrRoad}{" ,"}{v?.presentAddress?.postOffice}{" - "}
-                        {v?.presentAddress?.postalCode}{" ,"}{v?.presentAddress?.upozila}{" ,"}
-                        {v?.presentAddress?.district}{" ,"}{v?.presentAddress?.division}
+                        {v?.presentAddress?.additionalVillageOrRoad}
+                        {" ,"}
+                        {v?.presentAddress?.postOffice}
+                        {" - "}
+                        {v?.presentAddress?.postalCode}
+                        {" ,"}
+                        {v?.presentAddress?.upozila}
+                        {" ,"}
+                        {v?.presentAddress?.district}
+                        {" ,"}
+                        {v?.presentAddress?.division}
                       </Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "51%" }]}>
                       <Text style={styles.tableCellCus}>
-                      {v?.permanentAddress?.additionalVillageOrRoad}{" ,"}{v?.permanentAddress?.postOffice}{" -"}
-                        {v?.permanentAddress?.postalCode}{" ,"}{v?.permanentAddress?.upozila}{" ,"}
-                        {v?.permanentAddress?.district}{" ,"}{v?.permanentAddress?.division}
+                        {v?.permanentAddress?.additionalVillageOrRoad}
+                        {" ,"}
+                        {v?.permanentAddress?.postOffice}
+                        {" -"}
+                        {v?.permanentAddress?.postalCode}
+                        {" ,"}
+                        {v?.permanentAddress?.upozila}
+                        {" ,"}
+                        {v?.permanentAddress?.district}
+                        {" ,"}
+                        {v?.permanentAddress?.division}
                       </Text>
                     </View>
                   </View>
                 </View>
-                  <Text style={{fontSize: "11", fontWeight: "bold", color:"black"}}> Date Time of obtaining Thumb Impression: {v?.creationDate}</Text>
+                <Text
+                  style={{ fontSize: "11", fontWeight: "bold", color: "black" }}
+                >
+                  {" "}
+                  Date Time of obtaining Thumb Impression: {v?.creationDate}
+                </Text>
                 <View
                   style={[
                     styles.cusViewH2,
@@ -1217,16 +1329,18 @@ const ApplicationForm = (props) => {
             style={[styles.text, { textAlign: "left", fontSize: "10" }]}
             break
           >
-            We the undersigned confirm that we have obtained the Thumb Impression(s) of the above
-            person(s) [borrower/co-borrower/guarantor/mortgagor, as applicable] and they have put their
-            Thumb Impression(s) as per guideline of BRPD Circular # 15 dated 02.08.2023 in front of us. The
-            above Thumb Impression(s) have been verified with the database preserved for National Identity
+            We the undersigned confirm that we have obtained the Thumb
+            Impression(s) of the above person(s)
+            [borrower/co-borrower/guarantor/mortgagor, as applicable] and they
+            have put their Thumb Impression(s) as per guideline of BRPD Circular
+            # 15 dated 02.08.2023 in front of us. The above Thumb Impression(s)
+            have been verified with the database preserved for National Identity
             Card (NID) of Bangladesh.
           </Text>
         </View>
         <View style={[styles.cusViewH2, { marginBottom: "10px" }]}>
           <Text style={[styles.text, { textAlign: "left", fontSize: "10" }]}>
-          Date Time of obtaining Thumb Impression: {createdByTime}
+            Date Time of obtaining Thumb Impression: {createdByTime}
           </Text>
         </View>
         {/* <View style={[styles.cusViewH2, { marginTop: "40px" }]}>
@@ -1268,33 +1382,53 @@ const ApplicationForm = (props) => {
           </Text>
         </View> */}
         <View style={styles.container}>
-          <View style={[styles.leftColumn1,{width:"60%"}]}>
-          <Text
-            style={[
-              styles.text,
-              { textAlign: "left", fontSize: "12" },
-            ]}
-            break
-          >
-            Made by: {createdBy}
-          </Text>
-          {/* <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{createdBy}</Text> */}
-          <Text style={{fontSize: "13", fontWeight: "bold", color:"black", marginTop:"30px"}}>Signature with seal</Text>
-          <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{createdByTime}</Text>
+          <View style={[styles.leftColumn1, { width: "60%" }]}>
+            <Text
+              style={[styles.text, { textAlign: "left", fontSize: "12" }]}
+              break
+            >
+              Made by: {createdBy}
+            </Text>
+            {/* <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{createdBy}</Text> */}
+            <Text
+              style={{
+                fontSize: "13",
+                fontWeight: "bold",
+                color: "black",
+                marginTop: "30px",
+              }}
+            >
+              Signature with seal
+            </Text>
+            <Text
+              style={{ fontSize: "13", fontWeight: "bold", color: "black" }}
+            >
+              {createdByTime}
+            </Text>
           </View>
           <View style={styles.rightColumn1}>
-          <Text
-            style={[
-              styles.text,
-              { textAlign: "left", fontSize: "12" },
-            ]}
-            break
-          >
-            Authorized by: {approvedBy}
-          </Text>
-          {/* <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{approvedBy}</Text> */}
-          <Text style={{fontSize: "13", fontWeight: "bold", color:"black", marginTop:"30px"}}>Signature with seal</Text>
-          <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{approvedByTime}</Text>
+            <Text
+              style={[styles.text, { textAlign: "left", fontSize: "12" }]}
+              break
+            >
+              Authorized by: {approvedBy}
+            </Text>
+            {/* <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{approvedBy}</Text> */}
+            <Text
+              style={{
+                fontSize: "13",
+                fontWeight: "bold",
+                color: "black",
+                marginTop: "30px",
+              }}
+            >
+              Signature with seal
+            </Text>
+            <Text
+              style={{ fontSize: "13", fontWeight: "bold", color: "black" }}
+            >
+              {approvedByTime}
+            </Text>
           </View>
         </View>
       </Page>

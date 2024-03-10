@@ -6,7 +6,9 @@ const VerifiedApplications = lazy(() => import("../../views/pages/applications/V
 const GuarantorNidVerify = lazy(() => import("../../views/pages/applications/GuarantorNidVerify"))
 const GuarantorEcData = lazy(() => import("../../views/pages/applications/GuarantorEcData"))
 const EditApplicant = lazy(() => import("../../views/pages/applications/EditApplicant"));
-const NidVerify2 = lazy(() => import("../../views/pages/NidVerify2"));
+const InitNidVerify = lazy(() => import("../../views/pages/InitNidVerify"));
+const BorrowerNidVerify = lazy(() => import("../../views/pages/applications/BorrowerNidVerify"));
+const BorrowerEcData = lazy(() => import("../../views/pages/applications/BorrowerEcData"));
 const EcReturnData = lazy(() => import("../../views/pages/EcReturnData"));
 const Grantors = lazy(() => import("../../views/pages/Grantors"));
 // const ApplicationForm = lazy(() => import("../../views/pages/ApplicationForm"));
@@ -32,6 +34,7 @@ const EditEcUser = lazy(() => import("../../views/pages/ec/EditEcUser"));
 const ChangePassword = lazy(() => import("../../views/pages/users/ChangePassword"));
 const CoBorrowerNidVerify = lazy(() => import("../../views/pages/applications/co-borrower/CoBorrowerNidVerify"));
 const CoBorrowerEcData = lazy(() => import("../../views/pages/applications/co-borrower/CoBorrowerEcData"));
+const ViewCoBorrower = lazy(() => import("../../views/pages/applications/co-borrower/ViewCoBorrower"));
 const OthersRoutes = [
     {
         path: "/application-initiate",
@@ -43,7 +46,23 @@ const OthersRoutes = [
       },
     {
         path: "/nid-verify",
-        element: <NidVerify2 />,
+        element: <InitNidVerify />,
+        meta: {
+          action: 'read',
+          resource: 'FingerPrintVerify'
+        }
+      },
+    {
+        path: "/borrower-nid-verify",
+        element: <BorrowerNidVerify />,
+        meta: {
+          action: 'read',
+          resource: 'FingerPrintVerify'
+        }
+      },
+    {
+        path: "/borrower-ec-data",
+        element: <BorrowerEcData />,
         meta: {
           action: 'read',
           resource: 'FingerPrintVerify'
@@ -92,6 +111,14 @@ const OthersRoutes = [
       {
         path: "/coborrower-nid-verify",
         element: <CoBorrowerNidVerify />,
+        meta: {
+          action: 'read',
+          resource: 'Grantor'
+        }
+      },
+      {
+        path: "/coborrower-view",
+        element: <ViewCoBorrower />,
         meta: {
           action: 'read',
           resource: 'Grantor'

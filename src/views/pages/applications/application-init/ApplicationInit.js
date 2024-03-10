@@ -59,9 +59,9 @@ import {
                 setBlock(false)
                 toast.success('Successfully Created!')
                 setUserinfo(res.data)
-                localStorage.setItem("individual", JSON.stringify(res.data?.data))
-                localStorage.setItem("type", 1)
-                navigate('/nid-verify')
+                // localStorage.setItem("individual", JSON.stringify(res.data?.data))
+                // localStorage.setItem("type", 1)
+                navigate('/nid-verify',{state:{userData: res.data?.data, type: 1}})
                 // console.log("res", res)
                 // document.getElementById("button2").click()
             } else if(res.data?.result?.error === true) {
