@@ -113,3 +113,14 @@ div:where(.swal2-container) button:where(.swal2-styled).swal2-cancel {
 [dir] .flatpickr-input[readonly], [dir] .flatpickr-input ~ .form-control[readonly], [dir] .flatpickr-human-friendly[readonly] {
   background-color: #fff !important;
 }
+.cus-item {
+  padding: 8px 15px;
+  // clear: both;
+  text-align: inherit;
+  background-color: transparent;
+  border: 0;
+  border-radius: var(--bs-dropdown-item-border-radius, 0);
+}
+.cus-item:hover, .cus-item:focus {
+  background-color: rgba(115, 103, 240, 0.12);
+}

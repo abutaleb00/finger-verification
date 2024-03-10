@@ -32,8 +32,8 @@ useEffect(() =>{
   return (
     <div className="demo-inline-spacing">
       <div className="basic-modal">
-      <Badge id="GuarantorL" color={'primary'} className="text-capitalize" style={{cursor:"pointer"}} >
-        <span onClick={() => setBasicModal(!basicModal)}><Users /></span>
+      <Badge onClick={() => setBasicModal(!basicModal)} id="GuarantorL" color={'primary'} className="text-capitalize" style={{cursor:"pointer"}} >
+        <span ><Users /></span>
       </Badge>
       <UncontrolledTooltip
         placement="top"

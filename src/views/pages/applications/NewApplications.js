@@ -2,41 +2,25 @@
 // ** React Imports
 import { useState, useEffect } from "react";
 import {
-  Row,
-  Col,
   Badge,
   Card,
   CardHeader,
   CardTitle,
   CardBody,
-  Button,
-  FormGroup,
-  Input,
   UncontrolledTooltip,
 } from "reactstrap";
 import Swal from "sweetalert2";
-import Flatpickr from "react-flatpickr";
-import Select from "react-select";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "flatpickr/dist/themes/airbnb.css";
 // ** Third Party Components
 import "cleave.js/dist/addons/cleave-phone.us";
 import MUIDataTable from "mui-datatables";
-import moment from "moment";
 import GrantorList from "../GrantorList";
 import CoBorrowerList from "./co-borrower/CoBorrowerList";
 import DocumentList from "./DocumentList";
 import AddDocument from "./AddDocument";
-import {
-  Search,
-  Eye,
-  Edit,
-  UserPlus,
-  X,
-  CheckCircle,
-  UserCheck,
-} from "react-feather";
+import { Eye, Edit, UserPlus, CheckCircle, UserCheck } from "react-feather";
 import UILoader from "@components/ui-loader";
 import toast from "react-hot-toast";
 // ** Styles
@@ -166,6 +150,11 @@ const NewApplications = () => {
       options: {
         filter: true,
         sort: true,
+        textLabels: {
+          body: {
+            noMatch: 'abbbbb', // this would be whatever you want the message to say
+          }
+        },
         customBodyRender: (value) => {
           return (
             <div style={{ width: "auto" }}>
@@ -356,12 +345,21 @@ const NewApplications = () => {
       options: {
         filter: true,
         sort: true,
-        customBodyRender: (value) => {
+        customBodyRenderLite: (dataIndex) => {
+          const loanee = data[dataIndex]?.loanee;
+          const coBorrowers = data[dataIndex]?.coBorrowers;
+          const guarantors = data[dataIndex]?.guarantors;
           return (
-            <div style={{ textAlign: "center" }}>
-              <Badge color="warning">
-                {value === 0 ? "Pending" : "Approved"}
-              </Badge>
+            <div style={{ width: "auto" }}>
+              {loanee === null && (
+                <Badge style={{margin:"1px 0px"}} color="secondary">Pending Borrower</Badge>
+              )}
+              {coBorrowers?.length < 1 && (
+                <Badge style={{margin:"1px 0px"}} color="warning">Pending Co-borrower</Badge>
+              )}
+              {guarantors?.length < 1 && (
+                <Badge style={{margin:"1px 0px"}} color="primary">Pending Guarantor</Badge>
+              )}
             </div>
           );
         },
@@ -432,7 +430,6 @@ const NewApplications = () => {
                       </span>
                     </Badge>
                   </Link>
-                  {/* <Eye id="details" size={14} className='me-50' color="green" /> */}
                   <UncontrolledTooltip placement="top" target="details">
                     {" "}
                     View
@@ -442,7 +439,10 @@ const NewApplications = () => {
                   <Link
                     id="button2"
                     to={`/edit-application`}
-                    state={{ userinfo: alldata, type: isCompany === true ? 2 : 1, }}
+                    state={{
+                      userinfo: alldata,
+                      type: isCompany === true ? 2 : 1,
+                    }}
                   >
                     <Badge
                       id="edit"
@@ -492,10 +492,6 @@ const NewApplications = () => {
                   <GrantorList guarantors={guarantors} />
                 </div>
                 <div style={{ padding: "2px" }} className="btn btn-sm">
-                  {/* <Link
-                      to={`/guarantor-nid-verify`}
-                      state={{ loanee: alldata }}
-                  > */}
                   <Badge
                     onClick={() => {
                       navigate("/coborrower-nid-verify", {
@@ -522,7 +518,6 @@ const NewApplications = () => {
                     {" "}
                     Add Co-Borrower
                   </UncontrolledTooltip>
-                  {/* </Link> */}
                 </div>
                 <div style={{ padding: "2px" }} className="btn btn-sm">
                   <CoBorrowerList coBorrower={coBorrower} />
