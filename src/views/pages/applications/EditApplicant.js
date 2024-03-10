@@ -93,7 +93,7 @@ import {
     coBorrowers: [...application?.coBorrowers]
   }
   setBlock(true)
-  axios.post('/addloan', sendata).then(res => {
+  axios.put('/updateloanee', sendata).then(res => {
     if(res.data.result.error === false){
       setBlock(false)
       toast.success("Application Update Succsfully")
