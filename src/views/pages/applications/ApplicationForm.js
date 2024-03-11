@@ -507,7 +507,7 @@ const ApplicationForm = (props) => {
                   { marginTop: "5px", marginBottom: "-10px" },
                 ]}
               >
-                <Text style={styles.text}>{company?.companyName}</Text>
+                <Text style={[styles.text, {fontFamily:"Helvetica-Bold", fontSize: 8}]}>{company?.companyName}</Text>
               </View>
             )}
             <View

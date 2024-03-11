@@ -59,7 +59,7 @@ import {
     if(res.data.result.error === false){
       setBlock(false)
       toast.success("Application Update Succsfully")
-      navigate('/admin/ec-data')
+      navigate('/ec-data')
     } else if(res.data.result.error === true){
       setBlock(false)
       toast.error(res.data.result.errorMsg)
@@ -76,7 +76,7 @@ import {
       <Card>
         <CardHeader style={{marginBottom:"10px", borderBottom:"1px dashed gray"}}>
           <CardTitle tag="h4">Update Applicant Information</CardTitle>
-          <Button tag={Link} to="/admin/ec-data" color="primary" className="btn-md" outline>Back to User List</Button>
+          <Button tag={Link} to="/ec-data" color="primary" className="btn-md" outline>Back to User List</Button>
         </CardHeader>
   
         <CardBody>

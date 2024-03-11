@@ -59,7 +59,7 @@ const CreateUser = (props) => {
           if(res.data?.result?.error === false){
               setBlock(false)
               toast.success('Successfully Created!')
-              navigate('/admin/user-list')
+              navigate('/user-list')
           } else if(res.data?.result?.error === true) {
               setBlock(false)
               toast.error(res.data.result.errorMsg)
@@ -116,7 +116,7 @@ getBranchList()
     <Card>
       <CardHeader>
         <CardTitle tag="h4" >Account Information</CardTitle>
-        <Button tag={Link} to="/admin/user-list" color="primary" className="btn-sm" >Back to User List</Button>
+        <Button tag={Link} to="/user-list" color="primary" className="btn-sm" >Back to User List</Button>
       </CardHeader>
 
       <CardBody>

@@ -261,7 +261,7 @@ const VerifiedUserList = () => {
                     > View</UncontrolledTooltip>
                   </div>
                   <div style={{padding:"2px"}} className="btn btn-sm" >
-                    <Link to="/admin/update-user" state={{ userinfo: alldata }}>
+                    <Link to="/update-user" state={{ userinfo: alldata }}>
                   <Edit id="edit" size={14} className='me-50' color="blue" />
                   </Link>
                   <UncontrolledTooltip

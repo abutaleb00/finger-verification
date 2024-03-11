@@ -221,7 +221,7 @@ const OthersRoutes = [
         }
       },
       {
-        path: "/admin/audit-trail",
+        path: "/audit-trail",
         element: <AuditTrail />,
         meta: {
           action: 'read',
@@ -229,7 +229,7 @@ const OthersRoutes = [
         }
       },
       {
-        path: "/admin/ec-data",
+        path: "/ec-data",
         element: <EcData />,
         meta: {
           action: 'read',
@@ -237,7 +237,7 @@ const OthersRoutes = [
         }
       },
       {
-        path: "/admin/user-list",
+        path: "/user-list",
         element: <UserList />,
         meta: {
           action: 'read',
@@ -245,7 +245,7 @@ const OthersRoutes = [
         }
       },
       {
-        path: "/admin/create-user",
+        path: "/create-user",
         element: <CreateUser />,
         meta: {
           action: 'read',
@@ -253,7 +253,7 @@ const OthersRoutes = [
         }
       },
       {
-        path: "/admin/update-user",
+        path: "/update-user",
         element: <UpdateUser />,
         meta: {
           action: 'read',
@@ -261,7 +261,7 @@ const OthersRoutes = [
         }
       },
       {
-        path: "/admin/ec-user-create",
+        path: "/ec-user-create",
         element: <CreateEcUser />,
         meta: {
           action: 'read',
@@ -269,7 +269,7 @@ const OthersRoutes = [
         }
       },
       {
-        path: "/admin/ec-user-update",
+        path: "/ec-user-update",
         element: <EditEcUser />,
         meta: {
           action: 'read',
@@ -277,7 +277,7 @@ const OthersRoutes = [
         }
       },
       {
-        path: "/admin/role-permissions",
+        path: "/role-permissions",
         element: <Role />,
         meta: {
           action: 'read',

@@ -309,7 +309,7 @@ const UserList = () => {
             const isDeleted = data[dataIndex]?.isDeleted
             const fullName = data[dataIndex]?.fullName
             const roleName = data[dataIndex]?.roleName
-            const lockStatus = data[dataIndex]?.lockStatus
+            const lockStatus = data[dataIndex]?.isLocked
             const alldata = data[dataIndex]
             return (
                 <div style={{ width: "auto"}}>
@@ -322,7 +322,7 @@ const UserList = () => {
                     > View</UncontrolledTooltip>
                   </div> */}
                   <div style={{padding:"2px"}} className="btn btn-sm" >
-                    <Link to="/admin/update-user" state={{ userinfo: alldata }}>
+                    <Link to="/update-user" state={{ userinfo: alldata }}>
                   <Edit id="edit" size={14} className='me-50' color="blue" />
                   </Link>
                   <UncontrolledTooltip
@@ -497,7 +497,7 @@ const UserList = () => {
           </Button.Ripple>
         </Col>
         <Col md="2" style={{textAlign:"right"}}>
-            <Button style={{marginTop:"18px",}} tag={Link} to="/admin/create-user" color="primary" className=''> + Add New </Button>
+            <Button style={{marginTop:"18px",}} tag={Link} to="/create-user" color="primary" className=''> + Add New </Button>
         </Col>
       </Row>
       <MUIDataTable

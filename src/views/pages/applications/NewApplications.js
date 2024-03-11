@@ -150,11 +150,6 @@ const NewApplications = () => {
       options: {
         filter: true,
         sort: true,
-        textLabels: {
-          body: {
-            noMatch: 'abbbbb', // this would be whatever you want the message to say
-          }
-        },
         customBodyRender: (value) => {
           return (
             <div style={{ width: "auto" }}>
@@ -205,7 +200,17 @@ const NewApplications = () => {
         sort: true,
         customBodyRenderLite: (dataIndex) => {
           const loanee = data[dataIndex]?.loanee;
-          return <div style={{ width: "auto" }}>{loanee?.nameEn}</div>;
+          return (
+            <div style={{ width: "auto" }}>
+              {loanee === null ? (
+                <Badge style={{ margin: "1px 0px" }} color="danger">
+                  Waiting for <br/> Borrower Info
+                </Badge>
+              ) : (
+                loanee?.nameEn
+              )}
+            </div>
+          );
         },
       },
     },
@@ -257,7 +262,17 @@ const NewApplications = () => {
         sort: true,
         customBodyRenderLite: (dataIndex) => {
           const loanee = data[dataIndex]?.loanee;
-          return <div style={{ width: "auto" }}>{loanee?.ecjobid}</div>;
+          return (
+            <div style={{ width: "auto" }}>
+              {loanee === null ? (
+                <Badge style={{ margin: "1px 0px" }} color="danger">
+                  Waiting for <br/> Borrower Info
+                </Badge>
+              ) : (
+                loanee?.ecjobid
+              )}
+            </div>
+          );
         },
       },
     },
@@ -270,7 +285,17 @@ const NewApplications = () => {
         sort: true,
         customBodyRenderLite: (dataIndex) => {
           const loanee = data[dataIndex]?.loanee;
-          return <div style={{ width: "auto" }}>{loanee?.nationalId}</div>;
+          return (
+            <div style={{ width: "auto" }}>
+              {loanee === null ? (
+                <Badge style={{ margin: "1px 0px" }} color="danger">
+                  Waiting for <br/> Borrower Info
+                </Badge>
+              ) : (
+                loanee?.nationalId
+              )}
+            </div>
+          );
         },
       },
     },
@@ -283,7 +308,17 @@ const NewApplications = () => {
         sort: true,
         customBodyRenderLite: (dataIndex) => {
           const loanee = data[dataIndex]?.loanee;
-          return <div style={{ width: "auto" }}>{loanee?.father}</div>;
+          return (
+            <div style={{ width: "auto" }}>
+              {loanee === null ? (
+                <Badge style={{ margin: "1px 0px" }} color="danger">
+                  Waiting for <br/> Borrower Info
+                </Badge>
+              ) : (
+                loanee?.father
+              )}
+            </div>
+          );
         },
       },
     },
@@ -296,7 +331,17 @@ const NewApplications = () => {
         sort: true,
         customBodyRenderLite: (dataIndex) => {
           const loanee = data[dataIndex]?.loanee;
-          return <div style={{ width: "auto" }}>{loanee?.mother}</div>;
+          return (
+            <div style={{ width: "auto" }}>
+              {loanee === null ? (
+                <Badge style={{ margin: "1px 0px" }} color="danger">
+                  Waiting for <br/> Borrower Info
+                </Badge>
+              ) : (
+                loanee?.mother
+              )}
+            </div>
+          );
         },
       },
     },
@@ -309,7 +354,17 @@ const NewApplications = () => {
         sort: true,
         customBodyRenderLite: (dataIndex) => {
           const loanee = data[dataIndex]?.loanee;
-          return <div style={{ width: "auto" }}>{loanee?.mobile}</div>;
+          return (
+            <div style={{ width: "auto" }}>
+              {loanee === null ? (
+                <Badge style={{ margin: "1px 0px" }} color="danger">
+                  Waiting for <br/> Borrower Info
+                </Badge>
+              ) : (
+                loanee?.mobile
+              )}
+            </div>
+          );
         },
       },
     },
@@ -319,9 +374,18 @@ const NewApplications = () => {
       options: {
         filter: true,
         sort: true,
-        customBodyRender: (value) => {
+        customBodyRenderLite: (dataIndex) => {
+          const loanee = data[dataIndex]?.loanee;
           return (
-            <div>{value !== null && value !== undefined ? value : "N/A"}</div>
+            <div style={{ width: "auto" }}>
+              {loanee === null ? (
+                <Badge style={{ margin: "1px 0px" }} color="danger">
+                  Waiting for <br/> Borrower Info
+                </Badge>
+              ) : (
+                loanee?.branchName
+              )}
+            </div>
           );
         },
       },
@@ -352,14 +416,27 @@ const NewApplications = () => {
           return (
             <div style={{ width: "auto" }}>
               {loanee === null && (
-                <Badge style={{margin:"1px 0px"}} color="secondary">Pending Borrower</Badge>
+                <Badge style={{ margin: "1px 0px" }} color="danger">
+                  Pending Borrower
+                </Badge>
               )}
               {coBorrowers?.length < 1 && (
-                <Badge style={{margin:"1px 0px"}} color="warning">Pending Co-borrower</Badge>
+                <Badge style={{ margin: "1px 0px" }} color="warning">
+                  Pending Co-borrower
+                </Badge>
               )}
               {guarantors?.length < 1 && (
-                <Badge style={{margin:"1px 0px"}} color="primary">Pending Guarantor</Badge>
+                <Badge style={{ margin: "1px 0px" }} color="primary">
+                  Pending Guarantor
+                </Badge>
               )}
+              {loanee !== null &&
+                coBorrowers?.length > 0 &&
+                guarantors?.length > 0 && (
+                  <Badge style={{ margin: "1px 0px" }} color="success">
+                    Waiting for <br /> Approval
+                  </Badge>
+                )}
             </div>
           );
         },

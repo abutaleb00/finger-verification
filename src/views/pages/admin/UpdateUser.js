@@ -31,8 +31,8 @@ const UpdateUser = (props) => {
        axios.post('/updateuser', senddata).then(res => {
           if(res.data?.result?.error === false){
               setBlock(false)
-              toast.success('Successfully Created!')
-              navigate('/admin/user-list')
+              toast.success('Update Successfully!')
+              navigate('/user-list')
           } else if(res.data?.result?.error === true) {
               setBlock(false)
               toast.error(res.data.result.errorMsg)
@@ -89,7 +89,7 @@ const employeeOptions = [
     <Card>
       <CardHeader>
         <CardTitle tag="h4">Update User Information</CardTitle>
-        <Button tag={Link} to="/admin/user-list" color="primary" className="btn-sm" >Back to User List</Button>
+        <Button tag={Link} to="/user-list" color="primary" className="btn-sm" >Back to User List</Button>
       </CardHeader>
 
       <CardBody>
