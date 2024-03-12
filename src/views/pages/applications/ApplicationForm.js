@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   image1: {
     marginVertical: 10,
     marginHorizontal: 5,
-    width: "45%",
+    width: "30%",
   },
   image2: {
     marginVertical: 0,
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   image3: {
     marginVertical: 0,
     marginHorizontal: 0,
-    width: "60%",
+    width: "50%",
     // height: 100,
   },
   imageS: {
@@ -165,6 +165,21 @@ const styles = StyleSheet.create({
       marginRight: 50,
     },
   },
+  leftColumn2: {
+    flexDirection: "column",
+    width: "30%",
+    marginLeft: 1,
+    marginRight: 20,
+    marginTop: 10,
+    "@media max-width: 400": {
+      width: "50%",
+      marginRight: 30,
+    },
+    "@media orientation: landscape": {
+      width: "50%",
+      marginRight: 50,
+    },
+  },
   rightColumn: {
     flexDirection: "column",
     flexGrow: 1,
@@ -196,6 +211,20 @@ const styles = StyleSheet.create({
   rightColumn1: {
     flexDirection: "column",
     width: "30%",
+    flexGrow: 1,
+    flexShrink: 1,
+    marginLeft: 20,
+    marginRight: 10,
+    marginTop: 5,
+
+    "@media max-width: 400": {
+      marginTop: 10,
+      marginLeft: 5,
+    },
+  },
+  rightColumn2: {
+    flexDirection: "column",
+    width: "70%",
     flexGrow: 1,
     flexShrink: 1,
     marginLeft: 20,
@@ -345,17 +374,23 @@ const ApplicationForm = (props) => {
     <Document>
       <Page size="A4" style={styles.body}>
         <View style={styles.container}>
-          <View
+        <View style={styles.leftColumn2}>
+            <Image style={styles.image1} src="/verified.png" />
+          </View>
+          <View style={styles.rightColumn2}>
+          <Image style={styles.image3} src="/logo_sebplc.png" />
+          </View>
+          {/* <View
             style={[
               styles.cusViewImage,
-              { textAlign: "center", width: "100%" },
+              { textAlign: "left", width: "70%" },
             ]}
           >
             <Image style={styles.image3} src="/logo_sebplc.png" />
-          </View>
+          </View> */}
         </View>
         <View style={styles.container}>
-          <View style={[styles.cusView, { textAlign: "center" }]}>
+          <View style={[styles.cusView, { textAlign: "center", marginTop: "-10px" }]}>
             <Text style={[styles.text, { fontSize: 18 }]}>
               Fingerprint Verification Report
             </Text>
@@ -507,7 +542,7 @@ const ApplicationForm = (props) => {
                   { marginTop: "5px", marginBottom: "-10px" },
                 ]}
               >
-                <Text style={[styles.text, {fontFamily:"Helvetica-Bold", fontSize: 8}]}>{company?.companyName}</Text>
+                <Text style={[styles.text, {fontFamily:"Helvetica-Bold", fontSize: 8}]}>Name of Enterprise : {company?.companyName}</Text>
               </View>
             )}
             <View
