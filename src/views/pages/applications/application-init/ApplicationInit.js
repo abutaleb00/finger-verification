@@ -12,17 +12,19 @@ import {
   } from "reactstrap";
   import React from 'react';
   import axios from 'axios'
-  import { useState } from "react";
+  import { useState, useEffect } from "react";
   import Select from "react-select";
   import toast from 'react-hot-toast'
   import { useLocation, useNavigate, Link } from "react-router-dom";
   import UILoader from '@components/ui-loader'
   import { v4 as uuidv4 } from 'uuid'
   import CompanyProfile from "../../CompanyProfile";
+  import { getUserData } from '@utils'
 
   const ApplicationInit = (props) => {
     const location = useLocation()
     const navigate = useNavigate()
+    const user = getUserData()
     const [block, setBlock] = useState(false)
     const [userinfo, setUserinfo] = useState(null)
     const [state, setState] = useState({
@@ -74,7 +76,11 @@ import {
             toast.error(err.data?.result?.errorMsg)
          })
        }
-
+       useEffect(()=> {
+        if(user?.passwordChange === false){
+          navigate('/user/change-password')
+        }
+      }, [])
     return (
         <UILoader blocking={block}>
       <Card>

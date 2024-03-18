@@ -19,19 +19,15 @@ import GrantorList from "../GrantorList";
 import CoBorrowerList from "./co-borrower/CoBorrowerList";
 import DocumentList from "./DocumentList";
 import {
-  Search,
-  Trash,
   Eye,
-  Edit,
-  UserMinus,
-  UserPlus,
   Check,
   X,
-  CheckCircle,
 } from "react-feather";
 import UILoader from "@components/ui-loader";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
+import { getUserData } from '@utils'
+import { useNavigate } from 'react-router-dom'
 // ** Styles
 import "@styles/react/libs/react-select/_react-select.scss";
 import noImg from "../../../assets/images/avatars/avatar-blank.png";
@@ -48,6 +44,8 @@ const styles = {
   }),
 };
 const PendingApplications = () => {
+  const navigate = useNavigate();
+  const user = getUserData()
   const [data, setData] = useState([]);
   const [first, setFirst] = useState(0);
   const [last, setLast] = useState(100);
@@ -518,8 +516,10 @@ const PendingApplications = () => {
   ];
 
   useEffect(() => {
+    if(user?.passwordChange === false){
+      navigate('/user/change-password')
+    }
     allPendingApplicant();
-    console.log("first", JSON.parse(localStorage.getItem("userData")).roleName);
   }, []);
   const options = {
     filterType: "checkbox",

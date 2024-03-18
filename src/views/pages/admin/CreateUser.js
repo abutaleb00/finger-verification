@@ -35,6 +35,7 @@ const CreateUser = (props) => {
       rtgsLimit: 500000,
       bachLimit: 200000,
       fullName: "",
+      passwordChange: false,
       cbsCustId: "CUST122",
       isLocked: true,
       employeeType: 1,

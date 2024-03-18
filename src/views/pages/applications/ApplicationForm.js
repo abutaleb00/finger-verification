@@ -1046,7 +1046,7 @@ const ApplicationForm = (props) => {
                   style={{ fontSize: "11", fontWeight: "bold", color: "black" }}
                 >
                   {" "}
-                  Date Time of obtaining Thumb Impression: {v?.creationDate}
+                  Date & Time of obtaining Thumb Impression: {v?.creationDate}
                 </Text>
                 <View
                   style={[
@@ -1328,7 +1328,7 @@ const ApplicationForm = (props) => {
                   style={{ fontSize: "11", fontWeight: "bold", color: "black" }}
                 >
                   {" "}
-                  Date Time of obtaining Thumb Impression: {v?.creationDate}
+                  Date & Time of obtaining Thumb Impression: {v?.creationDate}
                 </Text>
                 <View
                   style={[
@@ -1375,7 +1375,7 @@ const ApplicationForm = (props) => {
         </View>
         <View style={[styles.cusViewH2, { marginBottom: "10px" }]}>
           <Text style={[styles.text, { textAlign: "left", fontSize: "10" }]}>
-            Date Time of obtaining Thumb Impression: {createdByTime}
+          Date & Time of obtaining Thumb Impression: {createdByTime}
           </Text>
         </View>
         {/* <View style={[styles.cusViewH2, { marginTop: "40px" }]}>

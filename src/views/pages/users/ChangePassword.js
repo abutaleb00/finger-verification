@@ -17,6 +17,7 @@ import {
   import {useNavigate } from "react-router-dom";
   import UILoader from '@components/ui-loader'
   import useJwt from '@src/auth/jwt/useJwt'
+  import { CheckCircle } from 'react-feather'
 
   const config = useJwt.jwtConfig
   const ChangePassword = (props) => {
@@ -71,7 +72,7 @@ import {
     return (
         <UILoader blocking={block}>
       <Card>
-        <CardHeader>
+        <CardHeader style={{borderBottom:"1px solid gray", paddingBottom:"10px"}}>
           <CardTitle tag="h4" >Change Password</CardTitle>
         </CardHeader>
   
@@ -79,7 +80,41 @@ import {
             <form onSubmit={UpdatePassword}>
             <div>
           <Row>
-            <Col className="mb-1" xl="4" md="4" sm="12">
+          <Col className="mb-1 mt-3 pl-5" xl="8" md="8" sm="12">
+          <p style={{color:"black", fontSize:"16px"}}>
+              {" "}
+              In order to <b>protect your account,</b> make sure your password:
+            </p>
+            <p>
+            <CheckCircle color="green" size={14} /> At least 8 characters
+            </p>
+            <p>
+            <CheckCircle color="green" size={14} /> At least 1 letters
+            </p>
+            <p>
+            <CheckCircle color="green" size={14} /> At Least 1 digits
+            </p>
+            <p>
+            <CheckCircle color="green" size={14} /> Must not contain database name
+            </p>
+            <p>
+            <CheckCircle color="green" size={14} /> Must not contain user name or
+              reverse user name
+            </p>
+            <p>
+            <CheckCircle color="green" size={14} /> Must not contain oracle
+            </p>
+            <p>
+            <CheckCircle color="green" size={14} /> Must not be too simple like
+              welcome1
+            </p>
+            <p>
+            <CheckCircle color="green" size={14} /> Password must differ by at
+              least 3 characters from the old password
+            </p>
+          </Col>
+          <Col className="mb-1 mt-3" xl="4" md="4" sm="12">
+            <Col className="mb-1" xl="12" md="12" sm="12">
               <Label className="form-label required-field" htmlFor="currentPassword">
               Current Password
               </Label>
@@ -92,7 +127,7 @@ import {
                 onChange={(e) => setSate({...state, currentPassword: e.target.value})}
               />
             </Col>
-            <Col className="mb-1" xl="4" md="4" sm="12">
+            <Col className="mb-1" xl="12" md="12" sm="12">
               <Label className="form-label required-field" htmlFor="newPasswordSt">
               New Password
               </Label>
@@ -105,7 +140,7 @@ import {
                 onChange={(e) => setSate({...state, newPasswordSt: e.target.value})}
               />
             </Col>
-            <Col className="mb-1" xl="4" md="4" sm="12">
+            <Col className="mb-1" xl="12" md="12" sm="12">
               <Label className="form-label required-field" htmlFor="confirmedPasswordSt">
               Confirm Password
               </Label>
@@ -118,8 +153,6 @@ import {
                 onChange={(e) => setSate({...state, confirmedPasswordSt: e.target.value})}
               />
             </Col>
-          </Row>
-          <Row>
             <Col xl={12} style={{ textAlign: "center", marginTop: "20px" }}>
               <Button
                 type="submit"
@@ -127,6 +160,7 @@ import {
               >
                 Submit
               </Button>
+            </Col>
             </Col>
           </Row>
           </div>

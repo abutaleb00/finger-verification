@@ -20,11 +20,15 @@ import { Eye, BarChart, X } from "react-feather";
 import UILoader from "@components/ui-loader";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
+import { getUserData } from '@utils'
+import { useNavigate } from 'react-router-dom'
 // ** Styles
 import "@styles/react/libs/react-select/_react-select.scss";
 import noImg from "../../../assets/images/avatars/avatar-blank.png";
 
 const VerifiedApplications = () => {
+  const user = getUserData()
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [first, setFirst] = useState(0);
   const [last, setLast] = useState(100);
@@ -454,6 +458,9 @@ const VerifiedApplications = () => {
   ];
 
   useEffect(() => {
+    if(user?.passwordChange === false){
+      navigate('/user/change-password')
+    }
     allVerifiedApplicant();
   }, []);
   const options = {

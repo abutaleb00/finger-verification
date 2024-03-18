@@ -22,12 +22,14 @@ import moment from "moment"
 import { Search, Eye, Edit, UserPlus, X, CheckCircle, UserCheck } from 'react-feather'
 import UILoader from '@components/ui-loader'
 import toast from 'react-hot-toast'
+import { getUserData } from '@utils'
 // ** Styles
 import "@styles/react/libs/react-select/_react-select.scss"
 
 const CompanyApplicationList = () => {
   const [data, setData] = useState([])
   const navigate = useNavigate()
+  const user = getUserData()
     const [first, setFirst] = useState(0)
     const [last, setLast] = useState(100)
     const [filter, setFilter] = useState("")
@@ -287,6 +289,9 @@ const CompanyApplicationList = () => {
     ]
 
  useEffect(() => {
+  if(user?.passwordChange === false){
+    navigate('/user/change-password')
+  }
   allNewApplication()
 }, [])  
     const options = {
