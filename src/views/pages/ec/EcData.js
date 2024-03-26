@@ -180,7 +180,7 @@ const EcData = () => {
                     </div>
                     <div style={{padding:"2px"}} className="btn btn-sm" >
                       <Link
-                        to={`/admin/ec-user-update`}
+                        to={`/ec-user-update`}
                         state={{ userinfo: alldata }}
                     >
                       <Badge id="edit" color={'info'} className="text-capitalize" style={{cursor:"pointer"}} >
@@ -329,7 +329,7 @@ const EcData = () => {
           </Button.Ripple>
         </Col>
         <Col md="2" style={{textAlign:"right"}}>
-            <Button style={{marginTop:"18px",}} tag={Link} to="/admin/ec-user-create" color="primary" className=''> + Add New </Button>
+            <Button style={{marginTop:"18px",}} tag={Link} to="/ec-user-create" color="primary" className=''> + Add New </Button>
         </Col>
       </Row>
       <MUIDataTable

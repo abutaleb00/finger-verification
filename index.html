@@ -31,8 +31,10 @@
               extraData,
             };
 
-            console.log("data", data);
-            window.fingerComponent.receiveFingerData(data);
+            console.log("data index", data);
+            // console.log("window", window.fingerComponent.receiveFingerData(data))
+            // window.fingerComponent.receiveFingerData(data);
+            window.receiveFingerData(data);
 
             //data.append('listoffingers', JSON.stringify(captureResponse.data));
             // var urlToSend = "http://localhost:8080/dataFromTcap";

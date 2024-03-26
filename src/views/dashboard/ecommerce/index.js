@@ -12,12 +12,21 @@ import {
 // ** Custom Components
 import StatsHorizontal from '@components/widgets/stats/StatsHorizontal'
 import '@styles/react/apps/app-users.scss'
+import { getUserData } from '@utils'
+import { useNavigate } from 'react-router-dom'
 
 // ** Icons Imports
 import { User, UserPlus, UserCheck, UserX } from 'react-feather'
 
 const EcommerceDashboard = () => {
+  const user = getUserData()
+  const navigate = useNavigate()
+  
   useEffect(()=> {
+    if(user?.passwordChange === false){
+      navigate('/user/change-password')
+    }
+
     localStorage.setItem("accountType", "0")
   }, [])
   return (

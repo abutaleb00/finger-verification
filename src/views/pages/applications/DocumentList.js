@@ -72,9 +72,9 @@ useEffect(() =>{
     <UILoader blocking={block}>
     <div className="demo-inline-spacing">
       <div className="basic-modal">
-      <Badge id="DocumentL" color={'dark'} className="text-capitalize" style={{cursor:"pointer"}} >
+      <Badge onClick={() => block !== true ? getAllDocument() : preventDefault()} id="DocumentL" color={'dark'} className="text-capitalize" style={{cursor:"pointer"}} >
         {/* <span onClick={() => setBasicModal(!basicModal)}><File /></span> */}
-        <span onClick={() => block !== true ? getAllDocument() : preventDefault()}><File /></span>
+        <span ><File /></span>
       </Badge>
       <UncontrolledTooltip
         placement="top"

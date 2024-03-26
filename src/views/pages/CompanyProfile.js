@@ -92,7 +92,8 @@ import {
     const companyExitOrApplication = (e) => {
       const sentdata = {
           companyProfile: {
-              ...state
+              ...state,
+              companyRegDate: moment(state?.companyRegDate).format("DD/MM/YYYY")
           },
           loanee: null,
           guarantors: [],
@@ -132,7 +133,7 @@ import {
             console.log("res.data", res.data)
              localStorage.setItem("company", JSON.stringify(res.data?.data))
              localStorage.setItem("type", 2)
-             navigate('/nid-verify')
+             navigate('/nid-verify', {state:{userData: res.data?.data, type: 2}})
               setBlock(false)
               toast.success('Successfully Created!')
               setUserinfo(res.data)
@@ -219,7 +220,7 @@ import {
           <Row style={{marginBottom:"20px", marginTop:"30px", paddingTop:"25px", borderTop:"1px dashed gray"}}>
             <Col className="mb-1" xl="12" md="12" sm="12">
               <Label className="form-label" htmlFor="companyInfo">
-              Company Info
+              Enterprise Info
               </Label>
               <Input
                 type="text"
@@ -372,4 +373,4 @@ import {
       </UILoader>
     );
   };
-  export default CompanyProfile;  
+  export default CompanyProfile;

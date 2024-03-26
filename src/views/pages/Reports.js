@@ -30,6 +30,8 @@ import "@styles/react/libs/react-select/_react-select.scss";
 import toast from 'react-hot-toast'
 import Swal from "sweetalert2"
 import UILoader from '@components/ui-loader'
+import { getUserData } from '@utils'
+import { useNavigate } from 'react-router-dom'
 
 
 const styles = {
@@ -44,6 +46,8 @@ const styles = {
     })
   }
 const Reports = () => {
+  const user = getUserData()
+  const navigate = useNavigate()
     const [startDate, setStartDate] = useState(moment().subtract(30, 'days').format("YYYY-MM-DD"))
     const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"))
     const [block, setBlock] = useState(false)
@@ -262,6 +266,9 @@ const Reports = () => {
     }
 
   useEffect(()=> {
+    if(user?.passwordChange === false){
+      navigate('/user/change-password')
+    }
     allPendingApplicant()
   }, [])
   return (

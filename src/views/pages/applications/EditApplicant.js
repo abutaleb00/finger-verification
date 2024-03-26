@@ -70,6 +70,7 @@ import {
         status: application?.status,
         id: application?.id
     },
+    companyProfile: location.state?.type === 2 ? application?.companyProfile : null,
     loanee: {
         ecjobid: state?.ecjobid,
         nidphoto: state?.nidphoto,
@@ -92,7 +93,7 @@ import {
     coBorrowers: [...application?.coBorrowers]
   }
   setBlock(true)
-  axios.post('/addloan', sendata).then(res => {
+  axios.put('/updateloanee', sendata).then(res => {
     if(res.data.result.error === false){
       setBlock(false)
       toast.success("Application Update Succsfully")
@@ -229,6 +230,7 @@ import {
               styles={styles}
               options={branchOption}
               placeholder="Select Branch"
+              value={branchOption?.filter((v) => v.value === branchName)}
               onChange={(e) => setBranchName(e.value)}
               maxMenuHeight={140}
               isSearchable

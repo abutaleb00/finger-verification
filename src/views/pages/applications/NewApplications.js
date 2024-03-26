@@ -2,489 +2,666 @@
 // ** React Imports
 import { useState, useEffect } from "react";
 import {
-  Row,
-  Col,
   Badge,
   Card,
   CardHeader,
   CardTitle,
   CardBody,
-  Button,
-  FormGroup,
-  Input,
-  UncontrolledTooltip
+  UncontrolledTooltip,
 } from "reactstrap";
-import Swal from "sweetalert2"
-import Flatpickr from "react-flatpickr"
-import Select from 'react-select'
-import axios from 'axios'
+import Swal from "sweetalert2";
+import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "flatpickr/dist/themes/airbnb.css";
 // ** Third Party Components
 import "cleave.js/dist/addons/cleave-phone.us";
-import MUIDataTable from "mui-datatables"
-import moment from "moment"
+import MUIDataTable from "mui-datatables";
 import GrantorList from "../GrantorList";
 import CoBorrowerList from "./co-borrower/CoBorrowerList";
 import DocumentList from "./DocumentList";
 import AddDocument from "./AddDocument";
-import { Search, Eye, Edit, UserPlus, X, CheckCircle, UserCheck } from 'react-feather'
-import UILoader from '@components/ui-loader'
-import toast from 'react-hot-toast'
+import { Eye, Edit, UserPlus, CheckCircle, UserCheck } from "react-feather";
+import UILoader from "@components/ui-loader";
+import toast from "react-hot-toast";
+import { getUserData } from '@utils'
 // ** Styles
-import "@styles/react/libs/react-select/_react-select.scss"
-
+import "@styles/react/libs/react-select/_react-select.scss";
+import noImg from "../../../assets/images/avatars/avatar-blank.png";
 
 const styles = {
-    control: base => ({
-      ...base,
-      fontFamily: "Times New Roman"
-    }),
-    menu: base => ({
-      ...base,
-      fontSize: 11,
-      lineHeight: 1
-    })
-  }
+  control: (base) => ({
+    ...base,
+    fontFamily: "Times New Roman",
+  }),
+  menu: (base) => ({
+    ...base,
+    fontSize: 11,
+    lineHeight: 1,
+  }),
+};
 const NewApplications = () => {
-  const [data, setData] = useState([])
-  const navigate = useNavigate()
-    const [first, setFirst] = useState(0)
-    const [last, setLast] = useState(100)
-    const [filter, setFilter] = useState("")
-    const [block, setBlock] = useState(false)
-    const [state, setState] = useState({
-        branch: null,
-        status: null
-    })
-    const searchEcData = () => {
-      const send = {
-        loanapplication: {
-            status: 4
+  const [data, setData] = useState([]);
+  const navigate = useNavigate();
+  const user = getUserData()
+  const [first, setFirst] = useState(0);
+  const [last, setLast] = useState(100);
+  const [filter, setFilter] = useState("");
+  const [block, setBlock] = useState(false);
+  const [state, setState] = useState({
+    branch: null,
+    status: null,
+  });
+  const searchEcData = () => {
+    const send = {
+      loanapplication: {
+        status: 4,
+      },
+    };
+    setBlock(true);
+    axios
+      .post("/getloandetailspending", send)
+      .then((res) => {
+        setBlock(false);
+        setData(res.data.data);
+      })
+      .catch((err) => console.log(err));
+  };
+  const allNewApplication = () => {
+    const send = {
+      loanapplication: {
+        status: 0,
+      },
+    };
+    setBlock(true);
+    axios
+      .post("/getloandetailspending", send)
+      .then((res) => {
+        if (res.data.result.error === false) {
+          setBlock(false);
+          setData(res.data.data);
+        } else if (res.data.result.error === true) {
+          setBlock(false);
+          toast.error(res.data.result.errorMsg);
         }
-    }
-        setBlock(true)
-         axios.post('/getloandetailspending', send).then(res => {
-          setBlock(false)
-          setData(res.data.data)
-         })
-         .catch(err => console.log(err))
-       }
-       const allNewApplication = () => {
-        const send = {
-          loanapplication: {
-              status: 0
-          }
-        }
-        setBlock(true)
-         axios.post('/getloandetailspending', send).then(res => {
-          if(res.data.result.error === false){
-            setBlock(false)
-            setData(res.data.data)
-          } else if(res.data.result.error === true){
-            setBlock(false)
-            toast.error(res.data.result.errorMsg)
-          }
-         })
-         .catch((err) =>{
-          setBlock(false)
-            toast.error(err.data.result.errorMsg)
-         })
-       }
+      })
+      .catch((err) => {
+        setBlock(false);
+        toast.error(err.data.result.errorMsg);
+      });
+  };
   const updateStatus = (e) => {
     const sentdata = {
-        loanapplication: {
-            loan_no: e,
-            status: 1
-        }
-    }
+      loanapplication: {
+        loan_no: e,
+        status: 1,
+      },
+    };
     Swal.fire({
-        title: `Are you sure ?`,
-        text: `You want to Complete this Application`,
-        type: "warning",
-        icon: 'warning',
-        footer: "",
-        showCancelButton: true,
-        confirmButtonText: 'Yes',
-        customClass: {
-            cancelButton: 'btn btn-danger ms-1',
-            confirmButton: 'btn btn-primary'
-        }
+      title: `Are you sure ?`,
+      text: `You want to Complete this Application`,
+      type: "warning",
+      icon: "warning",
+      footer: "",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      customClass: {
+        cancelButton: "btn btn-danger ms-1",
+        confirmButton: "btn btn-primary",
+      },
     }).then((result) => {
-        if (result.isConfirmed === true) {
-            setBlock(true)
-            axios.put(`/updateloanstatus`, sentdata).then((res) => {
-                if(res.data.result.error === false){
-                    setBlock(false)
-                    toast.success("Loan Application Update Successfully")
-                    allNewApplication()
-                  } else if (res.data.result.error === true){
-                    setBlock(false)
-                    toast.error(res.data.result.errorMsg)
-                  }
-            }).catch((e) => {
-                setBlock(false)
-                toast.error(e.data.result.errorMsg)
-            })
-        }
-    })
-}  
-    const columns = [
-      {
-        name: "loan_no",
-        label: "Application No",
-        options: {
-          filter: true,
-          sort: true,
-          customBodyRender: (value) => {
-            return (
-              <div style={{ width: "auto" }}>
-                {value !== null && value !== undefined ? value : "N/A"}
-              </div>
-            );
-          },
+      if (result.isConfirmed === true) {
+        setBlock(true);
+        axios
+          .put(`/updateloanstatus`, sentdata)
+          .then((res) => {
+            if (res.data.result.error === false) {
+              setBlock(false);
+              toast.success("Loan Application Update Successfully");
+              allNewApplication();
+            } else if (res.data.result.error === true) {
+              setBlock(false);
+              toast.error(res.data.result.errorMsg);
+            }
+          })
+          .catch((e) => {
+            setBlock(false);
+            toast.error(e.data.result.errorMsg);
+          });
+      }
+    });
+  };
+  const columns = [
+    {
+      name: "loan_no",
+      label: "Application No",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (value) => {
+          return (
+            <div style={{ width: "auto" }}>
+              {value !== null && value !== undefined ? value : "N/A"}
+            </div>
+          );
         },
       },
-      {
-        name: "isCompany",
-        label: "Borrower Type",
-        options: {
-          filter: true,
-          sort: true,
-          customBodyRender: (value) => {
-            return (
-              <div style={{ width: "auto" }}>
-                {value === false ? "Individual" : "Company"}
-              </div>
-            );
-          },
+    },
+    {
+      name: "isCompany",
+      label: "Borrower Type",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (value) => {
+          return (
+            <div style={{ width: "auto" }}>
+              {value === false ? "Individual" : "Company"}
+            </div>
+          );
         },
       },
-      {
-        name: "creationDate",
-        label: "Date",
-        options: {
-          filter: true,
-          sort: true,
-          customBodyRender: (value) => {
-            return (
-              <div style={{ width: "auto" }}>
-                {value !== null && value !== undefined ? value : "N/A"}
-              </div>
-            );
-          },
+    },
+    {
+      name: "isCompany",
+      label: "Company",
+      searchable: true,
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRenderLite: (dataIndex) => {
+          const companyProfile = data[dataIndex]?.companyProfile;
+          return (
+            <div style={{ width: "auto" }}>
+              {companyProfile !== null ? companyProfile?.companyName : "N/A"}
+            </div>
+          );
         },
       },
-      {
-        name: "nameEn",
-        label: "Applicant Name",
-        searchable: true,
-        options: {
-          filter: true,
-          sort: true,
-          customBodyRenderLite: (dataIndex) => {
-            const loanee = data[dataIndex]?.loanee
-            return (
-                <div style={{ width: "auto"}}>
-                {loanee?.nameEn}
-              </div>
-            )
-          }
+    },
+    {
+      name: "creationDate",
+      label: "Date",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (value) => {
+          return (
+            <div style={{ width: "auto" }}>
+              {value !== null && value !== undefined ? value : "N/A"}
+            </div>
+          );
         },
       },
-      {
-        name: "nidphoto",
-        label: "Photo",
-        searchable: true,
-        options: {
-          filter: true,
-          sort: true,
-          customBodyRenderLite: (dataIndex) => {
-            const loanee = data[dataIndex]?.loanee
-            return (
-                <div style={{ width: "auto", textAlign:"center"}}>
-                <img src={`data:image/jpeg;base64,${loanee?.nidphoto}`} alt='img' style={{width: 30, height: 30, border:"1px solid gray", borderRadius:"2px"}} />
-              </div>
-            )
-          }
+    },
+    {
+      name: "nameEn",
+      label: "Applicant Name",
+      searchable: true,
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRenderLite: (dataIndex) => {
+          const loanee = data[dataIndex]?.loanee;
+          return (
+            <div style={{ width: "auto" }}>
+              {loanee === null ? (
+                <Badge style={{ margin: "1px 0px" }} color="danger">
+                  Waiting for <br/> Borrower Info
+                </Badge>
+              ) : (
+                loanee?.nameEn
+              )}
+            </div>
+          );
         },
       },
-      {
-        name: "ecjobid",
-        label: "EC Ref.",
-        searchable: true,
-        options: {
-          filter: true,
-          sort: true,
-          customBodyRenderLite: (dataIndex) => {
-            const loanee = data[dataIndex]?.loanee
-            return (
-                <div style={{ width: "auto"}}>
-                {loanee?.ecjobid}
-              </div>
-            )
-          }
+    },
+    {
+      name: "nidphoto",
+      label: "Photo",
+      searchable: true,
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRenderLite: (dataIndex) => {
+          const loanee = data[dataIndex]?.loanee;
+          return (
+            <div style={{ width: "auto", textAlign: "center" }}>
+              {loanee !== null ? (
+                <img
+                  src={`data:image/jpeg;base64,${loanee?.nidphoto}`}
+                  alt="img"
+                  style={{
+                    width: 30,
+                    height: 30,
+                    border: "1px solid gray",
+                    borderRadius: "2px",
+                  }}
+                />
+              ) : (
+                <img
+                  src={noImg}
+                  alt="img"
+                  style={{
+                    width: 25,
+                    height: 25,
+                    border: "1px solid gray",
+                    borderRadius: "2px",
+                  }}
+                />
+              )}
+            </div>
+          );
         },
       },
-      {
-        name: "nationalId",
-        label: "NID",
-        searchable: true,
-        options: {
-          filter: true,
-          sort: true,
-          customBodyRenderLite: (dataIndex) => {
-            const loanee = data[dataIndex]?.loanee
-            return (
-                <div style={{ width: "auto"}}>
-                {loanee?.nationalId}
-              </div>
-            )
-          }
+    },
+    {
+      name: "ecjobid",
+      label: "EC Ref.",
+      searchable: true,
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRenderLite: (dataIndex) => {
+          const loanee = data[dataIndex]?.loanee;
+          return (
+            <div style={{ width: "auto" }}>
+              {loanee === null ? (
+                <Badge style={{ margin: "1px 0px" }} color="danger">
+                  Waiting for <br/> Borrower Info
+                </Badge>
+              ) : (
+                loanee?.ecjobid
+              )}
+            </div>
+          );
         },
       },
-      {
-        name: "lonee",
-        label: "Father Name",
-        searchable: true,
-        options: {
-          filter: true,
-          sort: true,
-          customBodyRenderLite: (dataIndex) => {
-            const loanee = data[dataIndex]?.loanee
-            return (
-                <div style={{ width: "auto"}}>
-                {loanee?.father}
-              </div>
-            )
-          }
+    },
+    {
+      name: "nationalId",
+      label: "NID",
+      searchable: true,
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRenderLite: (dataIndex) => {
+          const loanee = data[dataIndex]?.loanee;
+          return (
+            <div style={{ width: "auto" }}>
+              {loanee === null ? (
+                <Badge style={{ margin: "1px 0px" }} color="danger">
+                  Waiting for <br/> Borrower Info
+                </Badge>
+              ) : (
+                loanee?.nationalId
+              )}
+            </div>
+          );
         },
       },
-      {
-        name: "lonee",
-        label: "Mother Name",
-        searchable: true,
-        options: {
-          filter: true,
-          sort: true,
-          customBodyRenderLite: (dataIndex) => {
-            const loanee = data[dataIndex]?.loanee
-            return (
-                <div style={{ width: "auto"}}>
-                {loanee?.mother}
-              </div>
-            )
-          }
+    },
+    {
+      name: "lonee",
+      label: "Father Name",
+      searchable: true,
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRenderLite: (dataIndex) => {
+          const loanee = data[dataIndex]?.loanee;
+          return (
+            <div style={{ width: "auto" }}>
+              {loanee === null ? (
+                <Badge style={{ margin: "1px 0px" }} color="danger">
+                  Waiting for <br/> Borrower Info
+                </Badge>
+              ) : (
+                loanee?.father
+              )}
+            </div>
+          );
         },
       },
-      {
-        name: "mobile",
-        label: "Mobile",
-        searchable: true,
-        options: {
-          filter: true,
-          sort: true,
-          customBodyRenderLite: (dataIndex) => {
-            const loanee = data[dataIndex]?.loanee
-            return (
-                <div style={{ width: "auto"}}>
-                {loanee?.mobile}
-              </div>
-            )
-          }
+    },
+    {
+      name: "lonee",
+      label: "Mother Name",
+      searchable: true,
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRenderLite: (dataIndex) => {
+          const loanee = data[dataIndex]?.loanee;
+          return (
+            <div style={{ width: "auto" }}>
+              {loanee === null ? (
+                <Badge style={{ margin: "1px 0px" }} color="danger">
+                  Waiting for <br/> Borrower Info
+                </Badge>
+              ) : (
+                loanee?.mother
+              )}
+            </div>
+          );
         },
       },
-      {
-        name: "branchName",
-        label: "Branch",
-        options: {
-          filter: true,
-          sort: true,
-          customBodyRender: (value) => {
-            return (
-              <div>{value !== null && value !== undefined ? value : "N/A"}</div>
-            );
-          },
+    },
+    {
+      name: "mobile",
+      label: "Mobile",
+      searchable: true,
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRenderLite: (dataIndex) => {
+          const loanee = data[dataIndex]?.loanee;
+          return (
+            <div style={{ width: "auto" }}>
+              {loanee === null ? (
+                <Badge style={{ margin: "1px 0px" }} color="danger">
+                  Waiting for <br/> Borrower Info
+                </Badge>
+              ) : (
+                loanee?.mobile
+              )}
+            </div>
+          );
         },
       },
-      {
-        name: "createdBy",
-        label: "Created By",
-        options: {
-          filter: true,
-          sort: true,
-          customBodyRender: (value) => {
-            return (
-              <div>{value !== null && value !== undefined ? value : "N/A"}</div>
-            );
-          },
+    },
+    {
+      name: "branchName",
+      label: "Branch",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRenderLite: (dataIndex) => {
+          const loanee = data[dataIndex]?.loanee;
+          return (
+            <div style={{ width: "auto" }}>
+              {loanee === null ? (
+                <Badge style={{ margin: "1px 0px" }} color="danger">
+                  Waiting for <br/> Borrower Info
+                </Badge>
+              ) : (
+                loanee?.branchName
+              )}
+            </div>
+          );
         },
       },
-      {
-        name: "status",
-        label: "Status",
-        options: {
-          filter: true,
-          sort: true,
-          customBodyRender: (value) => {
-            return (
-              <div style={{textAlign:"center"}}><Badge color="warning">{value === 0 ? "Pending" : "Approved"}</Badge></div>
-            );
-          },
+    },
+    {
+      name: "createdBy",
+      label: "Created By",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (value) => {
+          return (
+            <div>{value !== null && value !== undefined ? value : "N/A"}</div>
+          );
         },
       },
-      {
-        name: "id",
-        label: "Action",
-        options: {
-          filter: true,
-          sort: false,
-          customBodyRenderLite: (dataIndex) => {
-            const alldata = data[dataIndex]
-            const isCompany = data[dataIndex]?.isCompany
-            const loanee = data[dataIndex]?.loanee
-            const guarantors = data[dataIndex]?.guarantors
-            const coBorrower = data[dataIndex]?.coBorrowers
-            const id = data[dataIndex]?.loan_no
-            const uniquereference = data[dataIndex]?.uniquereference
-            console.log("alldata", alldata)
-            return (
-                <div style={{ width: "auto"}}>
-                <div style={{ display: "inline-flex" }}>
-                {loanee === null &&
-                  <div style={{padding:"2px"}} className="btn btn-sm" >
-                  <Badge 
-                  onClick={() => {
-                    if(isCompany === true ){
-                      localStorage.setItem("company", JSON.stringify(alldata))
-                      localStorage.setItem("type", 2)
-                    }else{
-                    localStorage.setItem("individual", JSON.stringify(alldata))
-                    localStorage.setItem("type", 1)
-                    }
-                    navigate('/nid-verify')}} id="addBorrower" color={'secondary'} className="text-capitalize" style={{cursor:"pointer"}} >
-                   <span ><UserPlus /></span>
+    },
+    {
+      name: "status",
+      label: "Status",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRenderLite: (dataIndex) => {
+          const loanee = data[dataIndex]?.loanee;
+          const coBorrowers = data[dataIndex]?.coBorrowers;
+          const guarantors = data[dataIndex]?.guarantors;
+          return (
+            <div style={{ width: "auto" }}>
+              {loanee === null && (
+                <Badge style={{ margin: "1px 0px" }} color="danger">
+                  Pending Borrower
+                </Badge>
+              )}
+              {coBorrowers?.length < 1 && (
+                <Badge style={{ margin: "1px 0px" }} color="warning">
+                  Pending Co-borrower
+                </Badge>
+              )}
+              {guarantors?.length < 1 && (
+                <Badge style={{ margin: "1px 0px" }} color="primary">
+                  Pending Guarantor
+                </Badge>
+              )}
+              {loanee !== null &&
+                coBorrowers?.length > 0 &&
+                guarantors?.length > 0 && (
+                  <Badge style={{ margin: "1px 0px" }} color="success">
+                    Waiting for <br /> Approval
                   </Badge>
-                  <UncontrolledTooltip
+                )}
+            </div>
+          );
+        },
+      },
+    },
+    {
+      name: "id",
+      label: "Action",
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRenderLite: (dataIndex) => {
+          const alldata = data[dataIndex];
+          const isCompany = data[dataIndex]?.isCompany;
+          const loanee = data[dataIndex]?.loanee;
+          const guarantors = data[dataIndex]?.guarantors;
+          const coBorrower = data[dataIndex]?.coBorrowers;
+          const id = data[dataIndex]?.loan_no;
+          const uniquereference = data[dataIndex]?.uniquereference;
+          console.log("alldata", alldata);
+          return (
+            <div style={{ width: "auto" }}>
+              <div style={{ display: "inline-flex" }}>
+                {loanee === null && (
+                  <div style={{ padding: "2px" }} className="btn btn-sm">
+                    <Badge
+                      onClick={() => {
+                        navigate("/borrower-nid-verify", {
+                          state: {
+                            userData: alldata,
+                            type: isCompany === true ? 2 : 1,
+                          },
+                        });
+                      }}
+                      id="addBorrower"
+                      color={"secondary"}
+                      className="text-capitalize"
+                      style={{ cursor: "pointer" }}
+                    >
+                      <span>
+                        <UserPlus />
+                      </span>
+                    </Badge>
+                    <UncontrolledTooltip
                       placement="top"
                       target="addBorrower"
                       trigger="hover"
-                    > Add Borrower</UncontrolledTooltip>
+                    >
+                      {" "}
+                      Add Borrower
+                    </UncontrolledTooltip>
                   </div>
-                    }
-                  <div style={{padding:"2px"}} className="btn btn-sm" >
+                )}
+                <div style={{ padding: "2px" }} className="btn btn-sm">
                   <Link
-                    id='button2'
-                      to={`/view-application`}
-                      state={{ userinfo: alldata }}
+                    id="button2"
+                    to={`/view-application`}
+                    state={{ userinfo: alldata }}
                   >
-                    <Badge id="details" color={'info'} className="text-capitalize" style={{cursor:"pointer"}} >
-                    <span ><Eye /></span>
+                    <Badge
+                      id="details"
+                      color={"info"}
+                      className="text-capitalize"
+                      style={{ cursor: "pointer" }}
+                    >
+                      <span>
+                        <Eye />
+                      </span>
                     </Badge>
                   </Link>
-                  {/* <Eye id="details" size={14} className='me-50' color="green" /> */}
-                  <UncontrolledTooltip
-                      placement="top"
-                      target="details"
-                    > View</UncontrolledTooltip>
-                  </div>
-                  <div style={{padding:"2px"}} className="btn btn-sm" >
+                  <UncontrolledTooltip placement="top" target="details">
+                    {" "}
+                    View
+                  </UncontrolledTooltip>
+                </div>
+                <div style={{ padding: "2px" }} className="btn btn-sm">
                   <Link
-                    id='button2'
-                      to={`/edit-application`}
-                      state={{ userinfo: alldata }}
+                    id="button2"
+                    to={`/edit-application`}
+                    state={{
+                      userinfo: alldata,
+                      type: isCompany === true ? 2 : 1,
+                    }}
                   >
-                    <Badge id="edit" color={'info'} className="text-capitalize" style={{cursor:"pointer"}} >
-                   <span ><Edit /></span>
-                  </Badge>
+                    <Badge
+                      id="edit"
+                      color={"info"}
+                      className="text-capitalize"
+                      style={{ cursor: "pointer" }}
+                    >
+                      <span>
+                        <Edit />
+                      </span>
+                    </Badge>
                   </Link>
-                  <UncontrolledTooltip
-                      placement="top"
-                      target="edit"
-                    > Edit</UncontrolledTooltip>
-                  </div>
-                  <div style={{padding:"2px"}} className="btn btn-sm" >
-                  <Badge 
-                  onClick={() => {
-                    localStorage.setItem("lonee", JSON.stringify(alldata))
-                    navigate('/guarantor-nid-verify')}} id="adduser" color={'primary'} className="text-capitalize" style={{cursor:"pointer"}} >
-                   <span ><UserPlus /></span>
+                  <UncontrolledTooltip placement="top" target="edit">
+                    {" "}
+                    Edit
+                  </UncontrolledTooltip>
+                </div>
+                <div style={{ padding: "2px" }} className="btn btn-sm">
+                  <Badge
+                    onClick={() => {
+                      navigate("/guarantor-nid-verify", {
+                        state: {
+                          userData: alldata,
+                          type: isCompany === true ? 2 : 1,
+                        },
+                      });
+                    }}
+                    id="adduser"
+                    color={"primary"}
+                    className="text-capitalize"
+                    style={{ cursor: "pointer" }}
+                  >
+                    <span>
+                      <UserPlus />
+                    </span>
                   </Badge>
                   <UncontrolledTooltip
-                      placement="top"
-                      target="adduser"
-                      trigger="hover"
-                    > Add Guarantor</UncontrolledTooltip>
-                  </div>
-                  <div style={{padding:"2px"}} className="btn btn-sm" >
+                    placement="top"
+                    target="adduser"
+                    trigger="hover"
+                  >
+                    {" "}
+                    Add Guarantor
+                  </UncontrolledTooltip>
+                </div>
+                <div style={{ padding: "2px" }} className="btn btn-sm">
                   <GrantorList guarantors={guarantors} />
-                  </div>
-                  <div style={{padding:"2px"}} className="btn btn-sm" >
-                  {/* <Link
-                      to={`/guarantor-nid-verify`}
-                      state={{ loanee: alldata }}
-                  > */}
-                  <Badge 
-                  onClick={() => {
-                    localStorage.setItem("lonee", JSON.stringify(alldata))
-                    navigate('/coborrower-nid-verify')}} id="addCoBorrower" color={'warning'} className="text-capitalize" style={{cursor:"pointer"}} >
-                   <span ><UserCheck /></span>
+                </div>
+                <div style={{ padding: "2px" }} className="btn btn-sm">
+                  <Badge
+                    onClick={() => {
+                      navigate("/coborrower-nid-verify", {
+                        state: {
+                          userData: alldata,
+                          type: isCompany === true ? 2 : 1,
+                        },
+                      });
+                    }}
+                    id="addCoBorrower"
+                    color={"warning"}
+                    className="text-capitalize"
+                    style={{ cursor: "pointer" }}
+                  >
+                    <span>
+                      <UserCheck />
+                    </span>
                   </Badge>
                   <UncontrolledTooltip
-                      placement="top"
-                      target="addCoBorrower"
-                      trigger="hover"
-                    > Add Co-Borrower</UncontrolledTooltip>
-                    {/* </Link> */}
-                  </div>
-                  <div style={{padding:"2px"}} className="btn btn-sm" >
+                    placement="top"
+                    target="addCoBorrower"
+                    trigger="hover"
+                  >
+                    {" "}
+                    Add Co-Borrower
+                  </UncontrolledTooltip>
+                </div>
+                <div style={{ padding: "2px" }} className="btn btn-sm">
                   <CoBorrowerList coBorrower={coBorrower} />
-                  </div>
-                  <div style={{padding:"2px"}} className="btn btn-sm" >
+                </div>
+                <div style={{ padding: "2px" }} className="btn btn-sm">
                   <AddDocument uniquereference={uniquereference} />
-                  </div>
-                  <div style={{padding:"2px"}} className="btn btn-sm" >
+                </div>
+                <div style={{ padding: "2px" }} className="btn btn-sm">
                   <DocumentList uniquereference={uniquereference} />
-                  </div>
-                  {((JSON.parse(localStorage.getItem('userData')).roleName)?.toLowerCase() === 'maker') &&
-                  <div style={{padding:"2px"}} className="btn btn-sm" >
-                  <Badge onClick={() => updateStatus(id)} id="Complete" color={'success'} className="text-capitalize" style={{cursor:"pointer"}} >
-                   <span ><CheckCircle /></span>
-                  </Badge>
-                  <UncontrolledTooltip
+                </div>
+                {JSON.parse(
+                  localStorage.getItem("userData")
+                ).roleName?.toLowerCase() === "maker" && (
+                  <div style={{ padding: "2px" }} className="btn btn-sm">
+                    <Badge
+                      onClick={() => updateStatus(id)}
+                      id="Complete"
+                      color={"success"}
+                      className="text-capitalize"
+                      style={{ cursor: "pointer" }}
+                    >
+                      <span>
+                        <CheckCircle />
+                      </span>
+                    </Badge>
+                    <UncontrolledTooltip
                       placement="top"
                       target="Complete"
                       trigger="hover"
-                    > Complete</UncontrolledTooltip>
+                    >
+                      {" "}
+                      Complete
+                    </UncontrolledTooltip>
                   </div>
-                   }
-                </div>
+                )}
               </div>
-            )
-          }
-        }
-      }
-    ]
+            </div>
+          );
+        },
+      },
+    },
+  ];
 
- useEffect(() => {
-  allNewApplication()
-}, [])  
-    const options = {
+  useEffect(() => {
+    if(user?.passwordChange === false){
+      navigate('/user/change-password')
+    }
+    allNewApplication();
+  }, []);
+  const options = {
     filterType: "checkbox",
     responsive: "standard",
     filter: false,
     search: false,
     selectableRows: "none",
-    }
+  };
 
   return (
     <UILoader blocking={block}>
-    <Card>
-      <CardHeader className="border-bottom">
-        <CardTitle tag="h4">New Application List</CardTitle>
-      </CardHeader>
-      <CardBody className="my-1 py-50">
-      {/* <Row
+      <Card>
+        <CardHeader className="border-bottom">
+          <CardTitle tag="h4">New Application List</CardTitle>
+        </CardHeader>
+        <CardBody className="my-1 py-50">
+          {/* <Row
         style={{ marginBottom: "10px", paddingLeft: "30px", padding: "15px" }}
       >
         <Col md="6">
@@ -519,17 +696,16 @@ const NewApplications = () => {
           </Button.Ripple>
         </Col>
       </Row> */}
-      <MUIDataTable
-        title={"New Application List"}
-        data={data}
-        columns={columns}
-        options={options}
-        />
-      
-      </CardBody>
-    </Card>
+          <MUIDataTable
+            title={"New Application List"}
+            data={data}
+            columns={columns}
+            options={options}
+          />
+        </CardBody>
+      </Card>
     </UILoader>
   );
 };
 
-export default NewApplications
+export default NewApplications;

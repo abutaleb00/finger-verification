@@ -6,7 +6,9 @@ const VerifiedApplications = lazy(() => import("../../views/pages/applications/V
 const GuarantorNidVerify = lazy(() => import("../../views/pages/applications/GuarantorNidVerify"))
 const GuarantorEcData = lazy(() => import("../../views/pages/applications/GuarantorEcData"))
 const EditApplicant = lazy(() => import("../../views/pages/applications/EditApplicant"));
-const NidVerify2 = lazy(() => import("../../views/pages/NidVerify2"));
+const InitNidVerify = lazy(() => import("../../views/pages/InitNidVerify"));
+const BorrowerNidVerify = lazy(() => import("../../views/pages/applications/BorrowerNidVerify"));
+const BorrowerEcData = lazy(() => import("../../views/pages/applications/BorrowerEcData"));
 const EcReturnData = lazy(() => import("../../views/pages/EcReturnData"));
 const Grantors = lazy(() => import("../../views/pages/Grantors"));
 // const ApplicationForm = lazy(() => import("../../views/pages/ApplicationForm"));
@@ -44,7 +46,23 @@ const OthersRoutes = [
       },
     {
         path: "/nid-verify",
-        element: <NidVerify2 />,
+        element: <InitNidVerify />,
+        meta: {
+          action: 'read',
+          resource: 'FingerPrintVerify'
+        }
+      },
+    {
+        path: "/borrower-nid-verify",
+        element: <BorrowerNidVerify />,
+        meta: {
+          action: 'read',
+          resource: 'FingerPrintVerify'
+        }
+      },
+    {
+        path: "/borrower-ec-data",
+        element: <BorrowerEcData />,
         meta: {
           action: 'read',
           resource: 'FingerPrintVerify'
@@ -203,7 +221,7 @@ const OthersRoutes = [
         }
       },
       {
-        path: "/admin/audit-trail",
+        path: "/audit-trail",
         element: <AuditTrail />,
         meta: {
           action: 'read',
@@ -211,7 +229,7 @@ const OthersRoutes = [
         }
       },
       {
-        path: "/admin/ec-data",
+        path: "/ec-data",
         element: <EcData />,
         meta: {
           action: 'read',
@@ -219,7 +237,7 @@ const OthersRoutes = [
         }
       },
       {
-        path: "/admin/user-list",
+        path: "/user-list",
         element: <UserList />,
         meta: {
           action: 'read',
@@ -227,7 +245,7 @@ const OthersRoutes = [
         }
       },
       {
-        path: "/admin/create-user",
+        path: "/create-user",
         element: <CreateUser />,
         meta: {
           action: 'read',
@@ -235,7 +253,7 @@ const OthersRoutes = [
         }
       },
       {
-        path: "/admin/update-user",
+        path: "/update-user",
         element: <UpdateUser />,
         meta: {
           action: 'read',
@@ -243,7 +261,7 @@ const OthersRoutes = [
         }
       },
       {
-        path: "/admin/ec-user-create",
+        path: "/ec-user-create",
         element: <CreateEcUser />,
         meta: {
           action: 'read',
@@ -251,7 +269,7 @@ const OthersRoutes = [
         }
       },
       {
-        path: "/admin/ec-user-update",
+        path: "/ec-user-update",
         element: <EditEcUser />,
         meta: {
           action: 'read',
@@ -259,7 +277,7 @@ const OthersRoutes = [
         }
       },
       {
-        path: "/admin/role-permissions",
+        path: "/role-permissions",
         element: <Role />,
         meta: {
           action: 'read',
