@@ -66,7 +66,7 @@ const GuarantorEcData = (props) => {
     e.preventDefault();
     const ecdata = {
       ecjobid: location.state?.jobId,
-      nidphoto: nidPhoto,
+      nidphoto: state?.photo,
       name: state?.name,
       nameEn: state?.nameEn,
       bloodGroup: state?.bloodGroup,
@@ -300,7 +300,8 @@ const GuarantorEcData = (props) => {
                     Guarantor Photo
                   </p>
                   <img
-                    src={`data:image/jpeg;base64,${nidPhoto}`}
+                    // src={`data:image/jpeg;base64,${nidPhoto}`}
+                    src={`data:image/jpeg;base64,${state?.photo}`}
                     alt="nid photo"
                     style={{
                       width: 130,

@@ -50,6 +50,61 @@ console.log("location", location)
     setState({ ...state, ...data });
   };
   window.receiveFingerData = receiveFingerData;
+  const callECServer = () => {
+    const datatosend = {
+      nationalId: state.nid,
+      dateOfBirth: moment(state.dob).format("DD/MM/YYYY"),
+    };
+    setState({ ...state, block: true });
+    axios
+      .post("/getvoter", datatosend)
+      .then((res) => {
+        if (res.data.result.error === false) {
+          setState({ ...state, block: false });
+          Swal.fire({
+            title: "Verified",
+            text: "Now you can proceed to next step",
+            icon: "success",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Proceed!",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              setState({ ...state, ecresult: res.data.data });
+              navigate("/ec-data", {
+                state: {
+                  userinfo: res.data.data,
+                  jobId: state?.jobId,
+                  broweerType: Number(state.accountType),
+                  preUserdata: location?.state?.userData,
+                  type: location?.state?.type,
+                },
+              });
+              // document.getElementById("button2").click();
+            }
+          });
+        } else if (res.data.result.error === true) {
+          setState({ ...state, block: false });
+          Swal.fire({
+            title: "Failed",
+            text: "No User Data Found",
+            icon: "warning",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Okay",
+          }).then((result) => {
+            if (result.isConfirmed) {
+            }
+          });
+          // this.setState({block: false})
+          // toast.error(res.data.result.errorMsg)
+        }
+      })
+      .catch((err) => {
+        setState({ ...state, block: false });
+        toast.error(err.data.result.errorMsg);
+      });
+  };
   const errorAlert = () => {
     Swal.fire({
       icon: "error",
@@ -166,116 +221,94 @@ console.log("location", location)
                   // style={{display:"none"}}
                   id="button1"
                   color="primary"
-                  onClick={() => {
-                    console.log("clicked");
-                    let dataToSend = {
-                      dateOfBirth: state.dob,
-                      fingerEnums: [
-                        "RIGHT_THUMB",
-                        "RIGHT_INDEX",
-                        "LEFT_THUMB",
-                        "LEFT_INDEX",
-                      ],
-                      listoffingers: state.listoffingers,
-                      mobileNumber:
-                        state.mobileNumber === undefined ||
-                        state.mobileNumber === null
-                          ? ""
-                          : state.mobileNumber,
-                    };
-                    dataToSend[
-                      state.nid.length === 17 ? "nid17Digit" : "nid10Digit"
-                    ] = state.nid;
+                  // onClick={() => {
+                  //   console.log("clicked");
+                  //   let dataToSend = {
+                  //     dateOfBirth: state.dob,
+                  //     fingerEnums: [
+                  //       "RIGHT_THUMB",
+                  //       "RIGHT_INDEX",
+                  //       "LEFT_THUMB",
+                  //       "LEFT_INDEX",
+                  //     ],
+                  //     listoffingers: state.listoffingers,
+                  //     mobileNumber:
+                  //       state.mobileNumber === undefined ||
+                  //       state.mobileNumber === null
+                  //         ? ""
+                  //         : state.mobileNumber,
+                  //   };
+                  //   dataToSend[
+                  //     state.nid.length === 17 ? "nid17Digit" : "nid10Digit"
+                  //   ] = state.nid;
 
-                    //console.log("datato send ", ecData.data.success.data);
-                    setState({ block: true });
-                    console.log("api end");
-                    axios.post("/makethefulleccall", dataToSend).then((res) => {
-                      if (res.data.result.error === false) {
-                        setState({
-                          ...state,
-                          block: true,
-                          loaderText: "Processing.....",
-                        });
-                        setTimeout(() => {
-                          let dataSend = {
-                            ...res.data.data,
-                          };
-                          axios.post("/callECVerify", dataSend).then((res) => {
-                            if (res.data.result.error === false) {
-                              setState({
-                                ...state,
-                                block: false,
-                                ecresult:
-                                  res.data?.data?.verificationResponse
-                                    ?.voterInfo,
-                                loaderText: res.data.data.result,
-                                jobId: res.data?.data?.jobId,
-                              });
-                              if (res.data.data.result === "MATCH FOUND") {
-                                navigate("/guarantor-ec-data", {
-                                  state: {
-                                    userinfo: res.data?.data?.verificationResponse?.voterInfo,
-                                    jobId: res.data?.data?.jobId,
-                                    broweerType: Number(state.accountType),
-                                    preUserdata: location?.state?.userData,
-                                    type: location?.state?.type
-                                  },
-                                });
-                                // document.getElementById("button2").click();
-                              } else if (
-                                state.loaderText === "NO MATCH FOUND"
-                              ) {
-                                toast.error("NO MATCH FOUND");
-                                setTimeout(() => {
-                                  loaderHide();
-                                }, 1000);
-                              }
-                            } else {
-                              setState({
-                                ...state,
-                                loaderText: res.data.result.errMsg,
-                                block: false,
-                              });
-                              toast.error(res.data.result.errMsg);
-                            }
-                          });
-                        }, 2000);
-                      } else if (res.data.result.error === true) {
-                        setState({ ...state, block: false });
-                        toast.error(res.data.result.errorMsg);
-                      }
-                    });
-                  }}
-                  //  onClick={(e) => {
-                  //   callECServer()
-                  //     const ecresult = data.filter((obj) => obj.nationalId === state.nid);
-                  //    if(ecresult?.length > 0){
-                  //     setState({ecresult: ecresult}, ()=> {
-                  //       // document.getElementById("button2").click();
-                  //       dataAlert()
-                  //     })
-                  //    } else {
-                  //     dataAlert()
-                  //     // successAlert()
-                  //    }
+                  //   //console.log("datato send ", ecData.data.success.data);
+                  //   setState({ block: true });
+                  //   console.log("api end");
+                  //   axios.post("/makethefulleccall", dataToSend).then((res) => {
+                  //     if (res.data.result.error === false) {
+                  //       setState({
+                  //         ...state,
+                  //         block: true,
+                  //         loaderText: "Processing.....",
+                  //       });
+                  //       setTimeout(() => {
+                  //         let dataSend = {
+                  //           ...res.data.data,
+                  //         };
+                  //         axios.post("/callECVerify", dataSend).then((res) => {
+                  //           if (res.data.result.error === false) {
+                  //             setState({
+                  //               ...state,
+                  //               block: false,
+                  //               ecresult:
+                  //                 res.data?.data?.verificationResponse
+                  //                   ?.voterInfo,
+                  //               loaderText: res.data.data.result,
+                  //               jobId: res.data?.data?.jobId,
+                  //             });
+                  //             if (res.data.data.result === "MATCH FOUND") {
+                  //               navigate("/guarantor-ec-data", {
+                  //                 state: {
+                  //                   userinfo: res.data?.data?.verificationResponse?.voterInfo,
+                  //                   jobId: res.data?.data?.jobId,
+                  //                   broweerType: Number(state.accountType),
+                  //                   preUserdata: location?.state?.userData,
+                  //                   type: location?.state?.type
+                  //                 },
+                  //               });
+                  //               // document.getElementById("button2").click();
+                  //             } else if (
+                  //               state.loaderText === "NO MATCH FOUND"
+                  //             ) {
+                  //               toast.error("NO MATCH FOUND");
+                  //               setTimeout(() => {
+                  //                 loaderHide();
+                  //               }, 1000);
+                  //             }
+                  //           } else {
+                  //             setState({
+                  //               ...state,
+                  //               loaderText: res.data.result.errMsg,
+                  //               block: false,
+                  //             });
+                  //             toast.error(res.data.result.errMsg);
+                  //           }
+                  //         });
+                  //       }, 2000);
+                  //     } else if (res.data.result.error === true) {
+                  //       setState({ ...state, block: false });
+                  //       toast.error(res.data.result.errorMsg);
+                  //     }
+                  //   });
                   // }}
+                  onClick={(e) => {
+                    callECServer();
+                  }}
                   disabled={state.nid === ""}
                 >
                   Submit
                 </Button>
-                <Link
-                  id="button2"
-                  style={{ display: "none" }}
-                  to={`/ec-data`}
-                  state={{
-                    userinfo: state.ecresult,
-                    jobId: state.jobId,
-                    broweerType: Number(state.accountType),
-                  }}
-                >
-                  redirect
-                </Link>
               </Col>
             </Row>
           </Form>

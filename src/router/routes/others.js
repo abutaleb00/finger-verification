@@ -229,7 +229,7 @@ const OthersRoutes = [
         }
       },
       {
-        path: "/ec-data",
+        path: "/ec-user",
         element: <EcData />,
         meta: {
           action: 'read',

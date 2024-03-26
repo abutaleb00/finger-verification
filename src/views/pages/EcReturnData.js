@@ -68,7 +68,7 @@ const EcReturnData = (props) => {
     e.preventDefault();
     const ecdata = {
       ecjobid: location.state?.jobId,
-      nidphoto: nidPhoto,
+      nidphoto: state?.photo,
       name: state?.name,
       nameEn: state?.nameEn,
       bloodGroup: state?.bloodGroup,
@@ -182,7 +182,7 @@ const EcReturnData = (props) => {
       });
   };
   useEffect(() => {
-    getNidPhoto();
+    // getNidPhoto();
     getBranchList();
   }, []);
   return (
@@ -329,7 +329,8 @@ const EcReturnData = (props) => {
                     Applicant Photo
                   </p>
                   <img
-                    src={`data:image/jpeg;base64,${nidPhoto}`}
+                    // src={`data:image/jpeg;base64,${nidPhoto}`}
+                    src={`data:image/jpeg;base64,${state?.photo}`}
                     alt="nid photo"
                     style={{
                       width: 130,
@@ -831,4 +832,3 @@ const EcReturnData = (props) => {
   );
 };
 export default EcReturnData;
-
