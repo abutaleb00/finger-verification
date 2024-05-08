@@ -17,6 +17,26 @@ import { useState } from "react";
 import toast from 'react-hot-toast'
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import UILoader from '@components/ui-loader'
+import SelectRequired from "../../components/SelectRequired";
+
+const Selects = (props) => (
+  <SelectRequired
+    {...props}
+    SelectComponent={Select}
+    options={props.options || options}
+  />
+);
+const styles = {
+  control: (base) => ({
+    ...base,
+    fontFamily: "Times New Roman",
+  }),
+  menu: (base) => ({
+    ...base,
+    fontSize: 11,
+    lineHeight: 1,
+  }),
+};
 const CreateUser = (props) => {
   const location = useLocation()
   const navigate = useNavigate()
@@ -42,7 +62,7 @@ const CreateUser = (props) => {
       employeeTypeRef: "Permanent",
       passwordSt:"112233",
       employeeDesignation:"",
-      roles: ["User"],
+      roles: ["maker"],
       pages: [
           {
               name: "Dashboard",
@@ -93,7 +113,6 @@ const CreateUser = (props) => {
        })
      }
   const roleOptions = [
-      {value: null, label: "Select Role"},
       {value: "admin", label: "Admin"},
       {value: 'maker', label: "Maker"},
       {value: 'checker', label: "Checker"},
@@ -193,7 +212,7 @@ getBranchList()
             <Label className="form-label required-field" for="basicInput">
               Employee Type
             </Label>
-            <Select
+            <Selects
               isClearable={false}
               defaultValue={employeeOptions[0]}
               name="colors"
@@ -201,6 +220,9 @@ getBranchList()
               className="react-select"
               classNamePrefix="select"
               onChange={(e) => setSate({...state, employeeType: e.value, employeeTypeRef: e.label})}
+              styles={styles}
+              isSearchable
+              required
             />
           </Col>
           <Col className="mb-1" xl="4" md="6" sm="12">
@@ -219,7 +241,7 @@ getBranchList()
             <Label className="form-label required-field" for="basicInput">
               Branch Name
             </Label>
-            <Select
+            <Selects
               isClearable={false}
               defaultValue={branchOptions[0]}
               name="colors"
@@ -227,13 +249,16 @@ getBranchList()
               className="react-select"
               classNamePrefix="select"
               onChange={(e) => setSate({...state, branchId: e.value,  branchName: e.label})}
+              styles={styles}
+              isSearchable
+              required
             />
           </Col>
           <Col className="mb-1" xl="4" md="6" sm="12">
             <Label className="form-label required-field" for="basicInput">
               Role
             </Label>
-            <Select
+            <Selects
               isClearable={false}
               defaultValue={roleOptions[0]}
               name="colors"
@@ -241,13 +266,16 @@ getBranchList()
               className="react-select"
               classNamePrefix="select"
               onChange={(e) => setSate({...state, roleName: e.value, roles: [e.value]})}
+              styles={styles}
+              isSearchable
+              required
             />
           </Col>
           <Col className="mb-1" xl="4" md="6" sm="12">
             <Label className="form-label required-field" for="basicInput">
               Status
             </Label>
-            <Select
+            <Selects
               isClearable={false}
               defaultValue={statusOptions[0]}
               name="colors"
@@ -255,6 +283,9 @@ getBranchList()
               className="react-select"
               classNamePrefix="select"
               onChange={(e) => setSate({...state, isLocked: e.value})}
+              styles={styles}
+              isSearchable
+              required
             />
           </Col>
         </Row>
