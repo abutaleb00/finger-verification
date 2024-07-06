@@ -75,6 +75,7 @@ const EcReturnData = (props) => {
       dateOfBirth: state?.dateOfBirth,
       father: state?.father,
       mother: state?.mother,
+      gender: state?.gender?? "male",
       spouse: state?.spouse,
       mobile: state?.mobile,
       designation: state?.designation,

@@ -72,6 +72,7 @@ import {
         bloodGroup: state?.bloodGroup,
         dateOfBirth: state?.dateOfBirth,
         father: state?.father,
+        gender: state?.gender?? "male",
         mother: state?.mother,
         spouse: state?.spouse,
         mobile: state?.mobile,
