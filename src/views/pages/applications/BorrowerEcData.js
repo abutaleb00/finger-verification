@@ -57,9 +57,9 @@ import {
     const [branchOption, setBranchOption] = useState([]);
   
     const genderOptions = [
-      { value: "male", label: "Male" },
-      { value: "female", label: "Female", color: "#0052CC", isFixed: true },
-      { value: "third", label: "Third Person" },
+      { value: "Male", label: "Male" },
+      { value: "Female", label: "Female", color: "#0052CC", isFixed: true },
+      { value: "Third", label: "Third Person" },
     ];
     console.log("location 2", location?.state?.preUserdata)
     const createLoanApplication = (e) => {
@@ -72,7 +72,7 @@ import {
         bloodGroup: state?.bloodGroup,
         dateOfBirth: state?.dateOfBirth,
         father: state?.father,
-        gender: state?.gender?? "male",
+        gender: state?.gender?? "Male",
         mother: state?.mother,
         spouse: state?.spouse,
         mobile: state?.mobile,

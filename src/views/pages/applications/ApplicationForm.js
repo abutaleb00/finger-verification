@@ -685,7 +685,7 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}> Gender</Text>
             </View>
             <View style={[styles.tableColCus, { width: "26%" }]}>
-              <Text style={styles.tableCellCus}>Male</Text>
+              <Text style={styles.tableCellCus}>{applicantList?.gender?? "Male"}</Text>
             </View>
             <View style={[styles.tableColCus, { width: "3%" }]}>
               <Text style={styles.tableCellCus}>vii</Text>
@@ -954,7 +954,7 @@ const ApplicationForm = (props) => {
                       <Text style={styles.tableCellCus}> Gender</Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "26%" }]}>
-                      <Text style={styles.tableCellCus}>Male</Text>
+                      <Text style={styles.tableCellCus}>{v?.gender?? "Male"}</Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "3%" }]}>
                       <Text style={styles.tableCellCus}>ix</Text>
@@ -1236,7 +1236,7 @@ const ApplicationForm = (props) => {
                       <Text style={styles.tableCellCus}> Gender</Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "26%" }]}>
-                      <Text style={styles.tableCellCus}>Male</Text>
+                      <Text style={styles.tableCellCus}>{v?.gender?? "Male"}</Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "3%" }]}>
                       <Text style={styles.tableCellCus}>ix</Text>
