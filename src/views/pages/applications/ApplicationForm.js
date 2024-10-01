@@ -10,12 +10,44 @@ import {
   Image,
   Font,
 } from "@react-pdf/renderer";
+import moment from "moment";
 import { useLocation, Link, useNavigate } from "react-router-dom";
+import calibriBold from "../../../../public/calibri-bold.ttf";
+import calibriRegular from "../../../../public/calibri-regular.ttf";
 
 Font.register({
   family: "kalpurush",
   src: "/kalpurush.ttf",
 });
+
+Font.register({
+  family: "Calibri",
+  src: calibriRegular,
+  fontStyle: "normal",
+  fontWeight: "normal",
+  fonts: [
+    {
+      src: calibriRegular,
+    },
+    {
+      src: calibriBold,
+      fontWeight: "bold",
+    },
+  ],
+});
+// Font.register({
+//   family: 'Calibri',
+//   format: "truetype",
+//   fonts: [
+//     {
+//       src: calibriRegular,
+//     },
+//     {
+//       src: calibriBold,
+//       fontWeight: 'bold',
+//     },
+//   ],
+// });
 // Font.register({
 //   family: "Oswald",
 //   src: "https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf",
@@ -33,12 +65,13 @@ const styles = StyleSheet.create({
     paddingTop: 25,
     paddingBottom: 25,
     paddingHorizontal: 35,
-    fontFamily: "kalpurush",
+    fontFamily: "Calibri",
   },
   text: {
     padding: "0px",
-    fontSize: 10,
+    fontSize: 11,
     width: "100%",
+    fontFamily: "Calibri",
   },
   textT: {
     padding: "0px",
@@ -47,47 +80,54 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     marginTop: "10px",
+    fontFamily: "Calibri",
   },
   text1: {
-    fontSize: 10,
+    fontSize: 11,
     width: "30%",
     display: "flex",
+    fontFamily: "Calibri",
   },
   text2: {
-    fontSize: 10,
+    fontSize: 11,
     width: "70%",
     display: "flex",
     borderBottom: "1px dotted #000000",
+    fontFamily: "Calibri",
   },
   textf: {
-    fontSize: 10,
+    fontSize: 11,
     width: "70%",
     display: "flex",
-    fontFamily: "kalpurush",
+    fontFamily: "Calibri",
     borderBottom: "1px dotted #000000",
     maxLines: 2,
   },
   text3: {
-    fontSize: 10,
+    fontSize: 11,
     width: "33%",
     display: "flex",
+    fontFamily: "Calibri",
   },
   text4: {
-    fontSize: 10,
+    fontSize: 11,
     width: "33%",
     display: "flex",
+    fontFamily: "Calibri",
     borderBottom: "1px dotted #000000",
   },
   text5: {
-    fontSize: 10,
+    fontSize: 11,
     width: "21%",
     display: "flex",
+    fontFamily: "Calibri",
     borderBottom: "1px dotted #000000",
   },
   text6: {
-    fontSize: 10,
+    fontSize: 11,
     width: "50%",
     display: "flex",
+    fontFamily: "Calibri",
     textAlign: "center",
   },
   image: {
@@ -334,6 +374,7 @@ const styles = StyleSheet.create({
   tableCellCus: {
     margin: 2,
     fontSize: 9,
+    fontFamily: "Calibri",
   },
   page: {
     flexDirection: "row",
@@ -351,12 +392,14 @@ const ApplicationForm = (props) => {
   const [applicantList, setApplicantList] = useState([]);
   const [nomineeList, setNomineeList] = useState([]);
   const [coBorrowerList, setCoBorrowerList] = useState([]);
+  const [coBorrowerName, setCoBorrowerName] = useState("");
   const [company, setCompany] = useState({});
   const [branchname, setBranchname] = useState("");
-  const [createdBy, setCreatedBy] = useState("");
-  const [approvedBy, setApprovedBy] = useState("");
+  const [createdBy, setCreatedBy] = useState(null);
+  const [approvedBy, setApprovedBy] = useState(null);
   const [createdByTime, setCreatedByTime] = useState("");
   const [approvedByTime, setApprovedByTime] = useState("");
+  const [loanInformation, setLoanInformation] = useState([]);
 
   useEffect(() => {
     setApplicantList(location.state?.userinfo?.loanee);
@@ -364,21 +407,24 @@ const ApplicationForm = (props) => {
     setNomineeList(location.state?.userinfo?.guarantors);
     setCompany(location.state?.userinfo?.companyProfile);
     setCoBorrowerList(location.state?.userinfo?.coBorrowers);
-    setCreatedBy(location.state?.userinfo?.createdBy);
-    setApprovedBy(location.state?.userinfo?.modifiedBy);
+    setCoBorrowerName(location.state?.userinfo?.coBorrowers[0]?.nameEn ?? "");
+    setCreatedBy(location.state?.userinfo?.createdByUser);
+    setApprovedBy(location.state?.userinfo?.modifiedByUser);
     setCreatedByTime(location.state?.userinfo?.creationDate);
     setApprovedByTime(location.state?.userinfo?.modificationDate);
+    setLoanInformation(location.state?.userinfo);
   }, [location.state?.userinfo]);
   console.log("location", location.state);
+
   const MyDoc = () => (
     <Document>
       <Page size="A4" style={styles.body}>
         <View style={styles.container}>
-        <View style={styles.leftColumn2}>
+          <View style={styles.leftColumn2}>
             <Image style={styles.image1} src="/verified.png" />
           </View>
           <View style={styles.rightColumn2}>
-          <Image style={styles.image3} src="/logo_sebplc.png" />
+            <Image style={styles.image3} src="/logo.png" />
           </View>
           {/* <View
             style={[
@@ -390,136 +436,24 @@ const ApplicationForm = (props) => {
           </View> */}
         </View>
         <View style={styles.container}>
-          <View style={[styles.cusView, { textAlign: "center", marginTop: "-10px" }]}>
+          <View
+            style={[
+              styles.cusView,
+              { textAlign: "center", marginTop: "-10px" },
+            ]}
+          >
             <Text style={[styles.text, { fontSize: 18 }]}>
               Fingerprint Verification Report
             </Text>
           </View>
         </View>
-        {/* <View style={styles.container}>
-          <View style={styles.leftColumn}>
-            <Image style={styles.image1} src="/verified.png" />
-          </View> */}
-        {/* <View style={styles.rightColumn}>
-            <View style={styles.table}>
-              <View style={styles.tableRow}>
-                <View style={styles.tableCol1}>
-                  <Text style={styles.tableCell}>A/C No.</Text>
-                </View>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>1</Text>
-                </View>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>2</Text>
-                </View>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>0</Text>
-                </View>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>1</Text>
-                </View>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>0</Text>
-                </View>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>1</Text>
-                </View>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>8</Text>
-                </View>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>9</Text>
-                </View>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>6</Text>
-                </View>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>2</Text>
-                </View>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>2</Text>
-                </View>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>3</Text>
-                </View>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>4</Text>
-                </View>
-                <View style={styles.tableCol}>
-                  <Text style={styles.tableCell}>6</Text>
-                </View>
-              </View>
-              <View style={styles.tableRow}>
-                <View style={styles.tableCol2}>
-                  <Text style={styles.tableCell}>Unique Customer ID Code</Text>
-                </View>
-                <View style={styles.tableCol3}>
-                  <Text style={styles.tableCell}>1</Text>
-                </View>
-                <View style={styles.tableCol3}>
-                  <Text style={styles.tableCell}>1</Text>
-                </View>
-                <View style={styles.tableCol3}>
-                  <Text style={styles.tableCell}>0</Text>
-                </View>
-                <View style={styles.tableCol3}>
-                  <Text style={styles.tableCell}>1</Text>
-                </View>
-                <View style={styles.tableCol3}>
-                  <Text style={styles.tableCell}>2</Text>
-                </View>
-                <View style={styles.tableCol3}>
-                  <Text style={styles.tableCell}>3</Text>
-                </View>
-                <View style={styles.tableCol3}>
-                  <Text style={styles.tableCell}>4</Text>
-                </View>
-                <View style={styles.tableCol3}>
-                  <Text style={styles.tableCell}>3</Text>
-                </View>
-                <View style={styles.tableCol3}>
-                  <Text style={styles.tableCell}>4</Text>
-                </View>
-              </View>
-              <View style={styles.tableRow}>
-                <View style={styles.tableCol4}>
-                  <Text style={styles.tableCell}>Date</Text>
-                </View>
-                <View style={styles.tableCol5}>
-                  <Text style={styles.tableCell}>0</Text>
-                </View>
-                <View style={styles.tableCol5}>
-                  <Text style={styles.tableCell}>5</Text>
-                </View>
-                <View style={styles.tableCol5}>
-                  <Text style={styles.tableCell}>0</Text>
-                </View>
-                <View style={styles.tableCol5}>
-                  <Text style={styles.tableCell}>9</Text>
-                </View>
-                <View style={styles.tableCol5}>
-                  <Text style={styles.tableCell}>2</Text>
-                </View>
-                <View style={styles.tableCol5}>
-                  <Text style={styles.tableCell}>0</Text>
-                </View>
-                <View style={styles.tableCol5}>
-                  <Text style={styles.tableCell}>2</Text>
-                </View>
-                <View style={styles.tableCol5}>
-                  <Text style={styles.tableCell}>3</Text>
-                </View>
-              </View>
-            </View>
-          </View> */}
-        {/* </View> */}
         <View style={styles.container}>
           <View style={styles.leftColumn1}>
             <View style={styles.cusView}>
-              <Text style={styles.text}>The Manager</Text>
+              <Text style={[styles.text, { fontFamily: "Calibri", fontSize: 10 }]}>The Manager</Text>
             </View>
             <View style={[styles.cusView, { marginTop: "-10px" }]}>
-              <Text style={styles.text}>Southeast Bank PLC.</Text>
+              <Text style={[styles.text, { fontFamily: "Calibri", fontSize: 10 }]}>LankaBangla Finance PLC.</Text>
             </View>
             <View style={[styles.cusView, { marginTop: "-10px" }]}>
               <Text
@@ -527,11 +461,11 @@ const ApplicationForm = (props) => {
                   display: "flex",
                   flexDirection: "row",
                   width: "auto",
-                  borderBottom: "1px solid #000000",
-                  fontSize: "9px",
+                  fontSize: "10px",
+                  fontFamily: "Calibri",
                 }}
               >
-                {branchname?.toUpperCase()}
+                {branchname}
               </Text>
               {/* <Text style={[styles.text,{width:"auto", marginLeft:10}]}>Branch</Text> */}
             </View>
@@ -542,7 +476,11 @@ const ApplicationForm = (props) => {
                   { marginTop: "5px", marginBottom: "-10px" },
                 ]}
               >
-                <Text style={[styles.text, {fontFamily:"Helvetica-Bold", fontSize: 8}]}>Name of Enterprise : {company?.companyName}</Text>
+                <Text
+                  style={[styles.text, { fontFamily: "Calibri", fontSize: 10 }]}
+                >
+                  Name of Enterprise : {company?.companyName}
+                </Text>
               </View>
             )}
             <View
@@ -551,7 +489,7 @@ const ApplicationForm = (props) => {
                 { marginTop: "0px", marginBottom: "-10px" },
               ]}
             >
-              <Text style={styles.text}>Dear Sir,</Text>
+              <Text style={[styles.text, {fontFamily: "Calibri",fontSize: "10px",}]}>Dear Sir,</Text>
             </View>
           </View>
           <View style={styles.rightColumn1}>
@@ -567,32 +505,251 @@ const ApplicationForm = (props) => {
           </View>
         </View>
         <View style={[styles.cusView, { marginTop: "5px" }]}>
-          <Text style={styles.text}>
-            I/We am/are applying for a loan from your Branch. I/We furnish below
-            mentioned information regarding the loan and personal details:
+          {location.state?.userinfo?.isCompany === false ? (
+            <Text style={[styles.text, {fontFamily: "Calibri",fontSize: "10px", textAlign:"justify"}]}>
+              Thank you for approving a
+              {loanInformation?.product_info !== null ? (
+                <Text
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "auto",
+                    fontSize: "10px",
+                    fontFamily: "Calibri",
+                  }}
+                >
+                  {" "}
+                  {loanInformation?.product_info}
+                </Text>
+              ) : (
+                " _______________ "
+              )}{" "}
+              loan/lease/credit facility in favour of me/us for an amount of BDT
+              {loanInformation?.loan_amount !== null ? (
+                <Text
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "auto",
+                    fontSize: "11px",
+                    fontFamily: "Calibri",
+                  }}
+                >
+                  {" "}
+                  {loanInformation?.loan_amount}
+                </Text>
+              ) : (
+                " _______________ "
+              )}{" "}
+              from your esteemed organization vide sanction letter being
+              reference no.{" "}
+              {loanInformation?.sanction_ref !== null ? (
+                <Text
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "auto",
+                    fontSize: "10px",
+                    fontFamily: "Calibri",
+                  }}
+                >
+                  {loanInformation?.sanction_ref}
+                </Text>
+              ) : (
+                " _______________ "
+              )}{" "}
+              dated
+              {loanInformation?.saction_date !== null ? (
+                <Text
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "auto",
+                    fontSize: "10px",
+                    fontFamily: "Calibri",
+                  }}
+                >
+                  {" "}
+                  {moment(loanInformation?.saction_date).format("DD-MMM-YYYY")}.
+                </Text>
+              ) : (
+                " ____________ ."
+              )}{" "}
+              which has been duly accepted by me/us. I/We am/are fully aware of
+              the approved credit facility{" "}
+              <Text
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  width: "auto",
+                  fontSize: "10px",
+                  fontFamily: "Calibri",
+                }}
+              >
+                along with all the terms and conditions and furnished below
+                information and personal details generated through my thumb
+                verification
+              </Text>{" "}
+              and executed all security charge documents against the above
+              mentioned loan/lease facility.
+            </Text>
+          ) : (
+            <Text style={[styles.text,{fontFamily: "Calibri", fontSize: "10px", textAlign:"justify"}]}>
+              Thank you for approving a
+              {loanInformation?.product_info !== null ? (
+                <Text
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "auto",
+                    fontSize: "10px",
+                    fontFamily: "Calibri",
+                  }}
+                >
+                  {" "}
+                  {loanInformation?.product_info}
+                </Text>
+              ) : (
+                " ____________ "
+              )}{" "}
+              loan/lease/credit facility in favour of {company?.companyName}{" "}
+              represented by its authorized officials/Director/Managing
+              Director/Chairman Mr.
+              {applicantList?.nameEn !== null ? (
+                <Text
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "auto",
+                    fontSize: "10px",
+                    fontFamily: "Calibri",
+                  }}
+                >
+                  {applicantList?.nameEn}
+                </Text>
+              ) : (
+                " ____________ "
+              )}{" "}
+              {coBorrowerName !== "" && (
+                <Text
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "auto",
+                    fontSize: "10px",
+                    fontFamily: "Calibri",
+                  }}
+                >
+                  {", "}
+                  Mr. {coBorrowerName}
+                </Text>
+              )}
+              for an amount of BDT
+              {loanInformation?.loan_amount !== null ? (
+                <Text
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "auto",
+                    fontSize: "10px",
+                    fontFamily: "Calibri",
+                  }}
+                >
+                  {" "}
+                  {loanInformation?.loan_amount}
+                </Text>
+              ) : (
+                " _______________ "
+              )}{" "}
+              from your esteemed organization vide sanction letter being
+              reference no.{" "}
+              {loanInformation?.sanction_ref !== null ? (
+                <Text
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "auto",
+                    fontSize: "10px",
+                    fontFamily: "Calibri",
+                  }}
+                >
+                  {loanInformation?.sanction_ref}
+                </Text>
+              ) : (
+                " _______________ "
+              )}{" "}
+              dated
+              {loanInformation?.saction_date !== null ? (
+                <Text
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "auto",
+                    fontSize: "10px",
+                    fontFamily: "Calibri",
+                  }}
+                >
+                  {" "}
+                  {moment(loanInformation?.saction_date).format("DD-MMM-YYYY")}.
+                </Text>
+              ) : (
+                " ____________ ."
+              )}{" "}
+              which has been duly accepted by us. I/We am/are fully aware of the
+              approved credit facility{" "}
+              <Text
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  width: "auto",
+                  fontSize: "10px",
+                  fontFamily: "Calibri",
+                }}
+              >
+                along with all the terms and conditions and furnished below
+                information and personal details generated through my thumb
+                verification
+              </Text>{" "}
+              and executed all security charge documents against the above
+              mentioned loan/lease facility.{" "}
+            </Text>
+          )}
+        </View>
+        <View
+          style={[styles.cusView, { marginTop: "10px", marginBottom: "10px" }]}
+        >
+          <Text
+            style={[
+              styles.textT,
+              {
+                fontSize: "14px",
+                fontWeight: "bold",
+                textAlign: "center",
+                fontFamily: "Calibri",
+              },
+            ]}
+          >
+            Applicant Related Information
           </Text>
         </View>
-        <View style={styles.cusView}>
+        <View style={[styles.cusView, { paddingRight: "0px", paddingLeft: "0px" }]}>
           <Text
             style={{
-              textDecoration: "underline",
               fontSize: "10px",
               fontWeight: "bold",
               textAlign: "center",
-            }}
-          >
-            APPLICANT RELATED INFORMATION
-          </Text>
-        </View>
-        <View style={styles.cusView}>
-          <Text
-            style={{
-              fontSize: "9px",
-              fontWeight: "bold",
-              textAlign: "center",
+              fontFamily: "Calibri",
             }}
           >
             EC Referance No: {applicantList?.ecjobid}
+          </Text>
+        </View>
+        <View
+          style={[styles.cusView, { paddingRight: "0px", paddingLeft: "0px" }]}
+        >
+          <Text style={{ fontSize: "10", fontWeight: "bold", color: "black", fontFamily: "Calibri", }}>
+            Date & Time of obtaining Thumb Impression:{" "}
+            {applicantList?.creationDate}
           </Text>
         </View>
         <View style={styles.table}>
@@ -611,7 +768,9 @@ const ApplicationForm = (props) => {
               </Text>
             </View>
             <View style={[styles.tableColCus, { width: "70%" }]}>
-              <Text style={styles.tableCellCus}>{applicantList?.name} </Text>
+              <Text style={[styles.tableCellCus, { fontFamily: "kalpurush" }]}>
+                {applicantList?.name}{" "}{" "}
+              </Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -621,7 +780,7 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}></Text>
             </View>
             <View style={[styles.tableColCus, { width: "27%" }]}>
-              <Text style={styles.tableCellCus}>In English Block Letter</Text>
+              <Text style={styles.tableCellCus}>In English</Text>
             </View>
             <View style={[styles.tableColCus, { width: "70%" }]}>
               <Text style={styles.tableCellCus}>{applicantList?.nameEn}</Text>
@@ -637,7 +796,9 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}>Father Name</Text>
             </View>
             <View style={[styles.tableColCus, { width: "70%" }]}>
-              <Text style={styles.tableCellCus}>{applicantList?.father} </Text>
+              <Text style={styles.tableCellCus}>
+                {applicantList?.porichoyResponse?.fathersNameEN}{" "}
+              </Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -650,7 +811,9 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}>Mother Name</Text>
             </View>
             <View style={[styles.tableColCus, { width: "70%" }]}>
-              <Text style={styles.tableCellCus}>{applicantList?.mother} </Text>
+              <Text style={styles.tableCellCus}>
+                {applicantList?.porichoyResponse?.mothersNameEN}{" "}
+              </Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -673,7 +836,7 @@ const ApplicationForm = (props) => {
             </View>
             <View style={[styles.tableColCus, { width: "28%" }]}>
               <Text style={styles.tableCellCus}>
-                {applicantList?.dateOfBirth}
+                {moment(applicantList?.dateOfBirth).format("DD-MMM-YYYY")}
               </Text>
             </View>
           </View>
@@ -685,7 +848,11 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}> Gender</Text>
             </View>
             <View style={[styles.tableColCus, { width: "26%" }]}>
-              <Text style={styles.tableCellCus}>Male</Text>
+              <Text style={styles.tableCellCus}>
+                {applicantList?.gender !== null
+                  ? applicantList?.gender
+                  : "Male"}
+              </Text>
             </View>
             <View style={[styles.tableColCus, { width: "3%" }]}>
               <Text style={styles.tableCellCus}>vii</Text>
@@ -694,7 +861,7 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}>Profession</Text>
             </View>
             <View style={[styles.tableColCus, { width: "28%" }]}>
-              <Text style={styles.tableCellCus}>
+              <Text style={[styles.tableCellCus,{fontFamily: "kalpurush"}]}>
                 {applicantList?.occupation}
               </Text>
             </View>
@@ -728,19 +895,27 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}>x</Text>
             </View>
             <View style={[styles.tableColCus, { width: "27%" }]}>
-              <Text style={styles.tableCellCus}>Loan Type</Text>
+              <Text style={styles.tableCellCus}>Loan Name</Text>
             </View>
             <View style={[styles.tableColCus, { width: "25%" }]}>
-              <Text style={styles.tableCellCus}>Personal</Text>
+              <Text style={styles.tableCellCus}>
+                {loanInformation?.product_info !== null
+                  ? loanInformation?.product_info
+                  : " "}
+              </Text>
             </View>
             <View style={[styles.tableColCus, { width: "4%" }]}>
               <Text style={styles.tableCellCus}>xi </Text>
             </View>
             <View style={[styles.tableColCus, { width: "16%" }]}>
-              <Text style={styles.tableCellCus}>Currency </Text>
+              <Text style={styles.tableCellCus}>Reference No </Text>
             </View>
             <View style={[styles.tableColCus, { width: "25%" }]}>
-              <Text style={styles.tableCellCus}>BDT </Text>
+              <Text style={styles.tableCellCus}>
+                {loanInformation?.sanction_ref !== null
+                  ? loanInformation?.sanction_ref
+                  : " "}
+              </Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -748,10 +923,14 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}>xii</Text>
             </View>
             <View style={[styles.tableColCus, { width: "27%" }]}>
-              <Text style={styles.tableCellCus}>Mode of Loan Operation</Text>
+              <Text style={styles.tableCellCus}>Loan Type</Text>
             </View>
             <View style={[styles.tableColCus, { width: "70%" }]}>
-              <Text style={styles.tableCellCus}>INDIVIDUAL</Text>
+              <Text style={styles.tableCellCus}>
+                {location.state?.userinfo?.isCompany === false
+                  ? "INDIVIDUAL"
+                  : "CORPORATE"}
+              </Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -759,25 +938,78 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}>xiii</Text>
             </View>
             <View style={[styles.tableColCus, { width: "27%" }]}>
-              <Text style={styles.tableCellCus}> Proposed Loan Amount</Text>
+              <Text style={styles.tableCellCus}> Loan Amount</Text>
             </View>
             <View style={[styles.tableColCus, { width: "7%" }]}>
-              <Text style={styles.tableCellCus}>In Fig</Text>
+              <Text style={styles.tableCellCus}>BDT</Text>
             </View>
             <View style={[styles.tableColCus, { width: "18%" }]}>
-              <Text style={styles.tableCellCus}></Text>
+              <Text style={styles.tableCellCus}>
+                {loanInformation?.loan_amount !== null
+                  ? loanInformation?.loan_amount
+                  : " "}
+              </Text>
             </View>
             <View style={[styles.tableColCus, { width: "10%" }]}>
-              <Text style={styles.tableCellCus}>In Word</Text>
+              <Text style={styles.tableCellCus}>Sanction Date</Text>
             </View>
             <View style={[styles.tableColCus, { width: "35%" }]}>
-              <Text style={styles.tableCellCus}></Text>
+              <Text style={styles.tableCellCus}>
+                {loanInformation?.saction_date !== null
+                  ? moment(loanInformation?.saction_date).format("DD-MMM-YYYY")
+                  : " "}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={[styles.tableColCus, { width: "3%" }]}>
+              <Text style={styles.tableCellCus}>xiv</Text>
+            </View>
+            <View style={[styles.tableColCus, { width: "46%" }]}>
+              <Text style={styles.tableCellCus}> Present Address</Text>
+            </View>
+            <View style={[styles.tableColCus, { width: "3%" }]}>
+              <Text style={styles.tableCellCus}>xiv</Text>
+            </View>
+            <View style={[styles.tableColCus, { width: "48%" }]}>
+              <Text style={styles.tableCellCus}>Parmanent Address</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={[styles.tableColCus, { width: "49%" }]}>
+              <Text style={styles.tableCellCus}>
+                {applicantList?.presentAddress?.plainAddress}
+              </Text>
+            </View>
+            <View style={[styles.tableColCus, { width: "51%" }]}>
+              <Text style={styles.tableCellCus}>
+                {applicantList?.permanentAddress?.plainAddress}
+              </Text>
             </View>
           </View>
         </View>
         {coBorrowerList?.length > 0 && (
-          <View style={[styles.cusView, { marginTop: "10px" }]}>
-            <Text style={styles.textT}>Co-Borrowers information below:</Text>
+          <View
+            style={[
+              styles.cusView,
+              { marginTop: "10px", marginBottom: "10px" },
+            ]}
+            break
+            wrap={false}
+          >
+            <Text
+              style={[
+                styles.textT,
+                {
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  fontFamily: "Calibri",
+                },
+              ]}
+            >
+              Co-Borrower's Information
+            </Text>
           </View>
         )}
         {coBorrowerList?.length > 0 &&
@@ -808,20 +1040,252 @@ const ApplicationForm = (props) => {
                     }
                   />
                 </View>
+                <View style={[styles.cusView, { marginTop: "5px" }]}>
+                  {location.state?.userinfo?.isCompany === false ? (
+                    <Text style={[styles.text, { fontSize: "10px", fontFamily: "Calibri", textAlign:"justify"}]}>
+                      Thank you for approving a
+                      {loanInformation?.product_info !== null ? (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {" "}
+                          {loanInformation?.product_info}
+                        </Text>
+                      ) : (
+                        " _______________ "
+                      )}{" "}
+                      loan/lease/credit facility in favour of me/us for an
+                      amount of BDT
+                      {loanInformation?.loan_amount !== null ? (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {" "}
+                          {loanInformation?.loan_amount}
+                        </Text>
+                      ) : (
+                        " _______________ "
+                      )}{" "}
+                      from your esteemed organization vide sanction letter being
+                      reference no.{" "}
+                      {loanInformation?.sanction_ref !== null ? (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {loanInformation?.sanction_ref}
+                        </Text>
+                      ) : (
+                        " _______________ "
+                      )}{" "}
+                      dated
+                      {loanInformation?.saction_date !== null ? (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {" "}
+                          {moment(loanInformation?.saction_date).format(
+                            "DD-MMM-YYYY"
+                          )}
+                          .
+                        </Text>
+                      ) : (
+                        " ____________ ."
+                      )}{" "}
+                      which has been duly accepted by me/us. I/We am/are fully
+                      aware of the approved credit facility{" "}
+                      <Text
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          width: "auto",
+                          fontSize: "10px",
+                          fontFamily: "Calibri",
+                        }}
+                      >
+                        along with all the terms and conditions and furnished
+                        below information and personal details generated through
+                        my thumb verification
+                      </Text>{" "}
+                      and executed all security charge documents against the
+                      above mentioned loan/lease facility.
+                    </Text>
+                  ) : (
+                    <Text style={[styles.text, {fontSize: "10px", fontFamily: "Calibri",textAlign:"justify"}]}>
+                      Thank you for approving a
+                      {loanInformation?.product_info !== null ? (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "11px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {" "}
+                          {loanInformation?.product_info}
+                        </Text>
+                      ) : (
+                        " ____________ "
+                      )}{" "}
+                      loan/lease/credit facility in favour of{" "}
+                      {company?.companyName} represented by its authorized
+                      officials/Director/Managing Director/Chairman Mr.
+                      {applicantList?.nameEn !== null ? (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {" "}
+                          {applicantList?.nameEn}
+                        </Text>
+                      ) : (
+                        " ____________ "
+                      )}{" "}
+                      {coBorrowerName !== "" && (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {", "}
+                          Mr. {coBorrowerName}
+                        </Text>
+                      )}
+                      for an amount of BDT
+                      {loanInformation?.loan_amount !== null ? (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {" "}
+                          {loanInformation?.loan_amount}
+                        </Text>
+                      ) : (
+                        " _______________ "
+                      )}{" "}
+                      from your esteemed organization vide sanction letter being
+                      reference No.{" "}
+                      {loanInformation?.sanction_ref !== null ? (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {loanInformation?.sanction_ref}
+                        </Text>
+                      ) : (
+                        " _______________ "
+                      )}{" "}
+                      dated
+                      {loanInformation?.saction_date !== null ? (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {" "}
+                          {moment(loanInformation?.saction_date).format(
+                            "DD-MMM-YYYY"
+                          )}
+                          .
+                        </Text>
+                      ) : (
+                        " ____________ ."
+                      )}{" "}
+                      which has been duly accepted by us. I/We am/are fully
+                      aware of the approved credit facility{" "}
+                      <Text
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          width: "auto",
+                          fontSize: "10px",
+                          fontFamily: "Calibri",
+                        }}
+                      >
+                        along with all the terms and conditions and furnished
+                        below information and personal details generated through
+                        my thumb verification
+                      </Text>{" "}
+                      and executed all security charge documents against the
+                      above mentioned loan/lease facility.{" "}
+                    </Text>
+                  )}
+                </View>
+                <View style={[styles.cusView, {paddingRight: "0px", paddingLeft: "0px"}]}>
+                  <Text
+                    style={{
+                      fontSize: "10px",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      fontFamily: "Calibri",
+                    }}
+                  >
+                    EC Referance No: {v?.ecjobid}
+                  </Text>
+                </View>
                 <View
                   style={[
-                    styles.cusView1,
-                    { width: "70%", flexDirection: "row", marginTop: 50 },
+                    styles.cusView,
+                    { paddingRight: "0px", paddingLeft: "0px" },
                   ]}
                 >
                   <Text
                     style={{
-                      fontSize: "9px",
+                      fontSize: "10",
                       fontWeight: "bold",
-                      textAlign: "center",
+                      color: "black",
+                      fontFamily: "Calibri",
                     }}
                   >
-                    EC Referance No: {v?.ecjobid}
+                    Date & Time of obtaining Thumb Impression: {v?.creationDate}
                   </Text>
                 </View>
                 <View style={styles.table}>
@@ -840,7 +1304,12 @@ const ApplicationForm = (props) => {
                       </Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "70%" }]}>
-                      <Text style={styles.tableCellCus}>
+                      <Text
+                        style={[
+                          styles.tableCellCus,
+                          { fontFamily: "kalpurush" },
+                        ]}
+                      >
                         {v?.name !== null ? v?.name : ""}
                         {"  "}
                       </Text>
@@ -857,7 +1326,7 @@ const ApplicationForm = (props) => {
                     </View>
                     <View style={[styles.tableColCus, { width: "27%" }]}>
                       <Text style={styles.tableCellCus}>
-                        In English Block Letter
+                        In English
                       </Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "70%" }]}>
@@ -882,7 +1351,9 @@ const ApplicationForm = (props) => {
                     <View style={[styles.tableColCus, { width: "70%" }]}>
                       <Text style={styles.tableCellCus}>
                         {" "}
-                        {v?.father !== null ? v?.father : ""}
+                        {v?.porichoyResponse?.fathersNameEN !== null
+                          ? v?.porichoyResponse?.fathersNameEN
+                          : ""}
                         {"  "}
                       </Text>
                     </View>
@@ -901,7 +1372,9 @@ const ApplicationForm = (props) => {
                     </View>
                     <View style={[styles.tableColCus, { width: "70%" }]}>
                       <Text style={styles.tableCellCus}>
-                        {v?.mother !== null ? v?.mother : ""}
+                        {v?.porichoyResponse?.mothersNameEN !== null
+                          ? v?.porichoyResponse?.mothersNameEN
+                          : ""}
                         {"  "}
                       </Text>
                     </View>
@@ -941,7 +1414,9 @@ const ApplicationForm = (props) => {
                     </View>
                     <View style={[styles.tableColCus, { width: "28%" }]}>
                       <Text style={styles.tableCellCus}>
-                        {v?.dateOfBirth !== null ? v?.dateOfBirth : "N/A"}
+                        {v?.dateOfBirth !== null
+                          ? moment(v?.dateOfBirth).format("DD-MMM-YYYY")
+                          : "N/A"}
                         {"  "}
                       </Text>
                     </View>
@@ -954,7 +1429,9 @@ const ApplicationForm = (props) => {
                       <Text style={styles.tableCellCus}> Gender</Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "26%" }]}>
-                      <Text style={styles.tableCellCus}>Male</Text>
+                      <Text style={styles.tableCellCus}>
+                        {v?.gender !== null ? v?.gender : "Male"}
+                      </Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "3%" }]}>
                       <Text style={styles.tableCellCus}>ix</Text>
@@ -963,7 +1440,7 @@ const ApplicationForm = (props) => {
                       <Text style={styles.tableCellCus}>Profession</Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "28%" }]}>
-                      <Text style={styles.tableCellCus}>
+                      <Text style={[styles.tableCellCus, {fontFamily: "kalpurush"}]}>
                         {v?.occupation !== null ? v?.occupation : "N/A"}
                         {"  "}
                       </Text>
@@ -1012,54 +1489,41 @@ const ApplicationForm = (props) => {
                   <View style={styles.tableRow}>
                     <View style={[styles.tableColCus, { width: "49%" }]}>
                       <Text style={styles.tableCellCus}>
-                        {v?.presentAddress?.additionalVillageOrRoad}
-                        {" ,"}
-                        {v?.presentAddress?.postOffice}
-                        {" - "}
-                        {v?.presentAddress?.postalCode}
-                        {" ,"}
-                        {v?.presentAddress?.upozila}
-                        {" ,"}
-                        {v?.presentAddress?.district}
-                        {" ,"}
-                        {v?.presentAddress?.division}
+                        {v?.presentAddress?.plainAddress}
                       </Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "51%" }]}>
                       <Text style={styles.tableCellCus}>
-                        {v?.permanentAddress?.additionalVillageOrRoad}
-                        {" ,"}
-                        {v?.permanentAddress?.postOffice}
-                        {" -"}
-                        {v?.permanentAddress?.postalCode}
-                        {" ,"}
-                        {v?.permanentAddress?.upozila}
-                        {" ,"}
-                        {v?.permanentAddress?.district}
-                        {" ,"}
-                        {v?.permanentAddress?.division}
+                        {v?.permanentAddress?.plainAddress}
                       </Text>
                     </View>
                   </View>
                 </View>
-                <Text
-                  style={{ fontSize: "11", fontWeight: "bold", color: "black" }}
-                >
-                  {" "}
-                  Date & Time of obtaining Thumb Impression: {v?.creationDate}
-                </Text>
-                <View
-                  style={[
-                    styles.cusViewH2,
-                    { marginBottom: "10px", marginTop: "10px" },
-                  ]}
-                ></View>
               </View>
             );
           })}
         {nomineeList?.length > 0 && (
-          <View style={[styles.cusView, { marginTop: "10px" }]}>
-            <Text style={styles.textT}>Guarantor’s information below:</Text>
+          <View
+            style={[
+              styles.cusView,
+              { marginTop: "10px", marginBottom: "10px" },
+            ]}
+            break
+            wrap={false}
+          >
+            <Text
+              style={[
+                styles.textT,
+                {
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  fontFamily: "Calibri",
+                },
+              ]}
+            >
+              Gurantor's Information
+            </Text>
           </View>
         )}
         {nomineeList?.length > 0 &&
@@ -1090,20 +1554,329 @@ const ApplicationForm = (props) => {
                     }
                   />
                 </View>
+                <View style={[styles.cusView, { marginTop: "5px" }]}>
+                  {location.state?.userinfo?.isCompany === false ? (
+                    <Text style={[styles.text,{fontSize: "10",fontFamily: "Calibri", textAlign:"justify"}]}>
+                      Thank you for approving a
+                      {loanInformation?.product_info !== null ? (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {" "}
+                          {loanInformation?.product_info}
+                        </Text>
+                      ) : (
+                        " _______________ "
+                      )}{" "}
+                      loan/lease/credit facility in favour of{" "}
+                      {coBorrowerName?.nameEn !== null ? (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          Mr.{" "}{applicantList?.nameEn}
+                        </Text>
+                      ) : (
+                        " ____________ "
+                      )}{" "}
+                      {coBorrowerName !== "" && (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {", "}Mr. {coBorrowerName}
+                        </Text>
+                      )}
+                      for an amount of BDT
+                      {loanInformation?.loan_amount !== null ? (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {" "}
+                          {loanInformation?.loan_amount}
+                        </Text>
+                      ) : (
+                        " _______________ "
+                      )}{" "}
+                      from your esteemed organization vide sanction letter being
+                      reference no.{" "}
+                      {loanInformation?.sanction_ref !== null ? (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {loanInformation?.sanction_ref}
+                        </Text>
+                      ) : (
+                        " _______________ "
+                      )}{" "}
+                      dated
+                      {loanInformation?.saction_date !== null ? (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {" "}
+                          {moment(loanInformation?.saction_date).format(
+                            "DD-MMM-YYYY"
+                          )}
+                          .
+                        </Text>
+                      ) : (
+                        " ____________ ."
+                      )}{" "}
+                      I/We am/are fully aware of the approved credit facility{" "}
+                      <Text
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          width: "auto",
+                          fontSize: "10px",
+                          fontFamily: "Calibri",
+                        }}
+                      >
+                        along with all the terms and conditions
+                      </Text>{" "}
+                      and furnished below information and personal details{" "}
+                      <Text
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          width: "auto",
+                          fontSize: "10px",
+                          fontFamily: "Calibri",
+                        }}
+                      >
+                        generated through my thumb verification
+                      </Text>{" "}
+                      and executed all security charge documents against the
+                      above mentioned loan/lease facility.
+                    </Text>
+                  ) : (
+                    <Text style={[styles.text,{fontSize: "10", fontFamily: "Calibri", textAlign:"justify"}]}>
+                      Thank you for approving a
+                      {loanInformation?.product_info !== null ? (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {" "}
+                          {loanInformation?.product_info}
+                        </Text>
+                      ) : (
+                        " ____________ "
+                      )}{" "}
+                      loan/lease/credit facility in favour of{" "}
+                      {company?.companyName} represented by its authorized
+                      officials/Director/Managing Director/Chairman Mr.
+                      {applicantList?.nameEn !== null ? (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {applicantList?.nameEn}
+                        </Text>
+                      ) : (
+                        " ____________ "
+                      )}{" "}
+                      {coBorrowerName !== "" && (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {", "}
+                          Mr. {coBorrowerName}
+                        </Text>
+                      )}
+                      for an amount of BDT
+                      {loanInformation?.loan_amount !== null ? (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {" "}
+                          {loanInformation?.loan_amount}
+                        </Text>
+                      ) : (
+                        " _______________ "
+                      )}{" "}
+                      from your esteemed organization vide sanction letter being
+                      reference no.{" "}
+                      {loanInformation?.sanction_ref !== null ? (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {loanInformation?.sanction_ref}
+                        </Text>
+                      ) : (
+                        " _______________ "
+                      )}{" "}
+                      dated
+                      {loanInformation?.saction_date !== null ? (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {" "}
+                          {moment(loanInformation?.saction_date).format(
+                            "DD-MMM-YYYY"
+                          )}
+                          .
+                        </Text>
+                      ) : (
+                        " ____________ ."
+                      )}{" "}
+                      We {company?.companyName} represented by its authorized
+                      officials/Director/Managing Director/Chairman Mr.
+                      {applicantList?.nameEn !== null ? (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {" "}
+                          {applicantList?.nameEn}
+                        </Text>
+                      ) : (
+                        " ____________ "
+                      )}{" "}
+                      {coBorrowerName !== "" && (
+                        <Text
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "auto",
+                            fontSize: "10px",
+                            fontFamily: "Calibri",
+                          }}
+                        >
+                          {", "}
+                          Mr. {coBorrowerName}
+                        </Text>
+                      )}
+                      are fully aware of the approved credit facility{" "}
+                      <Text
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          width: "auto",
+                          fontSize: "10px",
+                          fontFamily: "Calibri",
+                        }}
+                      >
+                        along with all the terms and conditions
+                      </Text>{" "}
+                      and furnished below information and details{" "}
+                      <Text
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          width: "auto",
+                          fontSize: "10px",
+                          fontFamily: "Calibri",
+                        }}
+                      >
+                        generated through my thumb verification
+                      </Text>{" "}
+                      as a corporate guarantor of the said credit facility as
+                      well as executed security document against the above
+                      mentioned loan/lease facility.
+                    </Text>
+                  )}
+                </View>
+                <View style={[styles.cusView, {paddingRight: "0px", paddingLeft: "0px" }]}>
+                  <Text
+                    style={{
+                      fontSize: "10px",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      fontFamily: "Calibri",
+                    }}
+                  >
+                    EC Referance No: {v?.ecjobid}
+                  </Text>
+                </View>
                 <View
                   style={[
-                    styles.cusView1,
-                    { width: "70%", flexDirection: "row", marginTop: 50 },
+                    styles.cusView,
+                    { paddingRight: "0px", paddingLeft: "0px" },
                   ]}
                 >
                   <Text
                     style={{
-                      fontSize: "9px",
+                      fontSize: "10",
                       fontWeight: "bold",
-                      textAlign: "center",
+                      color: "black",
                     }}
                   >
-                    EC Referance No: {v?.ecjobid}
+                    Date & Time of obtaining Thumb Impression: {v?.creationDate}
                   </Text>
                 </View>
                 <View style={styles.table}>
@@ -1122,7 +1895,12 @@ const ApplicationForm = (props) => {
                       </Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "70%" }]}>
-                      <Text style={styles.tableCellCus}>
+                      <Text
+                        style={[
+                          styles.tableCellCus,
+                          { fontFamily: "kalpurush" },
+                        ]}
+                      >
                         {v?.name !== null ? v?.name : ""}
                         {"  "}
                       </Text>
@@ -1139,7 +1917,7 @@ const ApplicationForm = (props) => {
                     </View>
                     <View style={[styles.tableColCus, { width: "27%" }]}>
                       <Text style={styles.tableCellCus}>
-                        In English Block Letter
+                        In English
                       </Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "70%" }]}>
@@ -1164,7 +1942,9 @@ const ApplicationForm = (props) => {
                     <View style={[styles.tableColCus, { width: "70%" }]}>
                       <Text style={styles.tableCellCus}>
                         {" "}
-                        {v?.father !== null ? v?.father : ""}
+                        {v?.porichoyResponse?.fathersNameEN !== null
+                          ? v?.porichoyResponse?.fathersNameEN
+                          : ""}
                         {"  "}
                       </Text>
                     </View>
@@ -1183,7 +1963,9 @@ const ApplicationForm = (props) => {
                     </View>
                     <View style={[styles.tableColCus, { width: "70%" }]}>
                       <Text style={styles.tableCellCus}>
-                        {v?.mother !== null ? v?.mother : ""}
+                        {v?.porichoyResponse?.mothersNameEN !== null
+                          ? v?.porichoyResponse?.mothersNameEN
+                          : ""}
                         {"  "}
                       </Text>
                     </View>
@@ -1223,7 +2005,9 @@ const ApplicationForm = (props) => {
                     </View>
                     <View style={[styles.tableColCus, { width: "28%" }]}>
                       <Text style={styles.tableCellCus}>
-                        {v?.dateOfBirth !== null ? v?.dateOfBirth : "N/A"}
+                        {v?.dateOfBirth !== null
+                          ? moment(v?.dateOfBirth).format("DD-MMM-YYYY")
+                          : "N/A"}
                         {"  "}
                       </Text>
                     </View>
@@ -1236,7 +2020,9 @@ const ApplicationForm = (props) => {
                       <Text style={styles.tableCellCus}> Gender</Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "26%" }]}>
-                      <Text style={styles.tableCellCus}>Male</Text>
+                      <Text style={styles.tableCellCus}>
+                        {v?.gender !== null ? v?.gender : "Male"}
+                      </Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "3%" }]}>
                       <Text style={styles.tableCellCus}>ix</Text>
@@ -1245,7 +2031,7 @@ const ApplicationForm = (props) => {
                       <Text style={styles.tableCellCus}>Profession</Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "28%" }]}>
-                      <Text style={styles.tableCellCus}>
+                      <Text style={[styles.tableCellCus, {fontFamily: "kalpurush"}]}>
                         {v?.occupation !== null ? v?.occupation : "N/A"}
                         {"  "}
                       </Text>
@@ -1294,48 +2080,16 @@ const ApplicationForm = (props) => {
                   <View style={styles.tableRow}>
                     <View style={[styles.tableColCus, { width: "49%" }]}>
                       <Text style={styles.tableCellCus}>
-                        {v?.presentAddress?.additionalVillageOrRoad}
-                        {" ,"}
-                        {v?.presentAddress?.postOffice}
-                        {" - "}
-                        {v?.presentAddress?.postalCode}
-                        {" ,"}
-                        {v?.presentAddress?.upozila}
-                        {" ,"}
-                        {v?.presentAddress?.district}
-                        {" ,"}
-                        {v?.presentAddress?.division}
+                        {v?.presentAddress?.plainAddress}
                       </Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "51%" }]}>
                       <Text style={styles.tableCellCus}>
-                        {v?.permanentAddress?.additionalVillageOrRoad}
-                        {" ,"}
-                        {v?.permanentAddress?.postOffice}
-                        {" -"}
-                        {v?.permanentAddress?.postalCode}
-                        {" ,"}
-                        {v?.permanentAddress?.upozila}
-                        {" ,"}
-                        {v?.permanentAddress?.district}
-                        {" ,"}
-                        {v?.permanentAddress?.division}
+                        {v?.permanentAddress?.plainAddress}
                       </Text>
                     </View>
                   </View>
                 </View>
-                <Text
-                  style={{ fontSize: "11", fontWeight: "bold", color: "black" }}
-                >
-                  {" "}
-                  Date & Time of obtaining Thumb Impression: {v?.creationDate}
-                </Text>
-                <View
-                  style={[
-                    styles.cusViewH2,
-                    { marginBottom: "10px", marginTop: "10px" },
-                  ]}
-                ></View>
               </View>
             );
           })}
@@ -1344,6 +2098,8 @@ const ApplicationForm = (props) => {
             styles.cusViewH2,
             { marginBottom: "10px", marginTop: "30px" },
           ]}
+          break
+          wrap={false}
         >
           <Text
             style={[
@@ -1354,115 +2110,130 @@ const ApplicationForm = (props) => {
                 textDecoration: "underline",
               },
             ]}
-            break
           >
-            DECLARATION:
+            Declaration:
           </Text>
         </View>
         <View style={[styles.cusViewH2, { marginBottom: "10px" }]}>
           <Text
-            style={[styles.text, { textAlign: "left", fontSize: "10" }]}
+            style={[styles.text, { textAlign: "left", fontSize: "10",textAlign:"justify" }]}
             break
           >
             We the undersigned confirm that we have obtained the Thumb
             Impression(s) of the above person(s)
             [borrower/co-borrower/guarantor/mortgagor, as applicable] and they
-            have put their Thumb Impression(s) as per guideline of BRPD Circular
-            # 15 dated 02.08.2023 in front of us. The above Thumb Impression(s)
-            have been verified with the database preserved for National Identity
-            Card (NID) of Bangladesh.
+            have put their Thumb Impression(s) as per guideline of DFIM Circular
+            No. 09 dated 07 August 2023 in front of us. The above Thumb
+            Impression(s) have been verified with the database preserved for
+            National Identity Card (NID) of Bangladesh.
           </Text>
         </View>
         <View style={[styles.cusViewH2, { marginBottom: "10px" }]}>
           <Text style={[styles.text, { textAlign: "left", fontSize: "10" }]}>
-          Date & Time of obtaining Thumb Impression: {createdByTime}
+            Date & Time of obtaining Thumb Impression: {createdBy?.creationDate}
           </Text>
         </View>
-        {/* <View style={[styles.cusViewH2, { marginTop: "40px" }]}>
-          <Text style={[styles.text, { textAlign: "left", fontSize: "12" }]}>
-          </Text>
-        </View>
-        <View
-          style={[
-            styles.cusViewH2,
-            { marginBottom: "10px", marginTop: "10px" },
-          ]}
-        >
-          <Text
-            style={[styles.text, { textAlign: "left", fontSize: "14" }]}
-            break
-          >
-            (Guarantor’s Signature)
-          </Text>
-        </View>
-        <View style={[styles.cusViewH2, { marginTop: "10px" }]}>
-          <Text
-            style={[styles.text, { textAlign: "left", fontSize: "12" }]}
-            break
-          >
-            Date:- 05-09-2023
-          </Text>
-        </View>
-        <View
-          style={[styles.cusViewH2, { marginBottom: "10px", marginTop: "5px" }]}
-        >
-          <Text
-            style={[
-              styles.text,
-              { textAlign: "left", fontSize: "12", fontWeight: "bold" },
-            ]}
-            break
-          >
-            Place:- Gulshan 1, Dhaka
-          </Text>
-        </View> */}
         <View style={styles.container}>
           <View style={[styles.leftColumn1, { width: "60%" }]}>
             <Text
-              style={[styles.text, { textAlign: "left", fontSize: "12" }]}
+              style={[
+                styles.text,
+                {
+                  textAlign: "left",
+                  fontSize: "11",
+                  marginBottom: "5px",
+                  fontFamily: "Calibri",
+                },
+              ]}
               break
             >
-              Made by: {createdBy}
+              Made by:
+            </Text>
+            <Text
+              style={[styles.text, { textAlign: "left", fontSize: "11" }]}
+              break
+            >
+              {createdBy?.fullName}
+            </Text>
+            <Text
+              style={[styles.text, { textAlign: "left", fontSize: "11" }]}
+              break
+            >
+            Employee ID: {createdBy?.employeeTypeRef}
             </Text>
             {/* <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{createdBy}</Text> */}
             <Text
               style={{
-                fontSize: "13",
-                fontWeight: "bold",
+                fontSize: "11",
                 color: "black",
-                marginTop: "30px",
+                marginTop: "60px",
+                fontFamily: "Calibri",
               }}
             >
               Signature with seal
             </Text>
             <Text
-              style={{ fontSize: "13", fontWeight: "bold", color: "black" }}
+              style={{
+                fontSize: "11",
+                color: "black",
+                fontFamily: "Calibri",
+              }}
             >
-              {createdByTime}
+              {createdBy?.creationDate}
             </Text>
           </View>
           <View style={styles.rightColumn1}>
             <Text
-              style={[styles.text, { textAlign: "left", fontSize: "12" }]}
+              style={[
+                styles.text,
+                {
+                  textAlign: "left",
+                  fontSize: "11",
+                  marginBottom: "5px",
+                  fontFamily: "Calibri",
+                },
+              ]}
               break
             >
-              Authorized by: {approvedBy}
+              Authorized by:
+            </Text>
+            <Text
+              style={[
+                styles.text,
+                { textAlign: "left", fontSize: "11", fontFamily: "Calibri" },
+              ]}
+              break
+            >
+              {approvedBy?.fullName}
+            </Text>
+            <Text
+              style={[
+                styles.text,
+                { textAlign: "left", fontSize: "11", fontFamily: "Calibri" },
+              ]}
+              break
+            >
+            Employee ID: {approvedBy?.employeeTypeRef}
             </Text>
             {/* <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{approvedBy}</Text> */}
             <Text
               style={{
-                fontSize: "13",
-                fontWeight: "bold",
+                fontSize: "11",
+                fontFamily: "Calibri",
                 color: "black",
-                marginTop: "30px",
+                marginTop: "60px",
               }}
             >
               Signature with seal
             </Text>
             <Text
-              style={{ fontSize: "13", fontWeight: "bold", color: "black" }}
+              style={{
+                fontSize: "11",
+                fontFamily: "Calibri",
+                color: "black",
+              }}
             >
-              {approvedByTime}
+              {approvedBy?.modificationDate}
             </Text>
           </View>
         </View>

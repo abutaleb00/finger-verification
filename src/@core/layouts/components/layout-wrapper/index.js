@@ -35,7 +35,7 @@ const LayoutWrapper = (props) => {
     localStorage.removeItem('individual')
     localStorage.removeItem('company')
     localStorage.removeItem('type')
-    ocalStorage.removeItem(config.storageTokenKeyName)
+    localStorage.removeItem(config.storageTokenKeyName)
     localStorage.removeItem(config.storageRefreshTokenKeyName)   
     axios.delete('/oauth/revoke').then(res => {
       if(res.data.result.error === false){
