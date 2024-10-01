@@ -232,10 +232,10 @@ console.log("location", location)
                             } else {
                               setState({
                                 ...state,
-                                loaderText: res.data.result.errMsg,
+                                loaderText: res.data.result.errorMsg,
                                 block: false,
                               });
-                              toast.error(res.data.result.errMsg);
+                              toast.error(res.data.result.errorMsg);
                             }
                           });
                         }, 2000);
