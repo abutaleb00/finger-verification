@@ -60,7 +60,7 @@ const PendingApplications = () => {
   const [filter, setFilter] = useState("");
   const [block, setBlock] = useState(false);
   const [state, setState] = useState({
-    startDate: moment().subtract(30, 'days').format("YYYY-MM-DD"),
+    startDate: moment().format("YYYY-MM-DD"),
     endDate: moment().add(1, 'days').format("YYYY-MM-DD"),
     skip: 0,
     limit: 1000,

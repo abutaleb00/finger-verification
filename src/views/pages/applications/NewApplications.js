@@ -62,7 +62,7 @@ const NewApplications = () => {
   const [remarks, setRemarks] = useState('')
   const [userData, setUserData] = useState(null)
   const [state, setState] = useState({
-    startDate: moment().subtract(30, 'days').format("YYYY-MM-DD"),
+    startDate: moment().format("YYYY-MM-DD"),
     endDate: moment().add(1, 'days').format("YYYY-MM-DD"),
     skip: 0,
     limit: 1000,
@@ -813,6 +813,7 @@ const NewApplications = () => {
               <Button type="submit" outline
                 color="primary" style={{ marginRight: "10px" }} >Submit</Button>
               <Button outline
+              onClick={()=> setShow(!show)}
                 color="danger">Cancel</Button>
             </div>
           </form>

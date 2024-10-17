@@ -57,10 +57,10 @@ const CoBorrowerEcData = (props) => {
 
   const genderOptions = [
     { value: "Male", label: "Male" },
-    { value: "Female", label: "Female", color: "#0052CC", isFixed: true },
+    { value: "Female", label: "Female" },
     { value: "Third", label: "Third Person" },
   ];
-  
+
   console.log("location 2", location?.state?.preUserdata)
   const createLoanApplication = (e) => {
     e.preventDefault();
@@ -73,7 +73,7 @@ const CoBorrowerEcData = (props) => {
       dateOfBirth: state?.dateOfBirth,
       father: state?.father,
       mother: state?.mother,
-      gender: state?.gender?? "Male",
+      gender: state?.gender ?? "Male",
       spouse: state?.spouse,
       mobile: state?.mobile,
       designation: state?.designation,
@@ -86,10 +86,10 @@ const CoBorrowerEcData = (props) => {
     const individualLonee = {
       loan_no: preUserdata?.loan_no,
       branchName: state?.branchName,
-      applicantInfo: broweerType === 1 ? preUserdata?.applicantInfo: null,
-      applicantName: broweerType === 1 ? preUserdata?.applicantName: null,
-      applicantFatherName: broweerType === 1 ? preUserdata?.fatherName: null,
-      applicantMobile: broweerType === 1 ? preUserdata?.applicantMobile: null,
+      applicantInfo: broweerType === 1 ? preUserdata?.applicantInfo : null,
+      applicantName: broweerType === 1 ? preUserdata?.applicantName : null,
+      applicantFatherName: broweerType === 1 ? preUserdata?.fatherName : null,
+      applicantMobile: broweerType === 1 ? preUserdata?.applicantMobile : null,
       status: 0,
     };
     const companyLonee = {
@@ -101,8 +101,8 @@ const CoBorrowerEcData = (props) => {
       loanapplication: broweerType === 1 ? individualLonee : companyLonee,
       companyProfile: broweerType === 2 ? preUserdata?.companyProfile : null,
       loanee: preUserdata?.loanee,
-      guarantors:  [...preUserdata?.guarantors],
-      coBorrowers:[...preUserdata?.coBorrowers, ecdata],
+      guarantors: [...preUserdata?.guarantors],
+      coBorrowers: [...preUserdata?.coBorrowers, ecdata],
     };
     setBlock(true);
     axios
@@ -165,7 +165,7 @@ const CoBorrowerEcData = (props) => {
         </CardHeader>
 
         <CardBody>
-          <form onSubmit={(e)=>createLoanApplication(e)}>
+          <form onSubmit={(e) => createLoanApplication(e)}>
             <Row>
               <Col
                 className="mb-1"
@@ -319,15 +319,15 @@ const CoBorrowerEcData = (props) => {
                 <Label className="form-label" for="basicInput">
                   Gender
                 </Label>
-                <Select
-                  isClearable={false}
-                  defaultValue={genderOptions[0]}
-                  name="colors"
-                  options={genderOptions}
+                <Selects
                   className="react-select"
-                  classNamePrefix="select"
+                  styles={styles}
+                  options={genderOptions}
+                  placeholder="Select Gender"
                   onChange={(e) => setSate({ ...state, gender: e.value })}
-                  // isDisabled={true}
+                  maxMenuHeight={140}
+                  isSearchable
+                  required
                 />
               </Col>
               <Col className="mb-1" xl="4" md="6" sm="12">
@@ -762,10 +762,10 @@ const CoBorrowerEcData = (props) => {
                 <Button
                   type="submit"
                   color="primary"
-                  // onClick={() => {
-                  //   localStorage.setItem("accountType", "5")
-                  //   window.location.href = "/nid-verify";
-                  // }}
+                // onClick={() => {
+                //   localStorage.setItem("accountType", "5")
+                //   window.location.href = "/nid-verify";
+                // }}
                 >
                   Submit
                 </Button>

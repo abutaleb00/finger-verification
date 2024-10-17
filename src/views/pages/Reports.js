@@ -56,7 +56,7 @@ const Reports = () => {
   const [data, setData] = useState([])
   const [branchOption, setBranchOption] = useState([])
   const [state, setState] = useState({
-    startDate: moment().subtract(30, 'days').format("YYYY-MM-DD"),
+    startDate: moment().subtract(1, 'days').format("YYYY-MM-DD"),
     endDate: moment().add(1, 'days').format("YYYY-MM-DD"),
     branchName: null,
     status: null,

@@ -58,7 +58,7 @@ const GuarantorEcData = (props) => {
 
   const genderOptions = [
     { value: "Male", label: "Male" },
-    { value: "Female", label: "Female", color: "#0052CC", isFixed: true },
+    { value: "Female", label: "Female" },
     { value: "Third", label: "Third Person" },
   ];
   console.log("location 2", location?.state?.preUserdata)
@@ -319,15 +319,15 @@ const GuarantorEcData = (props) => {
                 <Label className="form-label" for="basicInput">
                   Gender
                 </Label>
-                <Select
-                  isClearable={false}
-                  defaultValue={genderOptions[0]}
-                  name="colors"
-                  options={genderOptions}
+                <Selects
                   className="react-select"
-                  classNamePrefix="select"
+                  styles={styles}
+                  options={genderOptions}
+                  placeholder="Select Gender"
                   onChange={(e) => setSate({ ...state, gender: e.value })}
-                  // isDisabled={true}
+                  maxMenuHeight={140}
+                  isSearchable
+                  required
                 />
               </Col>
               <Col className="mb-1" xl="4" md="6" sm="12">

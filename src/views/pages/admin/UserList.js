@@ -421,9 +421,9 @@ const UserList = () => {
   ]
 
 
-  useEffect(() => {
-    searchEcData()
-  }, [])
+  // useEffect(() => {
+  //   searchEcData()
+  // }, [])
   const userTypeOption = [
     { value: "false", label: "Live User" },
     { value: "true", label: "Deleted User" },

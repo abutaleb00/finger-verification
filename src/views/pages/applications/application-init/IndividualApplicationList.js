@@ -10,7 +10,11 @@ import {
   CardTitle,
   CardBody,
   UncontrolledTooltip,
-  Button
+  Button,
+  Input,
+  Modal,
+  ModalBody,
+  ModalHeader
 } from "reactstrap";
 import Swal from "sweetalert2"
 import axios from 'axios'
@@ -21,10 +25,7 @@ import "flatpickr/dist/themes/airbnb.css";
 import "cleave.js/dist/addons/cleave-phone.us";
 import MUIDataTable from "mui-datatables"
 import moment from "moment"
-import GrantorList from "../../GrantorList";
-import DocumentList from "../DocumentList";
-import AddDocument from "../AddDocument";
-import { Search, Eye, Edit, UserPlus, X, CheckCircle, UserCheck } from 'react-feather'
+import { Search, Trash, Edit, UserPlus, X, CheckCircle, UserCheck } from 'react-feather'
 import UILoader from '@components/ui-loader'
 import toast from 'react-hot-toast'
 import { getUserData } from '@utils'
@@ -51,8 +52,11 @@ const IndividualApplicationList = () => {
   const [last, setLast] = useState(100)
   const [filter, setFilter] = useState("")
   const [block, setBlock] = useState(false)
+  const [show, setShow] = useState(false)
+  const [remarks, setRemarks] = useState('')
+  const [userData, setUserData] = useState(null)
   const [state, setState] = useState({
-    startDate: moment().subtract(30, 'days').format("YYYY-MM-DD"),
+    startDate: moment().format("YYYY-MM-DD"),
     endDate: moment().add(1, 'days').format("YYYY-MM-DD"),
     skip: 0,
     limit: 1000,
@@ -78,44 +82,6 @@ const IndividualApplicationList = () => {
         setBlock(false)
         toast.error(err.data.result.errorMsg)
       })
-  }
-  const updateStatus = (e) => {
-    const sentdata = {
-      loanapplication: {
-        loan_no: e,
-        status: 1
-      }
-    }
-    Swal.fire({
-      title: `Are you sure ?`,
-      text: `You want to Complete this Application`,
-      type: "warning",
-      icon: 'warning',
-      footer: "",
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      customClass: {
-        cancelButton: 'btn btn-danger ms-1',
-        confirmButton: 'btn btn-primary'
-      }
-    }).then((result) => {
-      if (result.isConfirmed === true) {
-        setBlock(true)
-        axios.put(`/updateloanstatus`, sentdata).then((res) => {
-          if (res.data.result.error === false) {
-            setBlock(false)
-            toast.success("Loan Application Update Successfully")
-            allNewApplication()
-          } else if (res.data.result.error === true) {
-            setBlock(false)
-            toast.error(res.data.result.errorMsg)
-          }
-        }).catch((e) => {
-          setBlock(false)
-          toast.error(e.data.result.errorMsg)
-        })
-      }
-    })
   }
   const columns = [
     {
@@ -228,6 +194,37 @@ const IndividualApplicationList = () => {
                     trigger="hover"
                   > Comple Application</UncontrolledTooltip>
                 </div>
+                {JSON.parse(
+                  localStorage.getItem("userData")
+                ).roleName?.toLowerCase() === "maker" || JSON.parse(
+                  localStorage.getItem("userData")
+                ).roleName?.toLowerCase() === "admin" && (
+                    <div style={{ padding: "2px" }} className="btn btn-sm">
+                      <Badge
+                        onClick={() => {
+                          setShow(true)
+                          setUserData(alldata)
+                        }
+                        }
+                        id="delete"
+                        color={"danger"}
+                        className="text-capitalize"
+                        style={{ cursor: "pointer" }}
+                      >
+                        <span>
+                          <Trash />
+                        </span>
+                      </Badge>
+                      <UncontrolledTooltip
+                        placement="top"
+                        target="delete"
+                        trigger="hover"
+                      >
+                        {" "}
+                        Delete Application
+                      </UncontrolledTooltip>
+                    </div>
+                  )}
               </div>
             </div>
           )
@@ -235,7 +232,34 @@ const IndividualApplicationList = () => {
       }
     }
   ]
-
+  const deleteApplication = (e) => {
+    e.preventDefault()
+    const sentdata = {
+      loanapplication: {
+        loan_no: userData?.loan_no,
+        isDeleted: true
+      },
+      remarks: remarks
+    };
+    setShow(false)
+    setBlock(true);
+    axios
+      .post(`/loandelete`, sentdata)
+      .then((res) => {
+        if (res.data.result.error === false) {
+          setBlock(false);
+          toast.success("Loan Application Deleted Successfully");
+          allNewApplication();
+        } else if (res.data.result.error === true) {
+          setBlock(false);
+          toast.error(res.data.result.errorMsg);
+        }
+      })
+      .catch((e) => {
+        setBlock(false);
+        toast.error(e.data.result.errorMsg);
+      });
+  }
   useEffect(() => {
     if (user?.passwordChange === false) {
       navigate('/user/change-password')
@@ -257,41 +281,6 @@ const IndividualApplicationList = () => {
           <CardTitle tag="h4">New Application List</CardTitle>
         </CardHeader>
         <CardBody className="my-1 py-50">
-          {/* <Row
-        style={{ marginBottom: "10px", paddingLeft: "30px", padding: "15px" }}
-      >
-        <Col md="6">
-        <FormGroup className="mbb">
-        <label>Search Data</label>
-        <Input
-          id='accountName'
-          className='w-100'
-          type='text'
-          placeholder={"Enter search data"}
-          onChange={e => setFilter(e.target.value.trim())}
-          onKeyDown={(e) => {
-            if (e.keyCode === 13) {
-              searchEcData()
-              }
-           }}
-           />
-        </FormGroup>
-        </Col>
-        <Col md="2" style={{ textAlign: "left" }}>
-          <Button.Ripple
-            size="12"
-            style={{marginTop:"19px", width:"100%"}}
-            onClick={() => {
-              searchEcData()
-            }}
-            outline
-            color="primary"
-          >
-            <Search size={14} />
-            <span className="align-middle ms-25">Search</span>
-          </Button.Ripple>
-        </Col>
-      </Row> */}
           <Row
             style={{ marginBottom: "10px", paddingLeft: "30px", padding: "15px" }}
           >
@@ -355,6 +344,34 @@ const IndividualApplicationList = () => {
 
         </CardBody>
       </Card>
+      <Modal isOpen={show} toggle={() => setShow(!show)} className='modal-dialog-centered modal-sm'>
+        <ModalHeader className='bg-transparent' toggle={() => setShow(!show)}></ModalHeader>
+        <ModalBody className='pb-3 px-sm-3'>
+          <h3 className='text-center mb-1' style={{ color: "red", fontWeight: "bold" }}>Are you sure ?</h3>
+          <p className='text-center mb-2'>You want to Delete this Application</p>
+          <form onSubmit={deleteApplication}>
+            <Input
+              type="textarea"
+              rows={3}
+              id="basicInput"
+              placeholder="Enter remarks"
+              value={remarks}
+              onChange={(e) => {
+                setRemarks(e.target.value)
+              }}
+              required
+            />
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "20px" }}>
+
+              <Button type="submit" outline
+                color="primary" style={{ marginRight: "10px" }} >Submit</Button>
+              <Button outline
+              onClick={()=> setShow(!show)}
+                color="danger">Cancel</Button>
+            </div>
+          </form>
+        </ModalBody>
+      </Modal>
     </UILoader>
   );
 };
