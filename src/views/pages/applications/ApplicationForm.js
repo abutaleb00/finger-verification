@@ -357,6 +357,7 @@ const ApplicationForm = (props) => {
   const [approvedBy, setApprovedBy] = useState("");
   const [createdByTime, setCreatedByTime] = useState("");
   const [approvedByTime, setApprovedByTime] = useState("");
+  const [loneType, setLoneType] = useState(false);
 
   useEffect(() => {
     setApplicantList(location.state?.userinfo?.loanee);
@@ -368,6 +369,7 @@ const ApplicationForm = (props) => {
     setApprovedBy(location.state?.userinfo?.modifiedBy);
     setCreatedByTime(location.state?.userinfo?.creationDate);
     setApprovedByTime(location.state?.userinfo?.modificationDate);
+    setLoneType(location.state?.userinfo?.isCompany);
   }, [location.state?.userinfo]);
   console.log("location", location.state);
   const MyDoc = () => (
@@ -731,7 +733,7 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}>Loan Type</Text>
             </View>
             <View style={[styles.tableColCus, { width: "25%" }]}>
-              <Text style={styles.tableCellCus}>Personal</Text>
+              <Text style={styles.tableCellCus}>{loneType === true ? "Company" : "Individual" }</Text>
             </View>
             <View style={[styles.tableColCus, { width: "4%" }]}>
               <Text style={styles.tableCellCus}>xi </Text>
@@ -751,7 +753,7 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}>Mode of Loan Operation</Text>
             </View>
             <View style={[styles.tableColCus, { width: "70%" }]}>
-              <Text style={styles.tableCellCus}>INDIVIDUAL</Text>
+              <Text style={styles.tableCellCus}>{loneType === true ? "Company" : "Individual" }</Text>
             </View>
           </View>
           <View style={styles.tableRow}>

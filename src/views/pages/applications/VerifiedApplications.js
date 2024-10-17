@@ -6,10 +6,16 @@ import {
   CardTitle,
   CardBody,
   UncontrolledTooltip,
+  Row,
+  Col,
+  Button
 } from "reactstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Flatpickr from "react-flatpickr"
 import "flatpickr/dist/themes/airbnb.css";
+import moment from "moment"
+import { Search } from 'react-feather'
 // ** Third Party Components
 import "cleave.js/dist/addons/cleave-phone.us";
 import MUIDataTable from "mui-datatables";
@@ -35,9 +41,11 @@ const VerifiedApplications = () => {
   const [filter, setFilter] = useState("");
   const [block, setBlock] = useState(false);
   const [state, setState] = useState({
-    branch: null,
-    status: null,
-  });
+    startDate: moment().subtract(30, 'days').format("YYYY-MM-DD"),
+    endDate: moment().add(1, 'days').format("YYYY-MM-DD"),
+    skip: 0,
+    limit: 1000,
+  })
   const searchEcData = () => {
     const send = {
       loanapplication: {
@@ -58,14 +66,15 @@ const VerifiedApplications = () => {
       loanapplication: {
         status: 2,
       },
+      ...state,
     };
     setBlock(true);
     axios
-      .post("/getloandetailscomplete", send)
+      .post("/getloanapplicationbydates", send)
       .then((res) => {
         if (res.data.result.error === false) {
           setBlock(false);
-          setData(res.data.data);
+          setData(res.data.data?.ldb);
         } else if (res.data.result.error === false) {
           setBlock(false);
           toast.error(res.data.result.errorMsg);
@@ -427,28 +436,28 @@ const VerifiedApplications = () => {
                 {JSON.parse(
                   localStorage.getItem("userData")
                 ).roleName?.toLowerCase() === "checker" && (
-                  <div style={{ padding: "2px" }} className="btn btn-sm">
-                    <Badge
-                      id="Reject"
-                      onClick={() => rejectStatus(id)}
-                      color={"danger"}
-                      className="text-capitalize"
-                      style={{ cursor: "pointer" }}
-                    >
-                      <span>
-                        <X />
-                      </span>
-                    </Badge>
-                    <UncontrolledTooltip
-                      placement="top"
-                      target="Reject"
-                      trigger="hover"
-                    >
-                      {" "}
-                      Reject
-                    </UncontrolledTooltip>
-                  </div>
-                )}
+                    <div style={{ padding: "2px" }} className="btn btn-sm">
+                      <Badge
+                        id="Reject"
+                        onClick={() => rejectStatus(id)}
+                        color={"danger"}
+                        className="text-capitalize"
+                        style={{ cursor: "pointer" }}
+                      >
+                        <span>
+                          <X />
+                        </span>
+                      </Badge>
+                      <UncontrolledTooltip
+                        placement="top"
+                        target="Reject"
+                        trigger="hover"
+                      >
+                        {" "}
+                        Reject
+                      </UncontrolledTooltip>
+                    </div>
+                  )}
               </div>
             </div>
           );
@@ -458,7 +467,7 @@ const VerifiedApplications = () => {
   ];
 
   useEffect(() => {
-    if(user?.passwordChange === false){
+    if (user?.passwordChange === false) {
       navigate('/user/change-password')
     }
     allVerifiedApplicant();
@@ -513,6 +522,60 @@ const VerifiedApplications = () => {
           </Button.Ripple>
         </Col>
       </Row> */}
+          <Row
+            style={{ marginBottom: "10px", paddingLeft: "30px", padding: "15px" }}
+          >
+            <Col md="4">
+              <label>Start Date</label>
+              <Flatpickr
+                style={{ backgroundColor: "#fff", opacity: "1", padding: "9px 12px" }}
+                value={state?.startDate}
+                id="date-time-picker"
+                className="form-control"
+                onChange={(date) => {
+                  setState({ ...state, startDate: moment(date[0]).format("YYYY-MM-DD") })
+                }}
+              />
+            </Col>
+            <Col md="4">
+              <label>End Date</label>
+              <Flatpickr
+                options={{
+                  dateFormat: "Y-m-d"
+                }}
+                style={{ backgroundColor: "#fff", opacity: "1", padding: "9px 12px" }}
+                value={state?.endDate}
+                data-enable-time
+                id="date-time-picker"
+                className="form-control"
+                readonly={false}
+                onChange={(date) => {
+                  setState({ ...state, endDate: date[0] })
+                }}
+              />
+            </Col>
+            <Col md="4" style={{ textAlign: "left" }}>
+              <Button.Ripple
+                size="12"
+                style={{ marginTop: "17px" }}
+                onClick={() => {
+                  allVerifiedApplicant()
+                }}
+                outline
+                color="primary"
+              // onKeyDown={(e) => {
+              //   if (e.keyCode === 13) {
+              //     this.setState({ page: 0 }, () => {
+              //       this.cusSearch();
+              //     });
+              //   }
+              // }}
+              >
+                <Search size={14} />
+                <span className="align-middle ms-25">Search</span>
+              </Button.Ripple>
+            </Col>
+          </Row>
           <MUIDataTable
             title={"Verified Application List"}
             data={data}

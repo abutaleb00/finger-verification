@@ -9,11 +9,13 @@ import {
   CardHeader,
   CardTitle,
   CardBody,
-  UncontrolledTooltip
+  UncontrolledTooltip,
+  Button
 } from "reactstrap";
 import Swal from "sweetalert2"
 import axios from 'axios'
 import { Link, useNavigate } from "react-router-dom";
+import Flatpickr from "react-flatpickr"
 import "flatpickr/dist/themes/airbnb.css";
 // ** Third Party Components
 import "cleave.js/dist/addons/cleave-phone.us";
@@ -35,14 +37,17 @@ const CompanyApplicationList = () => {
     const [filter, setFilter] = useState("")
     const [block, setBlock] = useState(false)
     const [state, setState] = useState({
-        branch: null,
-        status: null
+      startDate: moment().subtract(30, 'days').format("YYYY-MM-DD"),
+      endDate: moment().add(1, 'days').format("YYYY-MM-DD"),
+      skip: 0,
+      limit: 1000,
     })
        const allNewApplication = () => {
         const send = {
           loanapplication: {
               status: 5
-          }
+          },
+          ...state
         }
         setBlock(true)
          axios.post('/getloandetailspending', send).then(res => {
@@ -292,7 +297,7 @@ const CompanyApplicationList = () => {
   if(user?.passwordChange === false){
     navigate('/user/change-password')
   }
-  allNewApplication()
+  // allNewApplication()
 }, [])  
     const options = {
     filterType: "checkbox",
@@ -344,6 +349,60 @@ const CompanyApplicationList = () => {
           </Button.Ripple>
         </Col>
       </Row> */}
+      <Row
+            style={{ marginBottom: "10px", paddingLeft: "30px", padding: "15px" }}
+          >
+            <Col md="4">
+              <label>Start Date</label>
+              <Flatpickr
+                style={{ backgroundColor: "#fff", opacity: "1", padding: "9px 12px" }}
+                value={state?.startDate}
+                id="date-time-picker"
+                className="form-control"
+                onChange={(date) => {
+                  setState({ ...state, startDate: moment(date[0]).format("YYYY-MM-DD") })
+                }}
+              />
+            </Col>
+            <Col md="4">
+              <label>End Date</label>
+              <Flatpickr
+                options={{
+                  dateFormat: "Y-m-d"
+                }}
+                style={{ backgroundColor: "#fff", opacity: "1", padding: "9px 12px" }}
+                value={state?.endDate}
+                data-enable-time
+                id="date-time-picker"
+                className="form-control"
+                readonly={false}
+                onChange={(date) => {
+                  setState({ ...state, endDate: date[0] })
+                }}
+              />
+            </Col>
+            <Col md="4" style={{ textAlign: "left" }}>
+              <Button.Ripple
+                size="12"
+                style={{ marginTop: "17px" }}
+                onClick={() => {
+                  allNewApplication()
+                }}
+                outline
+                color="primary"
+              // onKeyDown={(e) => {
+              //   if (e.keyCode === 13) {
+              //     this.setState({ page: 0 }, () => {
+              //       this.cusSearch();
+              //     });
+              //   }
+              // }}
+              >
+                <Search size={14} />
+                <span className="align-middle ms-25">Search</span>
+              </Button.Ripple>
+            </Col>
+          </Row>
       <MUIDataTable
         title={"Enterprise Initiate Application List"}
         data={data}

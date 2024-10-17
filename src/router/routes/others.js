@@ -23,6 +23,7 @@ const EditGuarantor = lazy(() => import("../../views/pages/applications/EditGuar
 const ViewGuarantor = lazy(() => import("../../views/pages/applications/ViewGuarantor"));
 const PendingUser = lazy(() => import("../../views/pages/PendingUser"));
 const Reports = lazy(() => import("../../views/pages/Reports"));
+const DeleteReport = lazy(() => import("../../views/pages/DeleteReport"));
 const EcData = lazy(() => import("../../views/pages/ec/EcData"));
 const AuditTrail = lazy(() => import("../../views/pages/admin/AuditTrail"));
 const UserList = lazy(() => import("../../views/pages/admin/UserList"));
@@ -218,6 +219,14 @@ const OthersRoutes = [
         meta: {
           action: 'read',
           resource: 'Reports'
+        }
+      },
+      {
+        path: "/delete-report",
+        element: <DeleteReport />,
+        meta: {
+          action: 'read',
+          resource: 'AdminSetting'
         }
       },
       {
