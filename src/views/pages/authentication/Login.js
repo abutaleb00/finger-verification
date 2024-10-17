@@ -43,7 +43,7 @@ import {
   FormFeedback,
 } from 'reactstrap'
 // ** Illustrations Imports
-import illustrationsLight from '@src/assets/images/pages/login-v2.svg'
+import illustrationsLight from '@src/assets/images/pages/bg2.jpg'
 import illustrationsDark from '@src/assets/images/pages/login-v2-dark.svg'
 import logo from '@src/assets/images/logo/logo.png'
 import { isUserLoggedIn } from '@utils'
@@ -187,7 +187,7 @@ const Login = () => {
         </Link>
         <Col className='d-none d-lg-flex align-items-center p-5' lg='8' sm='12'>
           <div className='w-100 d-lg-flex align-items-center justify-content-center px-5'>
-            <img className='img-fluid' src={source} alt='Login Cover' />
+            <img className='img-fluid' style={{maxHeight:"400px"}} src={source} alt='Login Cover' />
           </div>
         </Col>
         <Col className='d-flex align-items-center auth-bg px-2 p-lg-5' lg='4' sm='12'>
