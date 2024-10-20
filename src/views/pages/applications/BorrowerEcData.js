@@ -143,7 +143,7 @@ import {
             console.log("res.data.data", res.data.data);
             setNidPhoto(res.data.data?.photolink);
             // setData(res.data.data)
-          } else if (res.data.result.error === false) {
+          } else if (res.data.result.error === true) {
             setBlock(false);
             toast.error(res.data.result.errorMsg);
           }
@@ -170,7 +170,7 @@ import {
             console.log("res.data.data", res.data.data);
             // setNidPhoto(res.data.data?.photolink)
             // setData(res.data.data)
-          } else if (res.data.result.error === false) {
+          } else if (res.data.result.error === true) {
             setBlock(false);
             toast.error(res.data.result.errorMsg);
           }

@@ -185,8 +185,8 @@ const Login = () => {
         {/* <img style={{width:"25px", height:"auto"}} src={logo2} alt='Login Cover' /> */}
           <h2 className='brand-text text-primary ms-1'>Fingerprint Verification Solution (Southeast Bank PLC.)</h2>
         </Link>
-        <Col className='d-none d-lg-flex align-items-center p-5' lg='8' sm='12'>
-          <div className='w-100 d-lg-flex align-items-center justify-content-center px-5'>
+        <Col className='d-none d-lg-flex align-items-center p-3 mt-3' lg='8' sm='12'>
+          <div className='w-100 d-lg-flex align-items-center justify-content-center pr-5'>
             <img className='img-fluid' style={{maxHeight:"400px"}} src={source} alt='Login Cover' />
           </div>
         </Col>

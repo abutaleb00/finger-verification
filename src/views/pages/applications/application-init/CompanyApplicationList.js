@@ -44,7 +44,7 @@ const CompanyApplicationList = () => {
   const [remarks, setRemarks] = useState('')
   const [userData, setUserData] = useState(null)
   const [state, setState] = useState({
-    startDate: moment().format("YYYY-MM-DD"),
+    startDate: moment().subtract(4, 'days').format("YYYY-MM-DD"),
     endDate: moment().add(1, 'days').format("YYYY-MM-DD"),
     skip: 0,
     limit: 1000,
@@ -326,7 +326,7 @@ const CompanyApplicationList = () => {
     if (user?.passwordChange === false) {
       navigate('/user/change-password')
     }
-    // allNewApplication()
+    allNewApplication()
   }, [])
   const options = {
     filterType: "checkbox",

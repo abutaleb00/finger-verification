@@ -60,26 +60,12 @@ const PendingApplications = () => {
   const [filter, setFilter] = useState("");
   const [block, setBlock] = useState(false);
   const [state, setState] = useState({
-    startDate: moment().format("YYYY-MM-DD"),
+    startDate: moment().subtract(4, 'days').format("YYYY-MM-DD"),
     endDate: moment().add(1, 'days').format("YYYY-MM-DD"),
     skip: 0,
     limit: 1000,
   })
-  const searchEcData = () => {
-    const send = {
-      loanapplication: {
-        status: 1,
-      },
-    };
-    setBlock(true);
-    axios
-      .post("/getloandetailswaiting", send)
-      .then((res) => {
-        setBlock(false);
-        setData(res.data.data);
-      })
-      .catch((err) => console.log(err));
-  };
+
   const allPendingApplicant = () => {
     const send = {
       loanapplication: {
@@ -94,7 +80,7 @@ const PendingApplications = () => {
         if (res.data.result.error === false) {
           setBlock(false);
           setData(res.data.data?.ldb);
-        } else if (res.data.result.error === false) {
+        } else if (res.data.result.error === true) {
           setBlock(false);
           toast.error(res.data.result.errorMsg);
         }
@@ -530,7 +516,7 @@ const PendingApplications = () => {
     if(user?.passwordChange === false){
       navigate('/user/change-password')
     }
-    // allPendingApplicant();
+    allPendingApplicant();
   }, []);
   const options = {
     filterType: "checkbox",

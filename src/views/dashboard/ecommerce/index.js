@@ -67,7 +67,7 @@ const EcommerceDashboard = () => {
         console.log("res", items)
         console.log("res.data?.data?", res.data?.data)
         // setData(res.data.data)
-      } else if (res.data.result.error === false) {
+      } else if (res.data.result.error === true) {
         setBlock(false)
         toast.error(res.data.result.errorMsg)
       }
@@ -120,7 +120,7 @@ const EcommerceDashboard = () => {
             { value: null, label: "Select Branch" },
             ...branchOption,
           ]);
-        } else if (res.data.result.error === false) {
+        } else if (res.data.result.error === true) {
           setBlock(false);
           toast.error(res.data.result.errorMsg);
         }

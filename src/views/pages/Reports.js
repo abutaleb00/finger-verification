@@ -71,7 +71,7 @@ const Reports = () => {
       if (res.data.result.error === false) {
         setBlock(false)
         console.log("datat", res.data)
-      } else if (res.data.result.error === false) {
+      } else if (res.data.result.error === true) {
         setBlock(false)
         toast.error(res.data.result.errorMsg)
       }
@@ -87,7 +87,7 @@ const Reports = () => {
       if (res.data.result.error === false) {
         setBlock(false)
         setData(res.data.data)
-      } else if (res.data.result.error === false) {
+      } else if (res.data.result.error === true) {
         setBlock(false)
         toast.error(res.data.result.errorMsg)
       }
@@ -322,7 +322,7 @@ const Reports = () => {
           console.log("res.data.data", res.data.data);
           // setNidPhoto(res.data.data?.photolink)
           // setData(res.data.data)
-        } else if (res.data.result.error === false) {
+        } else if (res.data.result.error === true) {
           setBlock(false);
           toast.error(res.data.result.errorMsg);
         }
