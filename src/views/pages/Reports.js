@@ -65,22 +65,6 @@ const Reports = () => {
 
   })
 
-  const deleteApplicant = () => {
-    setBlock(true)
-    axios.post('/deletedlists').then(res => {
-      if (res.data.result.error === false) {
-        setBlock(false)
-        console.log("datat", res.data)
-      } else if (res.data.result.error === true) {
-        setBlock(false)
-        toast.error(res.data.result.errorMsg)
-      }
-    })
-      .catch((err) => {
-        setBlock(false)
-        toast.error(err.data.result.errorMsg)
-      })
-  }
   const allPendingApplicant = () => {
     setBlock(true)
     axios.post('/loansecuserwise', state).then(res => {
@@ -360,7 +344,6 @@ const Reports = () => {
       navigate('/user/change-password')
     }
     allPendingApplicant()
-    deleteApplicant()
   }, [])
   return (
     <UILoader blocking={block}>

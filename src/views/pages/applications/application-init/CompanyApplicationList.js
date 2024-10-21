@@ -57,10 +57,10 @@ const CompanyApplicationList = () => {
       ...state
     }
     setBlock(true)
-    axios.post('/getloandetailspending', send).then(res => {
+    axios.post('/getloanapplicationbydates', send).then(res => {
       if (res.data.result.error === false) {
         setBlock(false)
-        setData(res.data.data)
+        setData(res.data.data?.ldb)
       } else if (res.data.result.error === true) {
         setBlock(false)
         toast.error(res.data.result.errorMsg)
