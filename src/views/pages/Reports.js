@@ -435,7 +435,7 @@ const Reports = () => {
                   className='react-select'
                   styles={styles}
                   classNamePrefix='select'
-                  placeholder="Select Stock"
+                  placeholder="Select Status"
                   // defaultValue={currencyOptions[0]}
                   options={statusOption}
                   isClearable={false}

@@ -269,6 +269,7 @@ const CompanyApplicationList = () => {
           console.log("alldata", alldata)
           return (
             <div style={{ width: "auto" }}>
+            <div style={{ display: "inline-flex" }}>
               <div style={{ padding: "2px" }} className="btn btn-sm" >
                 <Badge
                   onClick={() => {
@@ -284,11 +285,11 @@ const CompanyApplicationList = () => {
                   trigger="hover"
                 > Comple Application</UncontrolledTooltip>
               </div>
-              {JSON.parse(
+              {((JSON.parse(
                 localStorage.getItem("userData")
-              ).roleName?.toLowerCase() === "maker" || JSON.parse(
+              ).roleName?.toLowerCase() === "maker") || (JSON.parse(
                 localStorage.getItem("userData")
-              ).roleName?.toLowerCase() === "admin" && (
+              ).roleName?.toLowerCase() === "admin")) && (
                   <div style={{ padding: "2px" }} className="btn btn-sm">
                     <Badge
                       onClick={() => {
@@ -315,6 +316,7 @@ const CompanyApplicationList = () => {
                     </UncontrolledTooltip>
                   </div>
                 )}
+            </div>
             </div>
           )
         }

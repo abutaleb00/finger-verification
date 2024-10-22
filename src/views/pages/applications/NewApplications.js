@@ -669,11 +669,11 @@ const NewApplications = () => {
                       </UncontrolledTooltip>
                     </div>
                   )}
-                {JSON.parse(
+                {((JSON.parse(
                   localStorage.getItem("userData")
-                ).roleName?.toLowerCase() === "maker" || JSON.parse(
+                ).roleName?.toLowerCase() === "maker") || (JSON.parse(
                   localStorage.getItem("userData")
-                ).roleName?.toLowerCase() === "admin" && (
+                ).roleName?.toLowerCase() === "admin")) && (
                     <div style={{ padding: "2px" }} className="btn btn-sm">
                       <Badge
                         onClick={() => {
