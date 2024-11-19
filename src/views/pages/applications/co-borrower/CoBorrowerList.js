@@ -40,7 +40,7 @@ const CoBorrowerList = (props) => {
       loanapplication: {
         loan_no: props?.id,
       },
-      coBorrower: [{ ...userData, isisDeleted: true, remarks: remarks }],
+      coBorrower: [{ ...userData, isDeleted: true, remarks: remarks }],
       coBorrowerDelete: true
     }
     setShow(false)

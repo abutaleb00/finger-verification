@@ -551,17 +551,13 @@ const PendingApplications = () => {
             <Col md="4">
               <label>End Date</label>
               <Flatpickr
-                options={{
-                  dateFormat: "Y-m-d"
-                }}
                 style={{ backgroundColor: "#fff", opacity: "1", padding: "9px 12px" }}
                 value={state?.endDate}
-                data-enable-time
                 id="date-time-picker"
                 className="form-control"
                 readonly={false}
                 onChange={(date) => {
-                  setState({ ...state, endDate: date[0] })
+                  setState({ ...state, endDate: moment(date[0]).format("YYYY-MM-DD") })
                 }}
               />
             </Col>

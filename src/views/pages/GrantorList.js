@@ -38,7 +38,7 @@ const GrantorList = (props) => {
       loanapplication: {
         loan_no: props?.id,
       },
-      guarantors: [{ ...userData, isisDeleted: true, remarks: remarks }],
+      guarantors: [{ ...userData, isDeleted: true, remarks: remarks }],
       gurantorDelete: true
     }
     setShow(false)
