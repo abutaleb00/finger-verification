@@ -3,17 +3,59 @@
   <head>
     <meta charset="utf-8" />
     <link rel="shortcut icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0,maximum-scale=1"
+    />
     <meta name="theme-color" content="#000000" />
     <script src="jquery-3.4.1.js" type="text/javascript"></script>
     <script src="jquery.easyModal.js" type="text/javascript"></script>
     <script src="config.js" type="text/javascript"></script>
     <!-- <script src="%PUBLIC_URL%/config.js"></script> -->
+    <script src="fpCapturer2.js"></script>
+    <script type="text/javascript">
+      function captureFinger2(sender, dataHolder) {
+        var fpGrabber = new FingerCapturer2(12004, "Verify Finger");
+        fpGrabber.captureFinger2(function (captureResponse) {
+          if (!captureResponse.isError) {
+            $(`#${dataHolder}`).val(captureResponse.data);
+            $("#divMsg")
+              .removeClass("error")
+              .addClass("success")
+              .html("Finger Captured")
+              .show();
+            console.log(captureResponse.data);
+            // extraData = "green";
+            let data = {
+              listoffingers: captureResponse.data,
+            };
+            console.log("data", data);
+            window.fingerComponent.receiveFingerData2(data);
+            returndata = captureResponse.data;
+            console.log("graber", captureResponse.data);
+            console.log("returndata", returndata);
+          } else {
+            $(`#${dataHolder}`).val("");
+            $("#divMsg")
+              .removeClass("success")
+              .addClass("error")
+              .html(
+                "Error occurred while capturing finger : " +
+                  captureResponse.message
+              )
+              .show();
+          }
+        });
+
+        return false;
+      }
+    </script>
+
     <script src="fpCapturer.js"></script>
     <script type="text/javascript">
       function captureFinger(sender, dataHolder, extraData) {
-        console.log("extra data", extraData);
-        var fpGrabber = new FingerCapturer(12002, "Verify Finger");
+        console.log("extra data 2", extraData);
+        var fpGrabber = new FingerCapturer(12002, "Verify Finger 2");
         fpGrabber.captureFinger(function (captureResponse) {
           if (!captureResponse.isError) {
             $(`#${dataHolder}`).val(captureResponse.data);
@@ -31,10 +73,8 @@
               extraData,
             };
 
-            console.log("data index", data);
-            // console.log("window", window.fingerComponent.receiveFingerData(data))
-            // window.fingerComponent.receiveFingerData(data);
-            window.receiveFingerData(data);
+            console.log("data", data);
+            window.fingerComponent.receiveFingerData(data);
 
             //data.append('listoffingers', JSON.stringify(captureResponse.data));
             // var urlToSend = "http://localhost:8080/dataFromTcap";

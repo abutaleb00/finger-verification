@@ -16,13 +16,12 @@ import {
 } from "reactstrap";
 import finger from "@src/assets/images/pages/fingerprint.svg";
 import fingerapp from "@src/assets/images/pages/fingerprint-app.png";
-import { Users, File, FilePlus } from "react-feather";
+import { Users, File, FilePlus, Layers } from "react-feather";
 import UILoader from "@components/ui-loader";
 import toast from "react-hot-toast";
-import { Tooltip as ReactTooltip } from "react-tooltip";
 export const baseAPI_URL = globalThis.baseAPI_URL;
 
-const DocumentList = (props) => {
+const FingerList = (props) => {
   const source = finger;
   const sourceapp = fingerapp;
   const [block, setBlock] = useState(false);
@@ -76,7 +75,7 @@ const DocumentList = (props) => {
       <div className="demo-inline-spacing">
         <div className="basic-modal">
           <Badge
-            id="DocumentL"
+            id="DocumentF"
             color={"dark"}
             className="text-capitalize"
             style={{ cursor: "pointer" }}
@@ -87,12 +86,12 @@ const DocumentList = (props) => {
                 block !== true ? getAllDocument() : preventDefault()
               }
             >
-              <File />
+              <Layers />
             </span>
           </Badge>
           <UncontrolledTooltip
             placement="top"
-            target="DocumentL"
+            target="DocumentF"
             trigger="hover"
           >
             {" "}
@@ -107,7 +106,7 @@ const DocumentList = (props) => {
             toggle={() => setBasicModal(!basicModal)}
           >
             <ModalHeader toggle={() => setBasicModal(!basicModal)}>
-              Document List
+              Fingerprint List
             </ModalHeader>
             <ModalBody>
               <Row style={{}}>
@@ -147,9 +146,6 @@ const DocumentList = (props) => {
                                 />
                               )}
                             </td>
-                            {/* {v.fileName.includes("pdf") ? <img src="/pdf.png" alt="pdf" width={100} /> : <img className='img-thumbnail' src={`data:image/jpeg;base64,${ v.base64Content}`} alt='photo'
-                                     style={{ border:"1px solid gray", borderRadius:"5px", padding:"5px"}} />}
-                                    </td> */}
                           </tr>
                           <tr>
                             <td
@@ -174,51 +170,7 @@ const DocumentList = (props) => {
                               Type:
                             </td>
                             <td style={{ textAlign: "left" }}>
-                              {v.documentType === 1
-                                ? "Applicant Photo"
-                                : v.documentType === 2
-                                ? "Signature"
-                                : v.documentType === 3
-                                ? "NID Front"
-                                : v.documentType === 4
-                                ? "NID Back"
-                                : v.documentType === 5
-                                ? "Passport"
-                                : v.documentType === 6
-                                ? "Birth Certificate"
-                                : v.documentType === 7
-                                ? "TIN Certificate"
-                                : v.documentType === 9
-                                ? "Driving License"
-                                : v.documentType === 10
-                                ? "Nominee Photo"
-                                : "Others"}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td
-                              colSpan={2}
-                              style={{ textAlign: "left", fontWeight: "bold" }}
-                            >
-                              {v.fileName.includes("pdf") && (
-                                <div
-                                  style={{
-                                    textAlign: "center",
-                                    padding: "2px",
-                                  }}
-                                >
-                                  <button
-                                    className="btn btn-primary"
-                                    onClick={() => {
-                                      setBasicModalPdf(true);
-                                      setBasicModal(false);
-                                      setPdfData(v.base64Content);
-                                    }}
-                                  >
-                                    Large View
-                                  </button>
-                                </div>
-                              )}
+                              {v.documentType === 11 ? "Fingerprint" : "Others"}
                             </td>
                           </tr>
                         </table>
@@ -276,4 +228,4 @@ const DocumentList = (props) => {
     </UILoader>
   );
 };
-export default DocumentList;
+export default FingerList;

@@ -35,7 +35,16 @@ const ChangePassword = lazy(() => import("../../views/pages/users/ChangePassword
 const CoBorrowerNidVerify = lazy(() => import("../../views/pages/applications/co-borrower/CoBorrowerNidVerify"));
 const CoBorrowerEcData = lazy(() => import("../../views/pages/applications/co-borrower/CoBorrowerEcData"));
 const ViewCoBorrower = lazy(() => import("../../views/pages/applications/co-borrower/ViewCoBorrower"));
+const FingerGrave = lazy(() => import("../../views/pages/finger/FingerGrave/"));
 const OthersRoutes = [
+  {
+    path: "/finger-grave",
+    element: <FingerGrave />,
+    meta: {
+      action: 'read',
+      resource: 'FingerPrintVerify'
+    }
+  },
     {
         path: "/application-initiate",
         element: <ApplicationInit />,
