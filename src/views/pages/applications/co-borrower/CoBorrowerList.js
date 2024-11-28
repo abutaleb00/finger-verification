@@ -41,14 +41,16 @@ const CoBorrowerList = (props) => {
         loan_no: props?.id,
       },
       coBorrower: [{ ...userData, isDeleted: true, remarks: remarks }],
-      coBorrowerDelete: true
+      coBorrowerDelete: true,
+      gurantorDelete: false,
+      loaneeDelete: false,
     }
     setShow(false)
     axios
       .post(`/loandelete`, sentdata)
       .then((res) => {
         if (res.data.result.error === false) {
-          toast.success("Gurantor Deleted Successfully");
+          toast.success("CoBorrower Deleted Successfully");
           allNewApplication();
         } else if (res.data.result.error === true) {
           toast.error(res.data.result.errorMsg);

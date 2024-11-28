@@ -145,7 +145,10 @@ const NewApplications = () => {
         loan_no: userData?.loan_no,
         isDeleted: true
       },
-      remarks: remarks
+      remarks: remarks,
+      gurantorDelete: true,
+      coBorrowerDelete: true,
+      loaneeDelete: true,
     };
     setShow(false)
     setBlock(true);
