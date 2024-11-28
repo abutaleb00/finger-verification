@@ -34,7 +34,7 @@ const CoBorrowerList = (props) => {
     setCoBorrowerList(props?.coBorrower)
   }, [props?.guarantors])
 
-  const deleteApplication = () => {
+  const deleteApplication = (e) => {
     e.preventDefault()
     const sentdata = {
       loanapplication: {
