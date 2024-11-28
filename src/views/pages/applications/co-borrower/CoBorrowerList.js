@@ -34,7 +34,7 @@ const CoBorrowerList = (props) => {
   const [show, setShow] = useState(false)
   useEffect(() => {
     setCoBorrowerList(props?.coBorrower)
-  }, [props?.guarantors])
+  }, [props?.coBorrower])
 
   const deleteApplication = (e) => {
     e.preventDefault()
@@ -53,7 +53,6 @@ const CoBorrowerList = (props) => {
       .then((res) => {
         if (res.data.result.error === false) {
           toast.success("CoBorrower Deleted Successfully");
-          setBasicModal(false)
           props?.allNewApplication();
         } else if (res.data.result.error === true) {
           toast.error(res.data.result.errorMsg);
