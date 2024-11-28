@@ -8,11 +8,23 @@ import {
   CardTitle,
   CardBody,
   UncontrolledTooltip,
+  Row,
+  Col,
+  Input,
+  FormGroup,
+  Button,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  ModalFooter
 } from "reactstrap";
 import Swal from "sweetalert2";
+import Flatpickr from "react-flatpickr"
+import { Search } from 'react-feather'
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "flatpickr/dist/themes/airbnb.css";
+import moment from "moment"
 // ** Third Party Components
 import "cleave.js/dist/addons/cleave-phone.us";
 import MUIDataTable from "mui-datatables";
@@ -20,7 +32,7 @@ import GrantorList from "../GrantorList";
 import CoBorrowerList from "./co-borrower/CoBorrowerList";
 import DocumentList from "./DocumentList";
 import AddDocument from "./AddDocument";
-import { Eye, Edit, UserPlus, CheckCircle, UserCheck } from "react-feather";
+import { Eye, Edit, UserPlus, CheckCircle, UserCheck, Trash } from "react-feather";
 import UILoader from "@components/ui-loader";
 import toast from "react-hot-toast";
 import { getUserData } from '@utils'
@@ -45,40 +57,32 @@ const NewApplications = () => {
   const user = getUserData()
   const [first, setFirst] = useState(0);
   const [last, setLast] = useState(100);
-  const [filter, setFilter] = useState("");
   const [block, setBlock] = useState(false);
+  const [show, setShow] = useState(false)
+  const [remarks, setRemarks] = useState('')
+  const [userData, setUserData] = useState(null)
   const [state, setState] = useState({
-    branch: null,
-    status: null,
-  });
-  const searchEcData = () => {
-    const send = {
-      loanapplication: {
-        status: 4,
-      },
-    };
-    setBlock(true);
-    axios
-      .post("/getloandetailspending", send)
-      .then((res) => {
-        setBlock(false);
-        setData(res.data.data);
-      })
-      .catch((err) => console.log(err));
-  };
+    startDate: moment().subtract(4, 'days').format("YYYY-MM-DD"),
+    endDate: moment().add(1, 'days').format("YYYY-MM-DD"),
+    skip: 0,
+    limit: 1000,
+
+  })
+
   const allNewApplication = () => {
     const send = {
       loanapplication: {
         status: 0,
       },
+      ...state
     };
     setBlock(true);
     axios
-      .post("/getloandetailspending", send)
+      .post("/getloanapplicationbydates", send)
       .then((res) => {
         if (res.data.result.error === false) {
           setBlock(false);
-          setData(res.data.data);
+          setData(res.data.data?.ldb);
         } else if (res.data.result.error === true) {
           setBlock(false);
           toast.error(res.data.result.errorMsg);
@@ -98,7 +102,11 @@ const NewApplications = () => {
     };
     Swal.fire({
       title: `Are you sure ?`,
-      text: `You want to Complete this Application`,
+      // text: `You want to Complete this Application`,
+      input: "text",
+      inputAttributes: {
+        autocapitalize: "off"
+      },
       type: "warning",
       icon: "warning",
       footer: "",
@@ -130,6 +138,38 @@ const NewApplications = () => {
       }
     });
   };
+  const deleteApplication = (e) => {
+    e.preventDefault()
+    const sentdata = {
+      loanapplication: {
+        loan_no: userData?.loan_no,
+        isDeleted: true
+      },
+      remarks: remarks,
+      gurantorDelete: true,
+      coBorrowerDelete: true,
+      loaneeDelete: true,
+    };
+    setShow(false)
+    setBlock(true);
+    axios
+      .post(`/loandelete`, sentdata)
+      .then((res) => {
+        if (res.data.result.error === false) {
+          setBlock(false);
+          toast.success("Loan Application Deleted Successfully");
+          allNewApplication();
+        } else if (res.data.result.error === true) {
+          setBlock(false);
+          toast.error(res.data.result.errorMsg);
+        }
+      })
+      .catch((e) => {
+        setBlock(false);
+        toast.error(e.data.result.errorMsg);
+      });
+  }
+
   const columns = [
     {
       name: "loan_no",
@@ -206,7 +246,7 @@ const NewApplications = () => {
             <div style={{ width: "auto" }}>
               {loanee === null ? (
                 <Badge style={{ margin: "1px 0px" }} color="danger">
-                  Waiting for <br/> Borrower Info
+                  Waiting for <br /> Borrower Info
                 </Badge>
               ) : (
                 loanee?.nameEn
@@ -268,7 +308,7 @@ const NewApplications = () => {
             <div style={{ width: "auto" }}>
               {loanee === null ? (
                 <Badge style={{ margin: "1px 0px" }} color="danger">
-                  Waiting for <br/> Borrower Info
+                  Waiting for <br /> Borrower Info
                 </Badge>
               ) : (
                 loanee?.ecjobid
@@ -291,7 +331,7 @@ const NewApplications = () => {
             <div style={{ width: "auto" }}>
               {loanee === null ? (
                 <Badge style={{ margin: "1px 0px" }} color="danger">
-                  Waiting for <br/> Borrower Info
+                  Waiting for <br /> Borrower Info
                 </Badge>
               ) : (
                 loanee?.nationalId
@@ -314,7 +354,7 @@ const NewApplications = () => {
             <div style={{ width: "auto" }}>
               {loanee === null ? (
                 <Badge style={{ margin: "1px 0px" }} color="danger">
-                  Waiting for <br/> Borrower Info
+                  Waiting for <br /> Borrower Info
                 </Badge>
               ) : (
                 loanee?.father
@@ -337,7 +377,7 @@ const NewApplications = () => {
             <div style={{ width: "auto" }}>
               {loanee === null ? (
                 <Badge style={{ margin: "1px 0px" }} color="danger">
-                  Waiting for <br/> Borrower Info
+                  Waiting for <br /> Borrower Info
                 </Badge>
               ) : (
                 loanee?.mother
@@ -360,7 +400,7 @@ const NewApplications = () => {
             <div style={{ width: "auto" }}>
               {loanee === null ? (
                 <Badge style={{ margin: "1px 0px" }} color="danger">
-                  Waiting for <br/> Borrower Info
+                  Waiting for <br /> Borrower Info
                 </Badge>
               ) : (
                 loanee?.mobile
@@ -377,12 +417,12 @@ const NewApplications = () => {
         filter: true,
         sort: true,
         customBodyRenderLite: (dataIndex) => {
-          const loanee = data[dataIndex]?.loanee;
+          const loanee = data[dataIndex];
           return (
             <div style={{ width: "auto" }}>
               {loanee === null ? (
                 <Badge style={{ margin: "1px 0px" }} color="danger">
-                  Waiting for <br/> Borrower Info
+                  Waiting for <br /> Borrower Info
                 </Badge>
               ) : (
                 loanee?.branchName
@@ -568,7 +608,7 @@ const NewApplications = () => {
                   </UncontrolledTooltip>
                 </div>
                 <div style={{ padding: "2px" }} className="btn btn-sm">
-                  <GrantorList guarantors={guarantors} />
+                  <GrantorList id={id} guarantors={guarantors} allNewApplication={allNewApplication} />
                 </div>
                 <div style={{ padding: "2px" }} className="btn btn-sm">
                   <Badge
@@ -599,7 +639,7 @@ const NewApplications = () => {
                   </UncontrolledTooltip>
                 </div>
                 <div style={{ padding: "2px" }} className="btn btn-sm">
-                  <CoBorrowerList coBorrower={coBorrower} />
+                  <CoBorrowerList id={id} coBorrower={coBorrower} allNewApplication={allNewApplication} />
                 </div>
                 <div style={{ padding: "2px" }} className="btn btn-sm">
                   <AddDocument uniquereference={uniquereference} />
@@ -610,28 +650,59 @@ const NewApplications = () => {
                 {JSON.parse(
                   localStorage.getItem("userData")
                 ).roleName?.toLowerCase() === "maker" && (
-                  <div style={{ padding: "2px" }} className="btn btn-sm">
-                    <Badge
-                      onClick={() => updateStatus(id)}
-                      id="Complete"
-                      color={"success"}
-                      className="text-capitalize"
-                      style={{ cursor: "pointer" }}
-                    >
-                      <span>
-                        <CheckCircle />
-                      </span>
-                    </Badge>
-                    <UncontrolledTooltip
-                      placement="top"
-                      target="Complete"
-                      trigger="hover"
-                    >
-                      {" "}
-                      Complete
-                    </UncontrolledTooltip>
-                  </div>
-                )}
+                    <div style={{ padding: "2px" }} className="btn btn-sm">
+                      <Badge
+                        onClick={() => updateStatus(id)}
+                        id="Complete"
+                        color={"success"}
+                        className="text-capitalize"
+                        style={{ cursor: "pointer" }}
+                      >
+                        <span>
+                          <CheckCircle />
+                        </span>
+                      </Badge>
+                      <UncontrolledTooltip
+                        placement="top"
+                        target="Complete"
+                        trigger="hover"
+                      >
+                        {" "}
+                        Complete
+                      </UncontrolledTooltip>
+                    </div>
+                  )}
+                {((JSON.parse(
+                  localStorage.getItem("userData")
+                ).roleName?.toLowerCase() === "maker") || (JSON.parse(
+                  localStorage.getItem("userData")
+                ).roleName?.toLowerCase() === "admin")) && (
+                    <div style={{ padding: "2px" }} className="btn btn-sm">
+                      <Badge
+                        onClick={() => {
+                          setShow(true)
+                          setUserData(alldata)
+                        }
+                        }
+                        id="delete"
+                        color={"danger"}
+                        className="text-capitalize"
+                        style={{ cursor: "pointer" }}
+                      >
+                        <span>
+                          <Trash />
+                        </span>
+                      </Badge>
+                      <UncontrolledTooltip
+                        placement="top"
+                        target="delete"
+                        trigger="hover"
+                      >
+                        {" "}
+                        Delete Application
+                      </UncontrolledTooltip>
+                    </div>
+                  )}
               </div>
             </div>
           );
@@ -641,7 +712,7 @@ const NewApplications = () => {
   ];
 
   useEffect(() => {
-    if(user?.passwordChange === false){
+    if (user?.passwordChange === false) {
       navigate('/user/change-password')
     }
     allNewApplication();
@@ -661,41 +732,56 @@ const NewApplications = () => {
           <CardTitle tag="h4">New Application List</CardTitle>
         </CardHeader>
         <CardBody className="my-1 py-50">
-          {/* <Row
-        style={{ marginBottom: "10px", paddingLeft: "30px", padding: "15px" }}
-      >
-        <Col md="6">
-        <FormGroup className="mbb">
-        <label>Search Data</label>
-        <Input
-          id='accountName'
-          className='w-100'
-          type='text'
-          placeholder={"Enter search data"}
-          onChange={e => setFilter(e.target.value.trim())}
-          onKeyDown={(e) => {
-            if (e.keyCode === 13) {
-              searchEcData()
-              }
-           }}
-           />
-        </FormGroup>
-        </Col>
-        <Col md="2" style={{ textAlign: "left" }}>
-          <Button.Ripple
-            size="12"
-            style={{marginTop:"19px", width:"100%"}}
-            onClick={() => {
-              searchEcData()
-            }}
-            outline
-            color="primary"
+          <Row
+            style={{ marginBottom: "10px", paddingLeft: "30px", padding: "15px" }}
           >
-            <Search size={14} />
-            <span className="align-middle ms-25">Search</span>
-          </Button.Ripple>
-        </Col>
-      </Row> */}
+            <Col md="4">
+              <label>Start Date</label>
+              <Flatpickr
+                style={{ backgroundColor: "#fff", opacity: "1", padding: "9px 12px" }}
+                value={state?.startDate}
+                id="date-time-picker"
+                className="form-control"
+                onChange={(date) => {
+                  setState({ ...state, startDate: moment(date[0]).format("YYYY-MM-DD") })
+                }}
+              />
+            </Col>
+            <Col md="4">
+              <label>End Date</label>
+              <Flatpickr
+                style={{ backgroundColor: "#fff", opacity: "1", padding: "9px 12px" }}
+                value={state?.endDate}
+                id="date-time-picker"
+                className="form-control"
+                readonly={false}
+                onChange={(date) => {
+                  setState({ ...state, endDate: moment(date[0]).format("YYYY-MM-DD") })
+                }}
+              />
+            </Col>
+            <Col md="4" style={{ textAlign: "left" }}>
+              <Button.Ripple
+                size="12"
+                style={{ marginTop: "17px" }}
+                onClick={() => {
+                  allNewApplication()
+                }}
+                outline
+                color="primary"
+              // onKeyDown={(e) => {
+              //   if (e.keyCode === 13) {
+              //     this.setState({ page: 0 }, () => {
+              //       this.cusSearch();
+              //     });
+              //   }
+              // }}
+              >
+                <Search size={14} />
+                <span className="align-middle ms-25">Search</span>
+              </Button.Ripple>
+            </Col>
+          </Row>
           <MUIDataTable
             title={"New Application List"}
             data={data}
@@ -704,6 +790,34 @@ const NewApplications = () => {
           />
         </CardBody>
       </Card>
+      <Modal isOpen={show} toggle={() => setShow(!show)} className='modal-dialog-centered modal-sm'>
+        <ModalHeader className='bg-transparent' toggle={() => setShow(!show)}></ModalHeader>
+        <ModalBody className='pb-3 px-sm-3'>
+          <h3 className='text-center mb-1' style={{ color: "red", fontWeight: "bold" }}>Are you sure ?</h3>
+          <p className='text-center mb-2'>You want to Delete this Application</p>
+          <form onSubmit={deleteApplication}>
+            <Input
+              type="textarea"
+              rows={3}
+              id="basicInput"
+              placeholder="Enter remarks"
+              value={remarks}
+              onChange={(e) => {
+                setRemarks(e.target.value)
+              }}
+              required
+            />
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "20px" }}>
+
+              <Button type="submit" outline
+                color="primary" style={{ marginRight: "10px" }} >Submit</Button>
+              <Button outline
+              onClick={()=> setShow(!show)}
+                color="danger">Cancel</Button>
+            </div>
+          </form>
+        </ModalBody>
+      </Modal>
     </UILoader>
   );
 };
