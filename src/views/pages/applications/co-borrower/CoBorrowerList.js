@@ -34,7 +34,7 @@ const CoBorrowerList = (props) => {
   const [show, setShow] = useState(false)
   useEffect(() => {
     setCoBorrowerList(props?.coBorrower)
-  }, [props?.guarantors])
+  }, [props?.coBorrower])
 
   const deleteApplication = (e) => {
     e.preventDefault()
