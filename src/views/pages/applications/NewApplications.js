@@ -608,7 +608,7 @@ const NewApplications = () => {
                   </UncontrolledTooltip>
                 </div>
                 <div style={{ padding: "2px" }} className="btn btn-sm">
-                  <GrantorList id={id} guarantors={guarantors} />
+                  <GrantorList id={id} guarantors={guarantors} allNewApplication={allNewApplication} />
                 </div>
                 <div style={{ padding: "2px" }} className="btn btn-sm">
                   <Badge
@@ -639,7 +639,7 @@ const NewApplications = () => {
                   </UncontrolledTooltip>
                 </div>
                 <div style={{ padding: "2px" }} className="btn btn-sm">
-                  <CoBorrowerList id={id} coBorrower={coBorrower} />
+                  <CoBorrowerList id={id} coBorrower={coBorrower} allNewApplication={allNewApplication} />
                 </div>
                 <div style={{ padding: "2px" }} className="btn btn-sm">
                   <AddDocument uniquereference={uniquereference} />

@@ -16,6 +16,8 @@ import {
 import finger from "@src/assets/images/pages/fingerprint.svg";
 import fingerapp from "@src/assets/images/pages/fingerprint-app.png";
 import { Users, Edit, Trash } from 'react-feather'
+import axios from "axios";
+import toast from 'react-hot-toast'
 import image1 from '@src/assets/images/avatars/1.png'
 import image2 from '@src/assets/images/avatars/2.png'
 import image3 from '@src/assets/images/avatars/3.png'
@@ -40,7 +42,7 @@ const CoBorrowerList = (props) => {
       loanapplication: {
         loan_no: props?.id,
       },
-      coBorrower: [{ ...userData, isDeleted: true, remarks: remarks }],
+      coBorrowers: [{ ...userData, isDeleted: true, remarks: remarks }],
       coBorrowerDelete: true,
       gurantorDelete: false,
       loaneeDelete: false,
@@ -51,7 +53,8 @@ const CoBorrowerList = (props) => {
       .then((res) => {
         if (res.data.result.error === false) {
           toast.success("CoBorrower Deleted Successfully");
-          allNewApplication();
+          setBasicModal(false)
+          props?.allNewApplication();
         } else if (res.data.result.error === true) {
           toast.error(res.data.result.errorMsg);
         }

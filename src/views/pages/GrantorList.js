@@ -18,6 +18,7 @@ import fingerapp from "@src/assets/images/pages/fingerprint-app.png";
 import { Users, Edit, Trash } from "react-feather";
 import Swal from "sweetalert2";
 import axios from "axios";
+import toast from 'react-hot-toast'
 
 const GrantorList = (props) => {
   const source = finger;
@@ -50,7 +51,8 @@ const GrantorList = (props) => {
         console.log("res", res);
         if (res.data.result.error === false) {
           toast.success("Gurantor Deleted Successfully");
-          allNewApplication();
+          setBasicModal(false)
+          props?.allNewApplication();
         } else if (res.data.result.error === true) {
           toast.error(res.data.result.errorMsg);
         }
