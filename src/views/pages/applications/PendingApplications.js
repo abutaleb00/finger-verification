@@ -8,10 +8,18 @@ import {
   CardTitle,
   CardBody,
   UncontrolledTooltip,
+  Row,
+  Col,
+  Input,
+  FormGroup,
+  Button
 } from "reactstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Flatpickr from "react-flatpickr"
 import "flatpickr/dist/themes/airbnb.css";
+import moment from "moment"
+import { Search } from 'react-feather'
 // ** Third Party Components
 import "cleave.js/dist/addons/cleave-phone.us";
 import MUIDataTable from "mui-datatables";
@@ -52,38 +60,27 @@ const PendingApplications = () => {
   const [filter, setFilter] = useState("");
   const [block, setBlock] = useState(false);
   const [state, setState] = useState({
-    branch: null,
-    status: null,
-  });
-  const searchEcData = () => {
-    const send = {
-      loanapplication: {
-        status: 1,
-      },
-    };
-    setBlock(true);
-    axios
-      .post("/getloandetailswaiting", send)
-      .then((res) => {
-        setBlock(false);
-        setData(res.data.data);
-      })
-      .catch((err) => console.log(err));
-  };
+    startDate: moment().subtract(4, 'days').format("YYYY-MM-DD"),
+    endDate: moment().add(1, 'days').format("YYYY-MM-DD"),
+    skip: 0,
+    limit: 1000,
+  })
+
   const allPendingApplicant = () => {
     const send = {
       loanapplication: {
         status: 1,
       },
+      ...state
     };
     setBlock(true);
     axios
-      .post("/getloandetailswaiting", send)
+      .post("/getloanapplicationbydates", send)
       .then((res) => {
         if (res.data.result.error === false) {
           setBlock(false);
-          setData(res.data.data);
-        } else if (res.data.result.error === false) {
+          setData(res.data.data?.ldb);
+        } else if (res.data.result.error === true) {
           setBlock(false);
           toast.error(res.data.result.errorMsg);
         }
@@ -536,41 +533,56 @@ const PendingApplications = () => {
           <CardTitle tag="h4">Pending Application List</CardTitle>
         </CardHeader>
         <CardBody className="my-1 py-50">
-          {/* <Row
-        style={{ marginBottom: "10px", paddingLeft: "30px", padding: "15px" }}
-      >
-        <Col md="6">
-        <FormGroup className="mbb">
-        <label>Search Data</label>
-        <Input
-          id='accountName'
-          className='w-100'
-          type='text'
-          placeholder={"Enter search data"}
-          onChange={e => setFilter(e.target.value.trim())}
-          onKeyDown={(e) => {
-            if (e.keyCode === 13) {
-              searchEcData()
-              }
-           }}
-           />
-        </FormGroup>
-        </Col>
-        <Col md="2" style={{ textAlign: "left" }}>
-          <Button.Ripple
-            size="12"
-            style={{marginTop:"19px", width:"100%"}}
-            onClick={() => {
-              searchEcData()
-            }}
-            outline
-            color="primary"
+            <Row
+            style={{ marginBottom: "10px", paddingLeft: "30px", padding: "15px" }}
           >
-            <Search size={14} />
-            <span className="align-middle ms-25">Search</span>
-          </Button.Ripple>
-        </Col>
-      </Row> */}
+            <Col md="4">
+              <label>Start Date</label>
+              <Flatpickr
+                style={{ backgroundColor: "#fff", opacity: "1", padding: "9px 12px" }}
+                value={state?.startDate}
+                id="date-time-picker"
+                className="form-control"
+                onChange={(date) => {
+                  setState({ ...state, startDate: moment(date[0]).format("YYYY-MM-DD") })
+                }}
+              />
+            </Col>
+            <Col md="4">
+              <label>End Date</label>
+              <Flatpickr
+                style={{ backgroundColor: "#fff", opacity: "1", padding: "9px 12px" }}
+                value={state?.endDate}
+                id="date-time-picker"
+                className="form-control"
+                readonly={false}
+                onChange={(date) => {
+                  setState({ ...state, endDate: moment(date[0]).format("YYYY-MM-DD") })
+                }}
+              />
+            </Col>
+            <Col md="4" style={{ textAlign: "left" }}>
+              <Button.Ripple
+                size="12"
+                style={{ marginTop: "17px" }}
+                onClick={() => {
+                  allPendingApplicant()
+                }}
+                outline
+                color="primary"
+              // onKeyDown={(e) => {
+              //   if (e.keyCode === 13) {
+              //     this.setState({ page: 0 }, () => {
+              //       this.cusSearch();
+              //     });
+              //   }
+              // }}
+              >
+                <Search size={14} />
+                <span className="align-middle ms-25">Search</span>
+              </Button.Ripple>
+            </Col>
+          </Row>
           <MUIDataTable
             title={"Pending Application List"}
             data={data}
