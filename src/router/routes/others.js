@@ -11,6 +11,7 @@ const BorrowerNidVerify = lazy(() => import("../../views/pages/applications/Borr
 const BorrowerEcData = lazy(() => import("../../views/pages/applications/BorrowerEcData"));
 const EcReturnData = lazy(() => import("../../views/pages/EcReturnData"));
 const Grantors = lazy(() => import("../../views/pages/Grantors"));
+const DeleteReport = lazy(() => import("../../views/pages/DeleteReport"));
 // const ApplicationForm = lazy(() => import("../../views/pages/ApplicationForm"));
 const ApplicationForm = lazy(() => import("../../views/pages/applications/ApplicationForm"));
 const NewGrantors = lazy(() => import("../../views/pages/NewGrantors"));
@@ -45,278 +46,286 @@ const OthersRoutes = [
       resource: 'FingerPrintVerify'
     }
   },
-    {
-        path: "/application-initiate",
-        element: <ApplicationInit />,
-        meta: {
-          action: 'read',
-          resource: 'FingerPrintVerify'
-        }
-      },
-    {
-        path: "/nid-verify",
-        element: <InitNidVerify />,
-        meta: {
-          action: 'read',
-          resource: 'FingerPrintVerify'
-        }
-      },
-    {
-        path: "/borrower-nid-verify",
-        element: <BorrowerNidVerify />,
-        meta: {
-          action: 'read',
-          resource: 'FingerPrintVerify'
-        }
-      },
-    {
-        path: "/borrower-ec-data",
-        element: <BorrowerEcData />,
-        meta: {
-          action: 'read',
-          resource: 'FingerPrintVerify'
-        }
-      },
-    {
-        path: "/guarantor-nid-verify",
-        element: <GuarantorNidVerify />,
-        meta: {
-          action: 'read',
-          resource: 'FingerPrintVerify'
-        }
-      },
-      {
-        path: "/ec-data",
-        element: <EcReturnData />,
-        meta: {
-          action: 'read',
-          resource: 'EcReturnData'
-        }
-      },
-      {
-        path: "/guarantor-ec-data",
-        element: <GuarantorEcData />,
-        meta: {
-          action: 'read',
-          resource: 'EcReturnData'
-        }
-      },
-      {
-        path: "/grantors",
-        element: <Grantors />,
-        meta: {
-          action: 'read',
-          resource: 'Grantor'
-        }
-      },
-      {
-        path: "/new-grantors",
-        element: <NewGrantors />,
-        meta: {
-          action: 'read',
-          resource: 'Grantor'
-        }
-      },
-      {
-        path: "/coborrower-nid-verify",
-        element: <CoBorrowerNidVerify />,
-        meta: {
-          action: 'read',
-          resource: 'Grantor'
-        }
-      },
-      {
-        path: "/coborrower-view",
-        element: <ViewCoBorrower />,
-        meta: {
-          action: 'read',
-          resource: 'Grantor'
-        }
-      },
-      {
-        path: "/coborrower-ec-data",
-        element: <CoBorrowerEcData />,
-        meta: {
-          action: 'read',
-          resource: 'EcReturnData'
-        }
-      },
-      {
-        path: "/verified-userlist",
-        element: <VerifiedUserList />,
-        meta: {
-          action: 'read',
-          resource: 'VerifiedUserList'
-        }
-      },
-      {
-        path: "/grantor-edit",
-        element: <EditGuarantor />,
-        meta: {
-          action: 'read',
-          resource: 'Grantor'
-        }
-      },
-      {
-        path: "/grantor-view",
-        element: <ViewGuarantor />,
-        meta: {
-          action: 'read',
-          resource: 'Grantor'
-        }
-      },
-      {
-        path: "/pending-user",
-        element: <PendingUser />,
-        meta: {
-          action: 'read',
-          resource: 'PendingUser'
-        }
-      },
-      {
-        path: "/view-application",
-        element: <ViewApplicant />,
-        meta: {
-          action: 'read',
-          resource: 'ViewApplicant'
-        }
-      },
-      {
-        path: "/new-applications",
-        element: <NewApplications />,
-        meta: {
-          action: 'read',
-          resource: 'NewApplications'
-        }
-      },
-      {
-        path: "/pending-applications",
-        element: <PendingApplications />,
-        meta: {
-          action: 'read',
-          resource: 'PendingApplications'
-        }
-      },
-      {
-        path: "/verified-applications",
-        element: <VerifiedApplications />,
-        meta: {
-          action: 'read',
-          resource: 'VerifiedApplications'
-        }
-      },
-      {
-        path: "/edit-application",
-        element: <EditApplicant />,
-        meta: {
-          action: 'read',
-          resource: 'ViewApplicant'
-        }
-      },
-      {
-        path: "/application-form",
-        element: <ApplicationForm />,
-        meta: {
-          action: 'read',
-          resource: 'ApplicationForm'
-        }
-      },
-      {
-        path: "/reports",
-        element: <Reports />,
-        meta: {
-          action: 'read',
-          resource: 'Reports'
-        }
-      },
-      {
-        path: "/audit-trail",
-        element: <AuditTrail />,
-        meta: {
-          action: 'read',
-          resource: 'AdminSetting'
-        }
-      },
-      {
-        path: "/ec-user",
-        element: <EcData />,
-        meta: {
-          action: 'read',
-          resource: 'AdminSetting'
-        }
-      },
-      {
-        path: "/user-list",
-        element: <UserList />,
-        meta: {
-          action: 'read',
-          resource: 'AdminSetting'
-        }
-      },
-      {
-        path: "/create-user",
-        element: <CreateUser />,
-        meta: {
-          action: 'read',
-          resource: 'AdminSetting'
-        }
-      },
-      {
-        path: "/update-user",
-        element: <UpdateUser />,
-        meta: {
-          action: 'read',
-          resource: 'AdminSetting'
-        }
-      },
-      {
-        path: "/ec-user-create",
-        element: <CreateEcUser />,
-        meta: {
-          action: 'read',
-          resource: 'AdminSetting'
-        }
-      },
-      {
-        path: "/ec-user-update",
-        element: <EditEcUser />,
-        meta: {
-          action: 'read',
-          resource: 'AdminSetting'
-        }
-      },
-      {
-        path: "/role-permissions",
-        element: <Role />,
-        meta: {
-          action: 'read',
-          resource: 'AdminSetting'
-        },
-      },
-      {
-        path: "/user/change-password",
-        element: <ChangePassword />,
-        meta: {
-          action: 'read',
-          resource: 'ChangePassword'
-        }
-      },
-      {
-        path: "/initiate-individual-application",
-        element: <IndividualApplicationList />,
-        meta: {
-          action: 'read',
-          resource: 'FingerPrintVerify'
-        }
-      },
-      {
-        path: "/initiate-company-application",
-        element: <CompanyApplicationList />,
-        meta: {
-          action: 'read',
-          resource: 'FingerPrintVerify'
-        }
-      }
+  {
+    path: "/application-initiate",
+    element: <ApplicationInit />,
+    meta: {
+      action: 'read',
+      resource: 'FingerPrintVerify'
+    }
+  },
+  {
+    path: "/nid-verify",
+    element: <InitNidVerify />,
+    meta: {
+      action: 'read',
+      resource: 'FingerPrintVerify'
+    }
+  },
+  {
+    path: "/borrower-nid-verify",
+    element: <BorrowerNidVerify />,
+    meta: {
+      action: 'read',
+      resource: 'FingerPrintVerify'
+    }
+  },
+  {
+    path: "/borrower-ec-data",
+    element: <BorrowerEcData />,
+    meta: {
+      action: 'read',
+      resource: 'FingerPrintVerify'
+    }
+  },
+  {
+    path: "/guarantor-nid-verify",
+    element: <GuarantorNidVerify />,
+    meta: {
+      action: 'read',
+      resource: 'FingerPrintVerify'
+    }
+  },
+  {
+    path: "/ec-data",
+    element: <EcReturnData />,
+    meta: {
+      action: 'read',
+      resource: 'EcReturnData'
+    }
+  },
+  {
+    path: "/guarantor-ec-data",
+    element: <GuarantorEcData />,
+    meta: {
+      action: 'read',
+      resource: 'EcReturnData'
+    }
+  },
+  {
+    path: "/grantors",
+    element: <Grantors />,
+    meta: {
+      action: 'read',
+      resource: 'Grantor'
+    }
+  },
+  {
+    path: "/new-grantors",
+    element: <NewGrantors />,
+    meta: {
+      action: 'read',
+      resource: 'Grantor'
+    }
+  },
+  {
+    path: "/coborrower-nid-verify",
+    element: <CoBorrowerNidVerify />,
+    meta: {
+      action: 'read',
+      resource: 'Grantor'
+    }
+  },
+  {
+    path: "/coborrower-view",
+    element: <ViewCoBorrower />,
+    meta: {
+      action: 'read',
+      resource: 'Grantor'
+    }
+  },
+  {
+    path: "/coborrower-ec-data",
+    element: <CoBorrowerEcData />,
+    meta: {
+      action: 'read',
+      resource: 'EcReturnData'
+    }
+  },
+  {
+    path: "/verified-userlist",
+    element: <VerifiedUserList />,
+    meta: {
+      action: 'read',
+      resource: 'VerifiedUserList'
+    }
+  },
+  {
+    path: "/grantor-edit",
+    element: <EditGuarantor />,
+    meta: {
+      action: 'read',
+      resource: 'Grantor'
+    }
+  },
+  {
+    path: "/grantor-view",
+    element: <ViewGuarantor />,
+    meta: {
+      action: 'read',
+      resource: 'Grantor'
+    }
+  },
+  {
+    path: "/pending-user",
+    element: <PendingUser />,
+    meta: {
+      action: 'read',
+      resource: 'PendingUser'
+    }
+  },
+  {
+    path: "/view-application",
+    element: <ViewApplicant />,
+    meta: {
+      action: 'read',
+      resource: 'ViewApplicant'
+    }
+  },
+  {
+    path: "/new-applications",
+    element: <NewApplications />,
+    meta: {
+      action: 'read',
+      resource: 'NewApplications'
+    }
+  },
+  {
+    path: "/pending-applications",
+    element: <PendingApplications />,
+    meta: {
+      action: 'read',
+      resource: 'PendingApplications'
+    }
+  },
+  {
+    path: "/verified-applications",
+    element: <VerifiedApplications />,
+    meta: {
+      action: 'read',
+      resource: 'VerifiedApplications'
+    }
+  },
+  {
+    path: "/edit-application",
+    element: <EditApplicant />,
+    meta: {
+      action: 'read',
+      resource: 'ViewApplicant'
+    }
+  },
+  {
+    path: "/application-form",
+    element: <ApplicationForm />,
+    meta: {
+      action: 'read',
+      resource: 'ApplicationForm'
+    }
+  },
+  {
+    path: "/reports",
+    element: <Reports />,
+    meta: {
+      action: 'read',
+      resource: 'Reports'
+    }
+  },
+  {
+    path: "/delete-report",
+    element: <DeleteReport />,
+    meta: {
+      action: 'read',
+      resource: 'AdminSetting'
+    }
+  },
+  {
+    path: "/audit-trail",
+    element: <AuditTrail />,
+    meta: {
+      action: 'read',
+      resource: 'AdminSetting'
+    }
+  },
+  {
+    path: "/ec-user",
+    element: <EcData />,
+    meta: {
+      action: 'read',
+      resource: 'AdminSetting'
+    }
+  },
+  {
+    path: "/user-list",
+    element: <UserList />,
+    meta: {
+      action: 'read',
+      resource: 'AdminSetting'
+    }
+  },
+  {
+    path: "/create-user",
+    element: <CreateUser />,
+    meta: {
+      action: 'read',
+      resource: 'AdminSetting'
+    }
+  },
+  {
+    path: "/update-user",
+    element: <UpdateUser />,
+    meta: {
+      action: 'read',
+      resource: 'AdminSetting'
+    }
+  },
+  {
+    path: "/ec-user-create",
+    element: <CreateEcUser />,
+    meta: {
+      action: 'read',
+      resource: 'AdminSetting'
+    }
+  },
+  {
+    path: "/ec-user-update",
+    element: <EditEcUser />,
+    meta: {
+      action: 'read',
+      resource: 'AdminSetting'
+    }
+  },
+  {
+    path: "/role-permissions",
+    element: <Role />,
+    meta: {
+      action: 'read',
+      resource: 'AdminSetting'
+    },
+  },
+  {
+    path: "/user/change-password",
+    element: <ChangePassword />,
+    meta: {
+      action: 'read',
+      resource: 'ChangePassword'
+    }
+  },
+  {
+    path: "/initiate-individual-application",
+    element: <IndividualApplicationList />,
+    meta: {
+      action: 'read',
+      resource: 'FingerPrintVerify'
+    }
+  },
+  {
+    path: "/initiate-company-application",
+    element: <CompanyApplicationList />,
+    meta: {
+      action: 'read',
+      resource: 'FingerPrintVerify'
+    }
+  }
 ]
 
 export default OthersRoutes

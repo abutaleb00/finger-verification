@@ -424,7 +424,7 @@ const ApplicationForm = (props) => {
             <Image style={styles.image1} src="/verified.png" />
           </View>
           <View style={styles.rightColumn2}>
-            <Image style={styles.image3} src="/logo.png" />
+            <Image style={styles.image3} src="/logo_sebplc.png" />
           </View>
           {/* <View
             style={[

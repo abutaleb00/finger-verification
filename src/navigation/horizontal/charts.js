@@ -1,5 +1,5 @@
 // ** Icons Import
-import {  CheckCircle, PlusCircle, Users, UserX,BarChart,Database, Share2, Globe, Clock, PieChart, Settings, Circle } from 'react-feather'
+import {  CheckCircle, PlusCircle, Users, UserX,BarChart,BarChart2, Database, Share2, Globe, Clock, PieChart, Settings, Circle } from 'react-feather'
 
 export default [
   // {
@@ -74,6 +74,14 @@ export default [
     navLink: "/reports",
     action: 'read',
     resource: 'Reports',
+  },
+  {
+    id: "DeleteReports",
+    title: "Delete Report",
+    icon: <BarChart2 size={20} />,
+    navLink: "/delete-report",
+    action: 'read',
+    resource: 'AdminSetting',
   },
   {
     id: 'AdminSetting',
