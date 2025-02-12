@@ -459,7 +459,7 @@ const ApplicationForm = (props) => {
               <Text style={[styles.text, { fontFamily: "Calibri", fontSize: 10 }]}>The Manager</Text>
             </View>
             <View style={[styles.cusView, { marginTop: "-10px" }]}>
-              <Text style={[styles.text, { fontFamily: "Calibri", fontSize: 10 }]}>LankaBangla Finance PLC.</Text>
+              <Text style={[styles.text, { fontFamily: "Calibri", fontSize: 10 }]}>Southeast Bank PLC.</Text>
             </View>
             <View style={[styles.cusView, { marginTop: "-10px" }]}>
               <Text
@@ -738,6 +738,17 @@ const ApplicationForm = (props) => {
             Applicant Related Information
           </Text>
         </View>
+        <View style={styles.leftColumn1}>
+        {
+              (localStorage.getItem("signature") !== undefined && localStorage.getItem("signature") !== null) &&
+
+              <Image
+                style={[styles.image2, {width: "100px" }]}
+                height={160}
+                src={`data:image/jpeg;base64,${localStorage.getItem("signature")}`}
+              />
+            }
+            </View>
         <View style={[styles.cusView, { paddingRight: "0px", paddingLeft: "0px" }]}>
           <Text
             style={{
@@ -803,7 +814,7 @@ const ApplicationForm = (props) => {
             </View>
             <View style={[styles.tableColCus, { width: "70%" }]}>
               <Text style={styles.tableCellCus}>
-                {applicantList?.porichoyResponse?.fathersNameEN}{" "}
+                {applicantList?.father}{" "}
               </Text>
             </View>
           </View>
@@ -818,7 +829,7 @@ const ApplicationForm = (props) => {
             </View>
             <View style={[styles.tableColCus, { width: "70%" }]}>
               <Text style={styles.tableCellCus}>
-                {applicantList?.porichoyResponse?.mothersNameEN}{" "}
+                {applicantList?.mother}{" "}
               </Text>
             </View>
           </View>
@@ -1547,18 +1558,27 @@ const ApplicationForm = (props) => {
                 <View
                   style={[
                     styles.cusView1,
-                    { width: "30%", marginBottom: 20, marginTop: 20 },
+                    { width: "40%", marginBottom: 20, marginTop: 20 },
                   ]}
                 >
                   <Image
-                    style={styles.image2}
-                    height={50}
+                    style={[styles.image2, { width: "160px" }]}
+                    height={160}
                     src={
                       v?.nidphoto !== undefined
                         ? `data:image/jpeg;base64,${v?.nidphoto}`
                         : "/user-image.jpg"
                     }
                   />
+                  {
+                    (localStorage.getItem("signature2") !== undefined && localStorage.getItem("signature2") !== null) &&
+
+                    <Image
+                      style={[styles.image2, { marginLeft: "20px", width: "130px" }]}
+                      height={160}
+                      src={`data:image/jpeg;base64,${localStorage.getItem("signature2")}`}
+                    />
+                  }
                 </View>
                 <View style={[styles.cusView, { marginTop: "5px" }]}>
                   {location.state?.userinfo?.isCompany === false ? (
@@ -2128,8 +2148,7 @@ const ApplicationForm = (props) => {
             We the undersigned confirm that we have obtained the Thumb
             Impression(s) of the above person(s)
             [borrower/co-borrower/guarantor/mortgagor, as applicable] and they
-            have put their Thumb Impression(s) as per guideline of DFIM Circular
-            No. 09 dated 07 August 2023 in front of us. The above Thumb
+            have put their Thumb Impression(s) as per guideline of BRPD Circular No-15, Dated 02 August 2023 in front of us. The above Thumb
             Impression(s) have been verified with the database preserved for
             National Identity Card (NID) of Bangladesh.
           </Text>
@@ -2168,16 +2187,11 @@ const ApplicationForm = (props) => {
               Employee ID: {createdBy?.employeeTypeRef}
             </Text>
             {/* <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{createdBy}</Text> */}
-            <Image
-              style={styles.imagec}
-              src={`data:image/jpeg;base64,${localStorage.getItem("signature")}`
-              }
-            />
             <Text
               style={{
                 fontSize: "11",
                 color: "black",
-                marginTop: "5px",
+                marginTop: "60px",
                 fontFamily: "Calibri",
               }}
             >
@@ -2227,18 +2241,12 @@ const ApplicationForm = (props) => {
               Employee ID: {approvedBy?.employeeTypeRef}
             </Text>
             {/* <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{approvedBy}</Text> */}
-            {localStorage.getItem("signature") !== undefined}
-            <Image
-              style={styles.imagec}
-              src={`data:image/jpeg;base64,${localStorage.getItem("signature")}`
-              }
-            />
             <Text
               style={{
                 fontSize: "11",
                 fontFamily: "Calibri",
                 color: "black",
-                marginTop: "5px",
+                marginTop: "60px",
               }}
             >
               Signature with seal

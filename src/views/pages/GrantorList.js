@@ -147,6 +147,20 @@ const GrantorList = (props) => {
                               <span>View</span>
                             </Badge>
                           </Link>
+                          <Link
+                            id="button2"
+                            to={`/finger-grave-2`}
+                            state={{ userinfo: v }}
+                          >
+                            <Badge
+                              id="edit"
+                              color={"success"}
+                              className="text-capitalize"
+                              style={{ cursor: "pointer", marginLeft:"5px" }}
+                            >
+                              <span>Fingerprint</span>
+                            </Badge>
+                          </Link>
                           <Badge
                             onClick={() => {
                               setShow(true);
