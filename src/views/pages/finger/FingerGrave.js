@@ -220,9 +220,11 @@ export default class FingerGrave extends Component {
       text: "Please input NID & Date of Birth",
     });
   };
-submitFingure = () =>{
-  localStorage.setItem("signature", this.state?.imageData)
-}
+  submitFingure = () => {
+    toast.success("Submit Successfully!")
+    localStorage.setItem("signature", this.state?.imageData)
+    document.getElementById("button2").click();
+  }
   render() {
     console.log("imageData", this.state?.imageData)
     console.log("pngBase64", this.state?.pngBase64)
@@ -250,7 +252,7 @@ submitFingure = () =>{
                   <img
                     src={
                       this.state?.imageData !== undefined &&
-                      this.state?.imageData !== null
+                        this.state?.imageData !== null
                         ? `data:image/jpeg;base64,${this.state?.imageData}`
                         : `${finger}`
                     }
@@ -336,7 +338,7 @@ submitFingure = () =>{
                     <img
                       src={
                         this.state?.imageData !== undefined &&
-                        this.state?.imageData !== null
+                          this.state?.imageData !== null
                           ? `data:image/jpeg;base64,${this.state?.imageData}`
                           : `${finger}`
                       }
@@ -379,6 +381,13 @@ submitFingure = () =>{
                 </Row>
               </ModalBody>
             </Modal>
+            <Link
+              id="button2"
+              style={{ display: "none" }}
+              to={`/new-applications`}
+            >
+              redirect
+            </Link>
           </CardBody>
         </Card>
       </UILoader>
