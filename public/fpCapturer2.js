@@ -46,7 +46,7 @@
         // var bzModal = showBusyModal(modalHtml);
         // bzModal.trigger('openModal');
         var captureRequest = $.ajax({
-            url: format("{0}:{1}/capbmp/", this.server, this.port),
+            url: format("{0}:{1}/capjpg/", this.server, this.port),
             async: true,
             crossDomain: true,
             dataType: 'jsonp',

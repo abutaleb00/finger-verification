@@ -52,7 +52,6 @@ export default class FingerGrave extends Component {
       PersonId: "",
     };
   }
-
   successAlert = () => {
     Swal.fire({
       icon: "error",
@@ -221,8 +220,12 @@ export default class FingerGrave extends Component {
       text: "Please input NID & Date of Birth",
     });
   };
-
+submitFingure = () =>{
+  localStorage.setItem("signature", this.state?.imageData)
+}
   render() {
+    console.log("imageData", this.state?.imageData)
+    console.log("pngBase64", this.state?.pngBase64)
     return (
       <UILoader blocking={this.state.block}>
         <Card>
@@ -296,7 +299,7 @@ export default class FingerGrave extends Component {
                     color="success"
                     style={{ width: "130px" }}
                     onClick={(e) => {
-                      this.uploadAllDocument();
+                      this.submitFingure();
                     }}
                     disabled={this.state.imageData === null}
                   >

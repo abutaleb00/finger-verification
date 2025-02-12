@@ -146,6 +146,12 @@ const styles = StyleSheet.create({
     width: "80%",
     height: 100,
   },
+  imagec: {
+    marginVertical: 0,
+    marginHorizontal: 0,
+    width: "130px",
+    height: "160px",
+  },
   image3: {
     marginVertical: 0,
     marginHorizontal: 0,
@@ -489,7 +495,7 @@ const ApplicationForm = (props) => {
                 { marginTop: "0px", marginBottom: "-10px" },
               ]}
             >
-              <Text style={[styles.text, {fontFamily: "Calibri",fontSize: "10px",}]}>Dear Sir,</Text>
+              <Text style={[styles.text, { fontFamily: "Calibri", fontSize: "10px", }]}>Dear Sir,</Text>
             </View>
           </View>
           <View style={styles.rightColumn1}>
@@ -506,7 +512,7 @@ const ApplicationForm = (props) => {
         </View>
         <View style={[styles.cusView, { marginTop: "5px" }]}>
           {location.state?.userinfo?.isCompany === false ? (
-            <Text style={[styles.text, {fontFamily: "Calibri",fontSize: "10px", textAlign:"justify"}]}>
+            <Text style={[styles.text, { fontFamily: "Calibri", fontSize: "10px", textAlign: "justify" }]}>
               Thank you for approving a
               {loanInformation?.product_info !== null ? (
                 <Text
@@ -594,7 +600,7 @@ const ApplicationForm = (props) => {
               mentioned loan/lease facility.
             </Text>
           ) : (
-            <Text style={[styles.text,{fontFamily: "Calibri", fontSize: "10px", textAlign:"justify"}]}>
+            <Text style={[styles.text, { fontFamily: "Calibri", fontSize: "10px", textAlign: "justify" }]}>
               Thank you for approving a
               {loanInformation?.product_info !== null ? (
                 <Text
@@ -861,7 +867,7 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}>Profession</Text>
             </View>
             <View style={[styles.tableColCus, { width: "28%" }]}>
-              <Text style={[styles.tableCellCus,{fontFamily: "kalpurush"}]}>
+              <Text style={[styles.tableCellCus, { fontFamily: "kalpurush" }]}>
                 {applicantList?.occupation}
               </Text>
             </View>
@@ -1042,7 +1048,7 @@ const ApplicationForm = (props) => {
                 </View>
                 <View style={[styles.cusView, { marginTop: "5px" }]}>
                   {location.state?.userinfo?.isCompany === false ? (
-                    <Text style={[styles.text, { fontSize: "10px", fontFamily: "Calibri", textAlign:"justify"}]}>
+                    <Text style={[styles.text, { fontSize: "10px", fontFamily: "Calibri", textAlign: "justify" }]}>
                       Thank you for approving a
                       {loanInformation?.product_info !== null ? (
                         <Text
@@ -1134,7 +1140,7 @@ const ApplicationForm = (props) => {
                       above mentioned loan/lease facility.
                     </Text>
                   ) : (
-                    <Text style={[styles.text, {fontSize: "10px", fontFamily: "Calibri",textAlign:"justify"}]}>
+                    <Text style={[styles.text, { fontSize: "10px", fontFamily: "Calibri", textAlign: "justify" }]}>
                       Thank you for approving a
                       {loanInformation?.product_info !== null ? (
                         <Text
@@ -1259,7 +1265,7 @@ const ApplicationForm = (props) => {
                     </Text>
                   )}
                 </View>
-                <View style={[styles.cusView, {paddingRight: "0px", paddingLeft: "0px"}]}>
+                <View style={[styles.cusView, { paddingRight: "0px", paddingLeft: "0px" }]}>
                   <Text
                     style={{
                       fontSize: "10px",
@@ -1440,7 +1446,7 @@ const ApplicationForm = (props) => {
                       <Text style={styles.tableCellCus}>Profession</Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "28%" }]}>
-                      <Text style={[styles.tableCellCus, {fontFamily: "kalpurush"}]}>
+                      <Text style={[styles.tableCellCus, { fontFamily: "kalpurush" }]}>
                         {v?.occupation !== null ? v?.occupation : "N/A"}
                         {"  "}
                       </Text>
@@ -1556,7 +1562,7 @@ const ApplicationForm = (props) => {
                 </View>
                 <View style={[styles.cusView, { marginTop: "5px" }]}>
                   {location.state?.userinfo?.isCompany === false ? (
-                    <Text style={[styles.text,{fontSize: "10",fontFamily: "Calibri", textAlign:"justify"}]}>
+                    <Text style={[styles.text, { fontSize: "10", fontFamily: "Calibri", textAlign: "justify" }]}>
                       Thank you for approving a
                       {loanInformation?.product_info !== null ? (
                         <Text
@@ -1685,7 +1691,7 @@ const ApplicationForm = (props) => {
                       above mentioned loan/lease facility.
                     </Text>
                   ) : (
-                    <Text style={[styles.text,{fontSize: "10", fontFamily: "Calibri", textAlign:"justify"}]}>
+                    <Text style={[styles.text, { fontSize: "10", fontFamily: "Calibri", textAlign: "justify" }]}>
                       Thank you for approving a
                       {loanInformation?.product_info !== null ? (
                         <Text
@@ -1851,7 +1857,7 @@ const ApplicationForm = (props) => {
                     </Text>
                   )}
                 </View>
-                <View style={[styles.cusView, {paddingRight: "0px", paddingLeft: "0px" }]}>
+                <View style={[styles.cusView, { paddingRight: "0px", paddingLeft: "0px" }]}>
                   <Text
                     style={{
                       fontSize: "10px",
@@ -2031,7 +2037,7 @@ const ApplicationForm = (props) => {
                       <Text style={styles.tableCellCus}>Profession</Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "28%" }]}>
-                      <Text style={[styles.tableCellCus, {fontFamily: "kalpurush"}]}>
+                      <Text style={[styles.tableCellCus, { fontFamily: "kalpurush" }]}>
                         {v?.occupation !== null ? v?.occupation : "N/A"}
                         {"  "}
                       </Text>
@@ -2116,7 +2122,7 @@ const ApplicationForm = (props) => {
         </View>
         <View style={[styles.cusViewH2, { marginBottom: "10px" }]}>
           <Text
-            style={[styles.text, { textAlign: "left", fontSize: "10",textAlign:"justify" }]}
+            style={[styles.text, { fontSize: "10", textAlign: "justify" }]}
             break
           >
             We the undersigned confirm that we have obtained the Thumb
@@ -2159,14 +2165,19 @@ const ApplicationForm = (props) => {
               style={[styles.text, { textAlign: "left", fontSize: "11" }]}
               break
             >
-            Employee ID: {createdBy?.employeeTypeRef}
+              Employee ID: {createdBy?.employeeTypeRef}
             </Text>
             {/* <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{createdBy}</Text> */}
+            <Image
+              style={styles.imagec}
+              src={`data:image/jpeg;base64,${localStorage.getItem("signature")}`
+              }
+            />
             <Text
               style={{
                 fontSize: "11",
                 color: "black",
-                marginTop: "60px",
+                marginTop: "5px",
                 fontFamily: "Calibri",
               }}
             >
@@ -2213,15 +2224,21 @@ const ApplicationForm = (props) => {
               ]}
               break
             >
-            Employee ID: {approvedBy?.employeeTypeRef}
+              Employee ID: {approvedBy?.employeeTypeRef}
             </Text>
             {/* <Text style={{fontSize: "13", fontWeight: "bold", color:"black"}}>{approvedBy}</Text> */}
+            {localStorage.getItem("signature") !== undefined}
+            <Image
+              style={styles.imagec}
+              src={`data:image/jpeg;base64,${localStorage.getItem("signature")}`
+              }
+            />
             <Text
               style={{
                 fontSize: "11",
                 fontFamily: "Calibri",
                 color: "black",
-                marginTop: "60px",
+                marginTop: "5px",
               }}
             >
               Signature with seal
