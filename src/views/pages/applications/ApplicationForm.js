@@ -813,7 +813,7 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}>Father Name</Text>
             </View>
             <View style={[styles.tableColCus, { width: "70%" }]}>
-              <Text style={styles.tableCellCus}>
+            <Text style={[styles.tableCellCus, { fontFamily: "kalpurush" }]}>
                 {applicantList?.father}{" "}
               </Text>
             </View>
@@ -828,7 +828,7 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}>Mother Name</Text>
             </View>
             <View style={[styles.tableColCus, { width: "70%" }]}>
-              <Text style={styles.tableCellCus}>
+            <Text style={[styles.tableCellCus, { fontFamily: "kalpurush" }]}>
                 {applicantList?.mother}{" "}
               </Text>
             </View>
@@ -1368,8 +1368,8 @@ const ApplicationForm = (props) => {
                     <View style={[styles.tableColCus, { width: "70%" }]}>
                       <Text style={styles.tableCellCus}>
                         {" "}
-                        {v?.porichoyResponse?.fathersNameEN !== null
-                          ? v?.porichoyResponse?.fathersNameEN
+                        {v?.father !== null
+                          ? v?.father
                           : ""}
                         {"  "}
                       </Text>
@@ -1389,8 +1389,8 @@ const ApplicationForm = (props) => {
                     </View>
                     <View style={[styles.tableColCus, { width: "70%" }]}>
                       <Text style={styles.tableCellCus}>
-                        {v?.porichoyResponse?.mothersNameEN !== null
-                          ? v?.porichoyResponse?.mothersNameEN
+                        {v?.mother !== null
+                          ? v?.mother
                           : ""}
                         {"  "}
                       </Text>
@@ -1966,10 +1966,10 @@ const ApplicationForm = (props) => {
                       <Text style={styles.tableCellCus}>Father Name</Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "70%" }]}>
-                      <Text style={styles.tableCellCus}>
+                    <Text style={[styles.tableCellCus, { fontFamily: "kalpurush" }]}>
                         {" "}
-                        {v?.porichoyResponse?.fathersNameEN !== null
-                          ? v?.porichoyResponse?.fathersNameEN
+                        {v?.father !== null
+                          ? v?.father
                           : ""}
                         {"  "}
                       </Text>
@@ -1988,9 +1988,9 @@ const ApplicationForm = (props) => {
                       <Text style={styles.tableCellCus}>Mother Name</Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "70%" }]}>
-                      <Text style={styles.tableCellCus}>
-                        {v?.porichoyResponse?.mothersNameEN !== null
-                          ? v?.porichoyResponse?.mothersNameEN
+                    <Text style={[styles.tableCellCus, { fontFamily: "kalpurush" }]}>
+                        {v?.mother !== null
+                          ? v?.mother
                           : ""}
                         {"  "}
                       </Text>
