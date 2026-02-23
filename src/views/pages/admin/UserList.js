@@ -62,8 +62,8 @@ const UserList = () => {
   const [basicModalUserName, setBasicModalUserName] = useState(false);
   const [passworChangeData, setPassworChangeData] = useState(null);
   const [newPassword, setNewPassword] = useState(null);
-  const [currentUsername , setCurrentUsername ] = useState('');
-  const [newUsername , setNewUsername ] = useState('');
+  const [currentUsername, setCurrentUsername] = useState('');
+  const [newUsername, setNewUsername] = useState('');
 
   const searchEcData = () => {
     const senddata = {
@@ -93,7 +93,7 @@ const UserList = () => {
         setBasicModalPassword(!basicModalPassword)
         searchEcData()
         // setData(res.data.data)
-        console.log("res.data", res.data)
+        // console.log("res.data", res.data)
       })
       .catch(err => {
         setBlock(false)
@@ -113,7 +113,7 @@ const UserList = () => {
         setBasicModalUserName(!basicModalUserName)
         searchEcData()
         // setData(res.data.data)
-        console.log("res.data", res.data)
+        // console.log("res.data", res.data)
       })
       .catch(err => {
         setBlock(false)
@@ -134,7 +134,7 @@ const UserList = () => {
         setBasicModal(!basicModal)
         searchEcData()
         // setData(res.data.data)
-        console.log("res.data", res.data)
+        // console.log("res.data", res.data)
       })
   }
   const changeStatus = (e, id) => {
@@ -392,8 +392,8 @@ const UserList = () => {
                 </div>
                 <div style={{ padding: "2px" }} className="btn btn-sm" >
                   <span onClick={() => {
-                     setCurrentUsername(alldata?.username)
-                     setBasicModalUserName(!basicModalUserName)
+                    setCurrentUsername(alldata?.username)
+                    setBasicModalUserName(!basicModalUserName)
                   }}><UserX id="username" size={14} className='me-50' color="green" /></span>
                   <UncontrolledTooltip
                     placement="top"

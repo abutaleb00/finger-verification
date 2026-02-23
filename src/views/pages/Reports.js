@@ -303,7 +303,7 @@ const Reports = () => {
             { value: null, label: "Select Branch" },
             ...branchOption,
           ]);
-          console.log("res.data.data", res.data.data);
+          // console.log("res.data.data", res.data.data);
           // setNidPhoto(res.data.data?.photolink)
           // setData(res.data.data)
         } else if (res.data.result.error === true) {

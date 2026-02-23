@@ -72,71 +72,71 @@ const BankLogin = (props) => {
   const navigate = useNavigate()
   const ability = useContext(AbilityContext)
   const source = skin === 'dark' ? illustrationsDark : illustrationsLight
-  useEffect(()=>{
-    console.log("baseAPI_URL", baseAPI_URL)
+  useEffect(() => {
+    // console.log("baseAPI_URL", baseAPI_URL)
     const userId = new URLSearchParams(globalThis?.location?.search).get("userId");
     const bankultimus = new URLSearchParams(globalThis?.location?.search).get("bankultimus");
     // console.log("id", userId);
     // console.log("bankultimus", bankultimus);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+    myHeaders.append("Authorization", "Basic bXktdHJ1c3RlZC1jbGllbnQ6c2VjcmV0");
+
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("grant_type", "password");
+    urlencoded.append("username", userId);
+    urlencoded.append("password", userId);
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: 'follow'
+    };
+
+    fetch(`${baseAPI_URL}/oauth/token`, requestOptions)
+      .then(response => response.json())
+      .then(function (res) {
+        const accessToken = res.data?.access_token
+        const refreshToken = res.data?.refresh_token
         var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-        myHeaders.append("Authorization", "Basic bXktdHJ1c3RlZC1jbGllbnQ6c2VjcmV0");
-        
-        var urlencoded = new URLSearchParams();
-        urlencoded.append("grant_type", "password");
-        urlencoded.append("username", userId);
-        urlencoded.append("password", userId);
+        myHeaders.append("Authorization", `Bearer ${res.data?.access_token}`);
+
+
         var requestOptions = {
-          method: 'POST',
+          method: 'GET',
           headers: myHeaders,
-          body: urlencoded,
           redirect: 'follow'
         };
-  
-  fetch(`${baseAPI_URL}/oauth/token`, requestOptions)
-    .then(response =>response.json())
-    .then(function (res) {
-      const accessToken = res.data?.access_token
-     const refreshToken = res.data?.refresh_token
-    var myHeaders = new Headers();
-     myHeaders.append("Authorization", `Bearer ${res.data?.access_token}`);
-  
-  
-  var requestOptions = {
-    method: 'GET',
-    headers: myHeaders,
-    redirect: 'follow'
-  };
-  if(res?.result.error === false){
-  fetch(`${baseAPI_URL}/getloogedinuser`, requestOptions)
-    .then(response => response.json())
-    .then(result => {
-      if(result?.result.error === false){
-      const mapdata = result.data !== undefined && result.data?.pages?.map((v) =>{
-        return v?.permissions?.map((k,i) =>{
-          return ({action: k , subject: v.name})
-        })
+        if (res?.result.error === false) {
+          fetch(`${baseAPI_URL}/getloogedinuser`, requestOptions)
+            .then(response => response.json())
+            .then(result => {
+              if (result?.result.error === false) {
+                const mapdata = result.data !== undefined && result.data?.pages?.map((v) => {
+                  return v?.permissions?.map((k, i) => {
+                    return ({ action: k, subject: v.name })
+                  })
+                })
+                const abilityfor = mapdata.flat(1)
+                const data = { ...result.data, accessToken: accessToken, refreshToken: refreshToken, ability: abilityfor, role: result?.roleName }
+                dispatch(handleLogin(data))
+                ability.update(abilityfor)
+                navigate(getHomeRouteForLoggedInUser(data.roleName))
+                toast(t => (
+                  <ToastContent t={t} role={data.role || 'admin'} name={data.fullName || data.username || 'John Doe'} />
+                ))
+              } else if (result?.result.error === true) {
+                toast.error(result.result.errorMsg)
+              }
+            })
+            .catch(error => console.log('error', error));
+        } else if (res?.result.error === true) {
+          toast.error(res.result.errorMsg)
+        }
       })
-      const abilityfor = mapdata.flat(1)
-      const data = { ...result.data, accessToken: accessToken, refreshToken: refreshToken, ability: abilityfor, role: result?.roleName }
-      dispatch(handleLogin(data))
-      ability.update(abilityfor)
-        navigate(getHomeRouteForLoggedInUser(data.roleName))
-        toast(t => (
-          <ToastContent t={t} role={data.role || 'admin'} name={data.fullName || data.username || 'John Doe'} />
-        ))
-      } else if(result?.result.error === true){
-        toast.error(result.result.errorMsg)
-      }
-    })
-    .catch(error => console.log('error', error));
-  } else if(res?.result.error === true){
-    toast.error(res.result.errorMsg)
-  }
-    })
-    .catch(error => console.log('error', error));
+      .catch(error => console.log('error', error));
 
-},[])
+  }, [])
 
   return (
     <div className='auth-wrapper auth-cover'>

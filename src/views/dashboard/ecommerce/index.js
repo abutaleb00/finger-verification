@@ -75,8 +75,6 @@ const EcommerceDashboard = () => {
             return i;
           });
           setRecentActivity(items);
-          console.log("res", items);
-          console.log("res.data?.data?", res.data?.data);
           // setData(res.data.data)
         } else if (res.data.result.error === true) {
           setBlock(false);
@@ -103,7 +101,6 @@ const EcommerceDashboard = () => {
       .then((res) => {
         setBlock(false);
         // setData(res.data.data);
-        console.log("ress", res?.data?.data);
         setCountData(res?.data?.data);
       })
       .catch((err) => console.log(err));
@@ -115,7 +112,6 @@ const EcommerceDashboard = () => {
       .then((res) => {
         setBlock(false);
         // setData(res.data.data);
-        console.log("ress", res?.data?.data);
         setCountData(res?.data?.data);
       })
       .catch((err) => console.log(err));
@@ -151,12 +147,7 @@ const EcommerceDashboard = () => {
     userData &&
       userData["roleName"] !== "admin" &&
       setState({ ...state, branchName: userData["branchName"] });
-    console.log(
-      "JSON.parse(localStorage.getItem('userData')['branchName'])",
-      JSON.parse(localStorage.getItem("userData"))["branchName"]
-    ),
-      console.log("state", state),
-      dashboardCount();
+    dashboardCount();
     if (user?.passwordChange === false) {
       navigate("/user/change-password");
     }
@@ -222,8 +213,8 @@ const EcommerceDashboard = () => {
                     localStorage.getItem("userData")
                   ).roleName?.toLowerCase() !== "admin"
                     ? branchOption?.filter(
-                        (v) => v.value === userData["branchName"]
-                      )
+                      (v) => v.value === userData["branchName"]
+                    )
                     : branchOption?.filter((v) => v.value === state?.branchName)
                 }
                 onChange={(e) => setState({ ...state, branchName: e.value })}
@@ -271,7 +262,7 @@ const EcommerceDashboard = () => {
               renderStats={
                 <h3 className="fw-bolder mb-75" style={{ fontSize: "36px" }}>
                   {countData?.totalUsersCount !== null &&
-                  countData?.totalUsersCount !== undefined
+                    countData?.totalUsersCount !== undefined
                     ? countData?.totalUsersCount
                     : 0}
                 </h3>
@@ -286,7 +277,7 @@ const EcommerceDashboard = () => {
               renderStats={
                 <h3 className="fw-bolder mb-75" style={{ fontSize: "36px" }}>
                   {countData?.makerCount !== null &&
-                  countData?.makerCount !== undefined
+                    countData?.makerCount !== undefined
                     ? countData?.makerCount
                     : 0}
                 </h3>
@@ -301,7 +292,7 @@ const EcommerceDashboard = () => {
               renderStats={
                 <h3 className="fw-bolder mb-75" style={{ fontSize: "36px" }}>
                   {countData?.checkerCount !== null &&
-                  countData?.checkerCount !== undefined
+                    countData?.checkerCount !== undefined
                     ? countData?.checkerCount
                     : 0}
                 </h3>
@@ -316,7 +307,7 @@ const EcommerceDashboard = () => {
               renderStats={
                 <h3 className="fw-bolder mb-75" style={{ fontSize: "36px" }}>
                   {countData?.adminCount !== null &&
-                  countData?.adminCount !== undefined
+                    countData?.adminCount !== undefined
                     ? countData?.adminCount
                     : 0}
                 </h3>
@@ -333,7 +324,7 @@ const EcommerceDashboard = () => {
               renderStats={
                 <h3 className="fw-bolder mb-75" style={{ fontSize: "36px" }}>
                   {countData?.newLoans !== null &&
-                  countData?.newLoans !== undefined
+                    countData?.newLoans !== undefined
                     ? countData?.newLoans
                     : 0}
                 </h3>
@@ -348,7 +339,7 @@ const EcommerceDashboard = () => {
               renderStats={
                 <h3 className="fw-bolder mb-75" style={{ fontSize: "36px" }}>
                   {countData?.pendingLoans !== null &&
-                  countData?.pendingLoans !== undefined
+                    countData?.pendingLoans !== undefined
                     ? countData?.pendingLoans
                     : 0}
                 </h3>
@@ -363,7 +354,7 @@ const EcommerceDashboard = () => {
               renderStats={
                 <h3 className="fw-bolder mb-75" style={{ fontSize: "36px" }}>
                   {countData?.verifiedLoans !== null &&
-                  countData?.verifiedLoans !== undefined
+                    countData?.verifiedLoans !== undefined
                     ? countData?.verifiedLoans
                     : 0}
                 </h3>
@@ -406,23 +397,23 @@ const EcommerceDashboard = () => {
                             v?.status === 1
                               ? "primary"
                               : v?.status === 0
-                              ? "warning"
-                              : v?.status === 4
-                              ? "info"
-                              : v?.status === 5
-                              ? "secondary"
-                              : "success"
+                                ? "warning"
+                                : v?.status === 4
+                                  ? "info"
+                                  : v?.status === 5
+                                    ? "secondary"
+                                    : "success"
                           }
                         >
                           {v?.status === 1
                             ? "Waiting for Approval"
                             : v?.status === 0
-                            ? "Pending"
-                            : v?.status === 2
-                            ? "Verified"
-                            : v?.status === 4
-                            ? "New Individual"
-                            : "New Company"}
+                              ? "Pending"
+                              : v?.status === 2
+                                ? "Verified"
+                                : v?.status === 4
+                                  ? "New Individual"
+                                  : "New Company"}
                         </Badge>
                       </div>
                     </td>

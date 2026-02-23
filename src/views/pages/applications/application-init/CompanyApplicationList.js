@@ -266,7 +266,7 @@ const CompanyApplicationList = () => {
         sort: false,
         customBodyRenderLite: (dataIndex) => {
           const alldata = data[dataIndex]
-          console.log("alldata", alldata)
+          // console.log("alldata", alldata)
           return (
             <div style={{ width: "auto" }}>
             <div style={{ display: "inline-flex" }}>

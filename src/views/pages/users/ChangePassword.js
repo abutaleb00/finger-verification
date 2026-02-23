@@ -50,7 +50,7 @@ import {
       
         axios.delete('/oauth/revoke').then(res => {
           if(res.data.result.error === false){
-            console.log("res.data", res.data)
+            // console.log("res.data", res.data)
             localStorage.removeItem('userData')
             localStorage.removeItem('individual')
           localStorage.removeItem('company')

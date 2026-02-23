@@ -26,8 +26,8 @@ import {
       { value: "female", label: "Female", color: "#0052CC", isFixed: true },
       { value: "third", label: "Third Person" },
     ];
-    console.log("location", location.state)
-    console.log("location 2", location.state?.userinfo?.permanentAddress)
+    // console.log("location", location.state)
+    // console.log("location 2", location.state?.userinfo?.permanentAddress)
 
     return (
       <UILoader blocking={block}>

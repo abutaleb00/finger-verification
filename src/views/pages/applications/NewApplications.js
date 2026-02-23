@@ -498,7 +498,7 @@ const NewApplications = () => {
           const coBorrower = data[dataIndex]?.coBorrowers;
           const id = data[dataIndex]?.loan_no;
           const uniquereference = data[dataIndex]?.uniquereference;
-          console.log("alldata", alldata);
+          // console.log("alldata", alldata);
           return (
             <div style={{ width: "auto" }}>
               <div style={{ display: "inline-flex" }}>

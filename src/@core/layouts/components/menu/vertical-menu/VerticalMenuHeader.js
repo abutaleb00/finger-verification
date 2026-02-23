@@ -21,7 +21,7 @@ const VerticalMenuHeader = props => {
   // ** Reset open group
   useEffect(() => {
     if (!menuHover && menuCollapsed) setGroupOpen([])
-    console.log("user", user)
+    // console.log("user", user)
   }, [menuHover, menuCollapsed])
 
   // ** Menu toggler component

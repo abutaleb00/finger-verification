@@ -33,72 +33,72 @@ const RoleUpdate = (props) => {
 
 
   const paymentOption = [
-    {value: 'maker', label: "Maker"},
-    {value: 'checker', label: "Checker"},
-    {value: 'bankUser', label: "Bank User"},
-    {value: 'user', label: "User"},
-    {value: 'admin', label: "Admin"}
+    { value: 'maker', label: "Maker" },
+    { value: 'checker', label: "Checker" },
+    { value: 'bankUser', label: "Bank User" },
+    { value: 'user', label: "User" },
+    { value: 'admin', label: "Admin" }
   ]
 
 
-useEffect(() =>{
-  setData(props.id)
- console.log("props", props)
-},[props])
+  useEffect(() => {
+    setData(props.id)
+    //  console.log("props", props)
+  }, [props])
   return (
     <UILoader blocking={block}>
-    <div className="demo-inline-spacing">
-      <div className="basic-modal">
-      <Badge id="AddDocumentL" color={'success'} className="text-capitalize" style={{cursor:"pointer"}} >
-        <span onClick={() => setBasicModal(!basicModal)}><FilePlus /></span>
-      </Badge>
-      <UncontrolledTooltip
-        placement="top"
-        target="AddDocumentL"
-        trigger="hover"
-        > Add Document</UncontrolledTooltip>
-        <Modal
-          className="sm"
-          centered={true}
-          isOpen={basicModal}
-          backdrop={false}
-          toggle={() => setBasicModal(!basicModal)}
-        >
-          <ModalHeader toggle={() => setBasicModal(!basicModal)}>
-          Add New Document
-          </ModalHeader>
-          <ModalBody>
-          <Row>
-            <Col className="mt-1" xl="12" md="12" sm="12" >
-            <FormGroup>
-            <Label for="selectDocument">Select Document Type</Label>
-                <Select
-                    className='react-select'
-                    classNamePrefix='Select'
-                    id='label'
-                    options={paymentOption}
-                    placeholder="Select Document"
+      <div className="demo-inline-spacing">
+        <div className="basic-modal">
+          <Badge id="AddDocumentL" color={'success'} className="text-capitalize" style={{ cursor: "pointer" }} >
+            <span onClick={() => setBasicModal(!basicModal)}><FilePlus /></span>
+          </Badge>
+          <UncontrolledTooltip
+            placement="top"
+            target="AddDocumentL"
+            trigger="hover"
+          > Add Document</UncontrolledTooltip>
+          <Modal
+            className="sm"
+            centered={true}
+            isOpen={basicModal}
+            backdrop={false}
+            toggle={() => setBasicModal(!basicModal)}
+          >
+            <ModalHeader toggle={() => setBasicModal(!basicModal)}>
+              Add New Document
+            </ModalHeader>
+            <ModalBody>
+              <Row>
+                <Col className="mt-1" xl="12" md="12" sm="12" >
+                  <FormGroup>
+                    <Label for="selectDocument">Select Document Type</Label>
+                    <Select
+                      className='react-select'
+                      classNamePrefix='Select'
+                      id='label'
+                      options={paymentOption}
+                      placeholder="Select Document"
                       onChange={(e) => {
-                        setData([...data, {rolename: e.value}])
-                        }}
+                        setData([...data, { rolename: e.value }])
+                      }}
                     />
-            </FormGroup>
-             </Col>
-            <Col className="mb-1" xl="12" md="12" sm="12" style={{textAlign:"center"}}>
-            <FormGroup>
-            <Button style={{marginRight:"10px"}} color='success' >
-                Upload
-              </Button>
-              <Button style={{marginLeft:"10px"}} color='danger' onClick={() => setBasicModal(!basicModal)}>
-                Cancel
-              </Button>
-            </FormGroup>
-             </Col>
-        </Row>
-          </ModalBody>
-        </Modal>
+                  </FormGroup>
+                </Col>
+                <Col className="mb-1" xl="12" md="12" sm="12" style={{ textAlign: "center" }}>
+                  <FormGroup>
+                    <Button style={{ marginRight: "10px" }} color='success' >
+                      Upload
+                    </Button>
+                    <Button style={{ marginLeft: "10px" }} color='danger' onClick={() => setBasicModal(!basicModal)}>
+                      Cancel
+                    </Button>
+                  </FormGroup>
+                </Col>
+              </Row>
+            </ModalBody>
+          </Modal>
+        </div>
       </div>
-    </div>
     </UILoader>
   );
 };

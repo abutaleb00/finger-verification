@@ -23,7 +23,8 @@ import InputPasswordToggle from '@components/input-password-toggle'
 // ** Utils
 import { getHomeRouteForLoggedInUser } from '@utils'
 import jwtDefaultConfig from '../../../@core/auth/jwt/jwtDefaultConfig'
-export const baseAPI_URL = globalThis.baseAPI_URL;
+export const baseAPI_URL = 'https://sebfvs.southeastbank.com.bd/apiserver';;
+// export const baseAPI_URL = globalThis.baseAPI_URL;
 export const baseURL = globalThis.baseURL;
 export const ADcallBack = globalThis.ADcallBack;
 export const bankLogin = globalThis.bankLogin;
@@ -98,42 +99,40 @@ const Login = () => {
   }, [])
 
   const getLogEnduser = (res) => {
-    console.log("res", res)
-    console.log("res.data?.access_token", res.data?.access_token)
     const accessToken = res.data?.access_token
     const refreshToken = res.data?.refresh_token
-     var myHeaders = new Headers();
- myHeaders.append("Authorization", `Bearer ${accessToken}`);
- 
- 
- var requestOptions = {
-   method: 'GET',
-   headers: myHeaders,
-   redirect: 'follow'
- };
- fetch(`${baseAPI_URL}/getloogedinuser`, requestOptions)
-   .then(response => response.json())
-   .then(result => {
-    if(result.result.error === false){
-      const mapdata = result?.data !== undefined && result?.data?.pages?.map((v) =>{
-        return v?.permissions?.map((k,i) =>{
-          return ({action: k , subject: v.name})
-        })
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${accessToken}`);
+
+
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+    fetch(`${baseAPI_URL}/getloogedinuser`, requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        if (result.result.error === false) {
+          const mapdata = result?.data !== undefined && result?.data?.pages?.map((v) => {
+            return v?.permissions?.map((k, i) => {
+              return ({ action: k, subject: v.name })
+            })
+          })
+          const abilityfor = mapdata.flat(1)
+          const role1 = 'admin'
+          const data = { ...result.data, accessToken: accessToken, refreshToken: refreshToken, ability: abilityfor, role: result?.roleName }
+          dispatch(handleLogin(data))
+          ability.update(abilityfor)
+          navigate(getHomeRouteForLoggedInUser(data.roleName))
+          toast(t => (
+            <ToastContent t={t} role={data.role || 'admin'} name={data.fullName || data.username || 'John Doe'} />
+          ))
+        } else if (result.result.error === true) {
+          toast.error(result.result.errorMsg)
+        }
       })
-      const abilityfor = mapdata.flat(1)
-      const role1 = 'admin'
-      const data = { ...result.data, accessToken: accessToken, refreshToken: refreshToken, ability: abilityfor, role: result?.roleName }
-      dispatch(handleLogin(data))
-      ability.update(abilityfor)
-        navigate(getHomeRouteForLoggedInUser(data.roleName))
-        toast(t => (
-          <ToastContent t={t} role={data.role || 'admin'} name={data.fullName || data.username || 'John Doe'} />
-        ))
-    } else if(result.result.error === true){
-      toast.error(result.result.errorMsg)
-    }
-   })
-   .catch(error => console.log('error', error)); 
+      .catch(error => console.log('error', error));
   }
 
   const onSubmit = data => {
@@ -152,20 +151,17 @@ const Login = () => {
         body: urlencoded,
         redirect: 'follow'
       };
-    fetch(`${baseAPI_URL}/oauth/token`, requestOptions)
-      .then(response =>response.json())
-  .then(function (res) {
-    const data1 = JSON.stringify(res)
-    console.log("first", JSON.stringify(res))
-    if(res.result.error === false){
-      getLogEnduser(res)
-    } else if(res.result.error === true){
-      toast.error(res.result.errorMsg)
-    }
-    console.log("res", JSON.stringify(res))
-
-  })
-  .catch(error => console.log('error', error));
+      fetch(`${baseAPI_URL}/oauth/token`, requestOptions)
+        .then(response => response.json())
+        .then(function (res) {
+          const data1 = JSON.stringify(res)
+          if (res.result.error === false) {
+            getLogEnduser(res)
+          } else if (res.result.error === true) {
+            toast.error(res.result.errorMsg)
+          }
+        })
+        .catch(error => console.log('error', error));
     } else {
       for (const key in data) {
         if (data[key].length === 0) {
@@ -176,18 +172,18 @@ const Login = () => {
       }
     }
   }
- 
+
   return (
     <div className='auth-wrapper auth-cover'>
       <Row className='auth-inner m-0'>
         <Link className='brand-logo' to='/' onClick={e => e.preventDefault()}>
-        <img style={{width:"25px", height:"auto"}} src={logo} alt='Login Cover' />
-        {/* <img style={{width:"25px", height:"auto"}} src={logo2} alt='Login Cover' /> */}
+          <img style={{ width: "25px", height: "auto" }} src={logo} alt='Login Cover' />
+          {/* <img style={{width:"25px", height:"auto"}} src={logo2} alt='Login Cover' /> */}
           <h2 className='brand-text text-primary ms-1'>Fingerprint Verification Solution (Southeast Bank PLC.)</h2>
         </Link>
         <Col className='d-none d-lg-flex align-items-center p-3 mt-3' lg='8' sm='12'>
           <div className='w-100 d-lg-flex align-items-center justify-content-center pr-5'>
-            <img className='img-fluid' style={{maxHeight:"400px"}} src={source} alt='Login Cover' />
+            <img className='img-fluid' style={{ maxHeight: "400px" }} src={source} alt='Login Cover' />
           </div>
         </Col>
         <Col className='d-flex align-items-center auth-bg px-2 p-lg-5' lg='4' sm='12'>

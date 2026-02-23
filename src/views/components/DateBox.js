@@ -23,11 +23,11 @@ class DateBox extends Component {
     if (m < 0 || (m === 0 && today.getDate() < selectDate.getDate())) {
       age_now--;
     }
-    console.log("now", selectDate);
+    // console.log("now", selectDate);
     return age_now;
   };
   ChangeHandler = (id) => {
-    console.log("date ", id);
+    // console.log("date ", id);
     let date2 = new Date(id.toISOString());
     let year = date2.getFullYear();
     let month = date2.getMonth() + 1;
@@ -40,8 +40,8 @@ class DateBox extends Component {
       month = "0" + month;
     }
     let stringDate = year + "-" + month + "-" + dt;
-    console.log("Change", year + "-" + month + "-" + dt);
-    console.log("Age", this.calculate_age(date2));
+    // console.log("Change", year + "-" + month + "-" + dt);
+    // console.log("Age", this.calculate_age(date2));
     this.setState(
       {
         dob: stringDate,

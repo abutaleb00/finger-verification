@@ -61,7 +61,7 @@ const CoBorrowerEcData = (props) => {
     { value: "Third", label: "Third Person" },
   ];
 
-  console.log("location 2", location?.state?.preUserdata)
+  // console.log("location 2", location?.state?.preUserdata)
   const createLoanApplication = (e) => {
     e.preventDefault();
     const ecdata = {
@@ -117,7 +117,7 @@ const CoBorrowerEcData = (props) => {
           setBlock(false);
           toast.error(res.data.result.errorMsg);
         } else if (res.error === "invalid_token") {
-          console.log("res err", res);
+          // console.log("res err", res);
           setBlock(false);
           toast.error("invalid_token");
           navigate("/login");
@@ -128,7 +128,7 @@ const CoBorrowerEcData = (props) => {
         setBlock(false);
         toast.error(err.data.result.errorMsg);
       });
-    console.log("send data", sendata);
+    // console.log("send data", sendata);
   };
   const getNidPhoto = () => {
     let sendData = {
@@ -140,7 +140,7 @@ const CoBorrowerEcData = (props) => {
       .then((res) => {
         if (res.data.result.error === false) {
           setBlock(false);
-          console.log("res.data.data", res.data.data);
+          // console.log("res.data.data", res.data.data);
           setNidPhoto(res.data.data?.photolink);
           // setData(res.data.data)
         } else if (res.data.result.error === true) {

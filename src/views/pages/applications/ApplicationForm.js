@@ -371,16 +371,16 @@ const ApplicationForm = (props) => {
     setApprovedByTime(location.state?.userinfo?.modificationDate);
     setLoneType(location.state?.userinfo?.isCompany);
   }, [location.state?.userinfo]);
-  console.log("location", location.state);
+  // console.log("location", location.state);
   const MyDoc = () => (
     <Document>
       <Page size="A4" style={styles.body}>
         <View style={styles.container}>
-        <View style={styles.leftColumn2}>
+          <View style={styles.leftColumn2}>
             <Image style={styles.image1} src="/verified.png" />
           </View>
           <View style={styles.rightColumn2}>
-          <Image style={styles.image3} src="/logo_sebplc.png" />
+            <Image style={styles.image3} src="/logo_sebplc.png" />
           </View>
           {/* <View
             style={[
@@ -544,7 +544,7 @@ const ApplicationForm = (props) => {
                   { marginTop: "5px", marginBottom: "-10px" },
                 ]}
               >
-                <Text style={[styles.text, {fontFamily:"Helvetica-Bold", fontSize: 8}]}>Name of Enterprise : {company?.companyName}</Text>
+                <Text style={[styles.text, { fontFamily: "Helvetica-Bold", fontSize: 8 }]}>Name of Enterprise : {company?.companyName}</Text>
               </View>
             )}
             <View
@@ -687,7 +687,7 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}> Gender</Text>
             </View>
             <View style={[styles.tableColCus, { width: "26%" }]}>
-              <Text style={styles.tableCellCus}>{applicantList?.gender?? "Male"}</Text>
+              <Text style={styles.tableCellCus}>{applicantList?.gender ?? "Male"}</Text>
             </View>
             <View style={[styles.tableColCus, { width: "3%" }]}>
               <Text style={styles.tableCellCus}>vii</Text>
@@ -733,7 +733,7 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}>Loan Type</Text>
             </View>
             <View style={[styles.tableColCus, { width: "25%" }]}>
-              <Text style={styles.tableCellCus}>{loneType === true ? "Company" : "Individual" }</Text>
+              <Text style={styles.tableCellCus}>{loneType === true ? "Company" : "Individual"}</Text>
             </View>
             <View style={[styles.tableColCus, { width: "4%" }]}>
               <Text style={styles.tableCellCus}>xi </Text>
@@ -753,7 +753,7 @@ const ApplicationForm = (props) => {
               <Text style={styles.tableCellCus}>Mode of Loan Operation</Text>
             </View>
             <View style={[styles.tableColCus, { width: "70%" }]}>
-              <Text style={styles.tableCellCus}>{loneType === true ? "Company" : "Individual" }</Text>
+              <Text style={styles.tableCellCus}>{loneType === true ? "Company" : "Individual"}</Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -956,7 +956,7 @@ const ApplicationForm = (props) => {
                       <Text style={styles.tableCellCus}> Gender</Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "26%" }]}>
-                      <Text style={styles.tableCellCus}>{v?.gender?? "Male"}</Text>
+                      <Text style={styles.tableCellCus}>{v?.gender ?? "Male"}</Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "3%" }]}>
                       <Text style={styles.tableCellCus}>ix</Text>
@@ -1238,7 +1238,7 @@ const ApplicationForm = (props) => {
                       <Text style={styles.tableCellCus}> Gender</Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "26%" }]}>
-                      <Text style={styles.tableCellCus}>{v?.gender?? "Male"}</Text>
+                      <Text style={styles.tableCellCus}>{v?.gender ?? "Male"}</Text>
                     </View>
                     <View style={[styles.tableColCus, { width: "3%" }]}>
                       <Text style={styles.tableCellCus}>ix</Text>
@@ -1377,7 +1377,7 @@ const ApplicationForm = (props) => {
         </View>
         <View style={[styles.cusViewH2, { marginBottom: "10px" }]}>
           <Text style={[styles.text, { textAlign: "left", fontSize: "10" }]}>
-          Date & Time of obtaining Thumb Impression: {createdByTime}
+            Date & Time of obtaining Thumb Impression: {createdByTime}
           </Text>
         </View>
         {/* <View style={[styles.cusViewH2, { marginTop: "40px" }]}>

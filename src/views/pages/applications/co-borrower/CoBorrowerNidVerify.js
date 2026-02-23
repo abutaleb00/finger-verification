@@ -41,7 +41,7 @@ const CoBorrowerNidVerify = (props) => {
     ecresult: [],
     block: false,
   });
-console.log("location", location)
+  // console.log("location", location)
   let receiveFingerData = (data) => {
     console.log(data);
     //  if( data?.extraData?.colorButton === "green"){
@@ -167,7 +167,7 @@ console.log("location", location)
                   id="button1"
                   color="primary"
                   onClick={() => {
-                    console.log("clicked");
+                    // console.log("clicked");
                     let dataToSend = {
                       dateOfBirth: state.dob,
                       fingerEnums: [
@@ -179,7 +179,7 @@ console.log("location", location)
                       listoffingers: state.listoffingers,
                       mobileNumber:
                         state.mobileNumber === undefined ||
-                        state.mobileNumber === null
+                          state.mobileNumber === null
                           ? ""
                           : state.mobileNumber,
                     };
@@ -189,7 +189,7 @@ console.log("location", location)
 
                     //console.log("datato send ", ecData.data.success.data);
                     setState({ block: true });
-                    console.log("api end");
+                    // console.log("api end");
                     axios.post("/makethefulleccall", dataToSend).then((res) => {
                       if (res.data.result.error === false) {
                         setState({

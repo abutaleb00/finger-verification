@@ -44,7 +44,7 @@ const CompanyProfile = () => {
     companyAddress: "",
     uniquereference: null,
   });
-  console.log("moment(new Date()", moment(new Date()).format("DD/MM/YYYY"));
+  // console.log("moment(new Date()", moment(new Date()).format("DD/MM/YYYY"));
   const { getRootProps, getInputProps } = useDropzone({
     multiple: false,
     onDrop: (acceptedFiles) => {
@@ -135,7 +135,7 @@ const CompanyProfile = () => {
       })
       .catch((err) => {
         setBlock(false);
-        console.log("first", err);
+        // console.log("first", err);
         toast.error(err.data?.result?.errorMsg);
       });
   };
@@ -155,7 +155,7 @@ const CompanyProfile = () => {
       .post("/addcompany", sentdata)
       .then((res) => {
         if (res.data?.result?.error === false) {
-          console.log("res.data", res.data);
+          // console.log("res.data", res.data);
           localStorage.setItem("company", JSON.stringify(res.data?.data));
           localStorage.setItem("type", 2);
           navigate("/nid-verify", {
@@ -224,7 +224,7 @@ const CompanyProfile = () => {
       buttonsStyling: false,
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log("clicked", result);
+        // console.log("clicked", result);
         addloanCompany(e);
       }
     });

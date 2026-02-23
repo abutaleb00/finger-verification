@@ -132,7 +132,7 @@ const AuditTrail = () => {
     },
    }).then(res => {
     setBlock(false)
-    console.log("res", res)
+    // console.log("res", res)
     setData2(res.data.data)
    })
  }
@@ -148,7 +148,7 @@ const AuditTrail = () => {
     },
    }).then(res => {
     setBlock(false)
-    console.log("res", res)
+    // console.log("res", res)
     setData2(res.data.data)
    })
    .catch(err => console.log(err))

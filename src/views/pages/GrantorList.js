@@ -48,7 +48,7 @@ const GrantorList = (props) => {
     axios
       .post(`/loandelete`, sentdata)
       .then((res) => {
-        console.log("res", res);
+        // console.log("res", res);
         if (res.data.result.error === false) {
           toast.success("Gurantor Deleted Successfully");
           props?.allNewApplication();

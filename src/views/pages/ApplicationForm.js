@@ -88,7 +88,7 @@ class ApplicationForm extends Component {
   }
 
   render() {
-    console.log("first", this.props)
+    // console.log("first", this.props)
     Font.register({
       family: "kalpurush",
       src: "/kalpurush.ttf",

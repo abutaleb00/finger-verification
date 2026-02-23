@@ -168,18 +168,18 @@ const RoleCards = () => {
       });
   };
 
-  const submitRole = () =>{
+  const submitRole = () => {
 
-      let roles = {
-        data: [{
-          admin: admin,
-          maker: maker,
-          checker: checker,
-          branchUser: branchUser,
-          user: user
-        }]
-      }
-    console.log("allrole", roles)
+    let roles = {
+      data: [{
+        admin: admin,
+        maker: maker,
+        checker: checker,
+        branchUser: branchUser,
+        user: user
+      }]
+    }
+    // console.log("allrole", roles)
   }
   useEffect(() => {
     allRole();
@@ -214,14 +214,14 @@ const RoleCards = () => {
   };
   const handleAdminCheck = (event) => {
     let updatedList = [...checked];
-    console.log("updatedList", updatedList)
+    // console.log("updatedList", updatedList)
     if (event.target.checked) {
       updatedList = [...checked, event.target.value];
     } else {
       updatedList.splice(checked.indexOf(event.target.value), 1);
     }
     setChecked(updatedList);
-    console.log("updatedList updatedList", updatedList)
+    // console.log("updatedList updatedList", updatedList)
   };
   return (
     <UILoader blocking={block}>
@@ -305,63 +305,63 @@ const RoleCards = () => {
                   </tr>
                   {modalType === "Admin"
                     ? admin?.map((role, index) => {
-                        return (
-                          <tr key={index}>
-                            <td className="text-nowrap fw-bolder">
-                              {role.name.replace(/([A-Z])/g, " $1").trim()}
-                            </td>
-                            <td>
-                              <div className="d-flex">
-                                <div className="form-check me-3 me-lg-5">
-                                  <Input
-                                    type="checkbox"
-                                    id={`read-${role.permissions}`}
-                                    defaultChecked={role.permissions.includes(
-                                      "read"
-                                    )}
-                                    onChange={handleAdminCheck}
-                                  />
-                                  <Label
-                                    className="form-check-label"
-                                    for={`read-${role.permissions}`}
-                                  >
-                                    Read
-                                  </Label>
-                                </div>
-                                <div className="form-check me-3 me-lg-5">
-                                  <Input
-                                    type="checkbox"
-                                    id={`write-${role.permissions}`}
-                                    defaultChecked={role.permissions.includes(
-                                      "write"
-                                    )}
-                                  />
-                                  <Label
-                                    className="form-check-label"
-                                    for={`write-${role.permissions}`}
-                                  >
-                                    Write
-                                  </Label>
-                                </div>
-                                <div className="form-check">
-                                  <Input
-                                    type="checkbox"
-                                    id={`create-${role.permissions}`}
-                                  />
-                                  <Label
-                                    className="form-check-label"
-                                    for={`create-${role.permissions}`}
-                                  >
-                                    Create
-                                  </Label>
-                                </div>
+                      return (
+                        <tr key={index}>
+                          <td className="text-nowrap fw-bolder">
+                            {role.name.replace(/([A-Z])/g, " $1").trim()}
+                          </td>
+                          <td>
+                            <div className="d-flex">
+                              <div className="form-check me-3 me-lg-5">
+                                <Input
+                                  type="checkbox"
+                                  id={`read-${role.permissions}`}
+                                  defaultChecked={role.permissions.includes(
+                                    "read"
+                                  )}
+                                  onChange={handleAdminCheck}
+                                />
+                                <Label
+                                  className="form-check-label"
+                                  for={`read-${role.permissions}`}
+                                >
+                                  Read
+                                </Label>
                               </div>
-                            </td>
-                          </tr>
-                        );
-                      })
+                              <div className="form-check me-3 me-lg-5">
+                                <Input
+                                  type="checkbox"
+                                  id={`write-${role.permissions}`}
+                                  defaultChecked={role.permissions.includes(
+                                    "write"
+                                  )}
+                                />
+                                <Label
+                                  className="form-check-label"
+                                  for={`write-${role.permissions}`}
+                                >
+                                  Write
+                                </Label>
+                              </div>
+                              <div className="form-check">
+                                <Input
+                                  type="checkbox"
+                                  id={`create-${role.permissions}`}
+                                />
+                                <Label
+                                  className="form-check-label"
+                                  for={`create-${role.permissions}`}
+                                >
+                                  Create
+                                </Label>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
                     : modalType === "Maker"
-                    ? maker?.map((role, index) => {
+                      ? maker?.map((role, index) => {
                         return (
                           <tr key={index}>
                             <td className="text-nowrap fw-bolder">
@@ -416,184 +416,184 @@ const RoleCards = () => {
                           </tr>
                         );
                       })
-                    : modalType === "Checker"
-                    ? checker?.map((role, index) => {
-                        return (
-                          <tr key={index}>
-                            <td className="text-nowrap fw-bolder">
-                              {role.name.replace(/([A-Z])/g, " $1").trim()}
-                            </td>
-                            <td>
-                              <div className="d-flex">
-                                <div className="form-check me-3 me-lg-5">
-                                  <Input
-                                    type="checkbox"
-                                    id={`read-${role.permissions}`}
-                                    defaultChecked={role.permissions.includes(
-                                      "read"
-                                    )}
-                                    onChange={(e)=>{
-                                      if(e.target.checked === true){
-                                        role.permissions.push("read")
-                                      }
-                                      console.log("value", e.target.checked)
-                                    }}
-                                  />
-                                  <Label
-                                    className="form-check-label"
-                                    for={`read-${role.permissions}`}
-                                  >
-                                    Read
-                                  </Label>
+                      : modalType === "Checker"
+                        ? checker?.map((role, index) => {
+                          return (
+                            <tr key={index}>
+                              <td className="text-nowrap fw-bolder">
+                                {role.name.replace(/([A-Z])/g, " $1").trim()}
+                              </td>
+                              <td>
+                                <div className="d-flex">
+                                  <div className="form-check me-3 me-lg-5">
+                                    <Input
+                                      type="checkbox"
+                                      id={`read-${role.permissions}`}
+                                      defaultChecked={role.permissions.includes(
+                                        "read"
+                                      )}
+                                      onChange={(e) => {
+                                        if (e.target.checked === true) {
+                                          role.permissions.push("read")
+                                        }
+                                        // console.log("value", e.target.checked)
+                                      }}
+                                    />
+                                    <Label
+                                      className="form-check-label"
+                                      for={`read-${role.permissions}`}
+                                    >
+                                      Read
+                                    </Label>
+                                  </div>
+                                  <div className="form-check me-3 me-lg-5">
+                                    <Input
+                                      type="checkbox"
+                                      id={`write-${role.permissions}`}
+                                      defaultChecked={role.permissions.includes(
+                                        "write"
+                                      )}
+                                    />
+                                    <Label
+                                      className="form-check-label"
+                                      for={`write-${role.permissions}`}
+                                    >
+                                      Write
+                                    </Label>
+                                  </div>
+                                  <div className="form-check">
+                                    <Input
+                                      type="checkbox"
+                                      id={`create-${role.permissions}`}
+                                    />
+                                    <Label
+                                      className="form-check-label"
+                                      for={`create-${role.permissions}`}
+                                    >
+                                      Create
+                                    </Label>
+                                  </div>
                                 </div>
-                                <div className="form-check me-3 me-lg-5">
-                                  <Input
-                                    type="checkbox"
-                                    id={`write-${role.permissions}`}
-                                    defaultChecked={role.permissions.includes(
-                                      "write"
-                                    )}
-                                  />
-                                  <Label
-                                    className="form-check-label"
-                                    for={`write-${role.permissions}`}
-                                  >
-                                    Write
-                                  </Label>
-                                </div>
-                                <div className="form-check">
-                                  <Input
-                                    type="checkbox"
-                                    id={`create-${role.permissions}`}
-                                  />
-                                  <Label
-                                    className="form-check-label"
-                                    for={`create-${role.permissions}`}
-                                  >
-                                    Create
-                                  </Label>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })
-                    : modalType === "Branch User"
-                    ? branchUser?.map((role, index) => {
-                        return (
-                          <tr key={index}>
-                            <td className="text-nowrap fw-bolder">
-                              {role.name.replace(/([A-Z])/g, " $1").trim()}
-                            </td>
-                            <td>
-                              <div className="d-flex">
-                                <div className="form-check me-3 me-lg-5">
-                                  <Input
-                                    type="checkbox"
-                                    id={`read-${role.permissions}`}
-                                    defaultChecked={role.permissions.includes(
-                                      "read"
-                                    )}
-                                  />
-                                  <Label
-                                    className="form-check-label"
-                                    for={`read-${role.permissions}`}
-                                  >
-                                    Read
-                                  </Label>
-                                </div>
-                                <div className="form-check me-3 me-lg-5">
-                                  <Input
-                                    type="checkbox"
-                                    id={`write-${role.permissions}`}
-                                    defaultChecked={role.permissions.includes(
-                                      "write"
-                                    )}
-                                  />
-                                  <Label
-                                    className="form-check-label"
-                                    for={`write-${role.permissions}`}
-                                  >
-                                    Write
-                                  </Label>
-                                </div>
-                                <div className="form-check">
-                                  <Input
-                                    type="checkbox"
-                                    id={`create-${role.permissions}`}
-                                  />
-                                  <Label
-                                    className="form-check-label"
-                                    for={`create-${role.permissions}`}
-                                  >
-                                    Create
-                                  </Label>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })
-                    : user?.map((role, index) => {
-                        return (
-                          <tr key={index}>
-                            <td className="text-nowrap fw-bolder">
-                              {role.name.replace(/([A-Z])/g, " $1").trim()}
-                            </td>
-                            <td>
-                              <div className="d-flex">
-                                <div className="form-check me-3 me-lg-5">
-                                  <Input
-                                    type="checkbox"
-                                    id={`read-${role.permissions}`}
-                                    defaultChecked={role.permissions.includes(
-                                      "read"
-                                    )}
-                                  />
-                                  <Label
-                                    className="form-check-label"
-                                    for={`read-${role.permissions}`}
-                                  >
-                                    Read
-                                  </Label>
-                                </div>
-                                <div className="form-check me-3 me-lg-5">
-                                  <Input
-                                    type="checkbox"
-                                    id={`write-${role.permissions}`}
-                                    defaultChecked={role.permissions.includes(
-                                      "write"
-                                    )}
-                                  />
-                                  <Label
-                                    className="form-check-label"
-                                    for={`write-${role.permissions}`}
-                                  >
-                                    Write
-                                  </Label>
-                                </div>
-                                <div className="form-check">
-                                  <Input
-                                    type="checkbox"
-                                    id={`create-${role.permissions}`}
-                                  />
-                                  <Label
-                                    className="form-check-label"
-                                    for={`create-${role.permissions}`}
-                                  >
-                                    Create
-                                  </Label>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })}
+                              </td>
+                            </tr>
+                          );
+                        })
+                        : modalType === "Branch User"
+                          ? branchUser?.map((role, index) => {
+                            return (
+                              <tr key={index}>
+                                <td className="text-nowrap fw-bolder">
+                                  {role.name.replace(/([A-Z])/g, " $1").trim()}
+                                </td>
+                                <td>
+                                  <div className="d-flex">
+                                    <div className="form-check me-3 me-lg-5">
+                                      <Input
+                                        type="checkbox"
+                                        id={`read-${role.permissions}`}
+                                        defaultChecked={role.permissions.includes(
+                                          "read"
+                                        )}
+                                      />
+                                      <Label
+                                        className="form-check-label"
+                                        for={`read-${role.permissions}`}
+                                      >
+                                        Read
+                                      </Label>
+                                    </div>
+                                    <div className="form-check me-3 me-lg-5">
+                                      <Input
+                                        type="checkbox"
+                                        id={`write-${role.permissions}`}
+                                        defaultChecked={role.permissions.includes(
+                                          "write"
+                                        )}
+                                      />
+                                      <Label
+                                        className="form-check-label"
+                                        for={`write-${role.permissions}`}
+                                      >
+                                        Write
+                                      </Label>
+                                    </div>
+                                    <div className="form-check">
+                                      <Input
+                                        type="checkbox"
+                                        id={`create-${role.permissions}`}
+                                      />
+                                      <Label
+                                        className="form-check-label"
+                                        for={`create-${role.permissions}`}
+                                      >
+                                        Create
+                                      </Label>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })
+                          : user?.map((role, index) => {
+                            return (
+                              <tr key={index}>
+                                <td className="text-nowrap fw-bolder">
+                                  {role.name.replace(/([A-Z])/g, " $1").trim()}
+                                </td>
+                                <td>
+                                  <div className="d-flex">
+                                    <div className="form-check me-3 me-lg-5">
+                                      <Input
+                                        type="checkbox"
+                                        id={`read-${role.permissions}`}
+                                        defaultChecked={role.permissions.includes(
+                                          "read"
+                                        )}
+                                      />
+                                      <Label
+                                        className="form-check-label"
+                                        for={`read-${role.permissions}`}
+                                      >
+                                        Read
+                                      </Label>
+                                    </div>
+                                    <div className="form-check me-3 me-lg-5">
+                                      <Input
+                                        type="checkbox"
+                                        id={`write-${role.permissions}`}
+                                        defaultChecked={role.permissions.includes(
+                                          "write"
+                                        )}
+                                      />
+                                      <Label
+                                        className="form-check-label"
+                                        for={`write-${role.permissions}`}
+                                      >
+                                        Write
+                                      </Label>
+                                    </div>
+                                    <div className="form-check">
+                                      <Input
+                                        type="checkbox"
+                                        id={`create-${role.permissions}`}
+                                      />
+                                      <Label
+                                        className="form-check-label"
+                                        for={`create-${role.permissions}`}
+                                      >
+                                        Create
+                                      </Label>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })}
                 </tbody>
               </Table>
             </Col>
             <Col className="text-center mt-2" xs={12}>
-              <Button type="submit" onClick={()=> submitRole()} color="primary" className="me-1">
+              <Button type="submit" onClick={() => submitRole()} color="primary" className="me-1">
                 Submit
               </Button>
               <Button type="reset" outline onClick={onReset}>

@@ -23,8 +23,6 @@ const PrivateRoute = ({ children, route }) => {
       resource = route.meta.resource
       restrictedRoute = route.meta.restricted
     }
-    console.log("route.meta", route)
-    console.log("ability", ability)
     if (!user) {
       return <Navigate to='/finger-2' />
     }

@@ -61,7 +61,7 @@ const GuarantorEcData = (props) => {
     { value: "Female", label: "Female" },
     { value: "Third", label: "Third Person" },
   ];
-  console.log("location 2", location?.state?.preUserdata)
+  // console.log("location 2", location?.state?.preUserdata)
   const createLoanApplication = (e) => {
     e.preventDefault();
     const ecdata = {
@@ -73,7 +73,7 @@ const GuarantorEcData = (props) => {
       dateOfBirth: state?.dateOfBirth,
       father: state?.father,
       mother: state?.mother,
-      gender: state?.gender?? "Male",
+      gender: state?.gender ?? "Male",
       spouse: state?.spouse,
       mobile: state?.mobile,
       designation: state?.designation,
@@ -86,10 +86,10 @@ const GuarantorEcData = (props) => {
     const individualLonee = {
       loan_no: preUserdata?.loan_no,
       branchName: state?.branchName,
-      applicantInfo: broweerType === 1 ? preUserdata?.applicantInfo: null,
-      applicantName: broweerType === 1 ? preUserdata?.applicantName: null,
-      applicantFatherName: broweerType === 1 ? preUserdata?.fatherName: null,
-      applicantMobile: broweerType === 1 ? preUserdata?.applicantMobile: null,
+      applicantInfo: broweerType === 1 ? preUserdata?.applicantInfo : null,
+      applicantName: broweerType === 1 ? preUserdata?.applicantName : null,
+      applicantFatherName: broweerType === 1 ? preUserdata?.fatherName : null,
+      applicantMobile: broweerType === 1 ? preUserdata?.applicantMobile : null,
       status: 0,
     };
     const companyLonee = {
@@ -101,8 +101,8 @@ const GuarantorEcData = (props) => {
       loanapplication: broweerType === 1 ? individualLonee : companyLonee,
       companyProfile: broweerType === 2 ? preUserdata?.companyProfile : null,
       loanee: preUserdata?.loanee,
-      guarantors:  [...preUserdata?.guarantors, ecdata],
-      coBorrowers:[...preUserdata?.coBorrowers],
+      guarantors: [...preUserdata?.guarantors, ecdata],
+      coBorrowers: [...preUserdata?.coBorrowers],
     };
     setBlock(true);
     axios
@@ -128,7 +128,7 @@ const GuarantorEcData = (props) => {
         setBlock(false);
         toast.error(err.data.result.errorMsg);
       });
-    console.log("send data", sendata);
+    // console.log("send data", sendata);
   };
   const getNidPhoto = () => {
     let sendData = {
@@ -140,7 +140,7 @@ const GuarantorEcData = (props) => {
       .then((res) => {
         if (res.data.result.error === false) {
           setBlock(false);
-          console.log("res.data.data", res.data.data);
+          // console.log("res.data.data", res.data.data);
           setNidPhoto(res.data.data?.photolink);
           // setData(res.data.data)
         } else if (res.data.result.error === true) {
@@ -165,7 +165,7 @@ const GuarantorEcData = (props) => {
         </CardHeader>
 
         <CardBody>
-          <form onSubmit={(e)=>createLoanApplication(e)}>
+          <form onSubmit={(e) => createLoanApplication(e)}>
             <Row>
               <Col
                 className="mb-1"
@@ -762,10 +762,10 @@ const GuarantorEcData = (props) => {
                 <Button
                   type="submit"
                   color="primary"
-                  // onClick={() => {
-                  //   localStorage.setItem("accountType", "5")
-                  //   window.location.href = "/nid-verify";
-                  // }}
+                // onClick={() => {
+                //   localStorage.setItem("accountType", "5")
+                //   window.location.href = "/nid-verify";
+                // }}
                 >
                   Submit
                 </Button>

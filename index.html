@@ -12,7 +12,6 @@
     <script src="fpCapturer.js"></script>
     <script type="text/javascript">
       function captureFinger(sender, dataHolder, extraData) {
-        console.log("extra data", extraData);
         var fpGrabber = new FingerCapturer(12002, "Verify Finger");
         fpGrabber.captureFinger(function (captureResponse) {
           if (!captureResponse.isError) {
@@ -31,7 +30,6 @@
               extraData,
             };
 
-            console.log("data index", data);
             // console.log("window", window.fingerComponent.receiveFingerData(data))
             // window.fingerComponent.receiveFingerData(data);
             window.receiveFingerData(data);
