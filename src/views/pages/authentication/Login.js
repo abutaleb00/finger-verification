@@ -9,7 +9,7 @@ import { useSkin } from '@hooks/useSkin'
 import toast from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 import { useForm, Controller } from 'react-hook-form'
-import { Coffee, X } from 'react-feather'
+import { Coffee, X, Shield, Globe, ArrowRight, AlertCircle } from 'react-feather'
 
 // ** Actions
 import { handleLogin } from '@store/authentication'
@@ -35,6 +35,10 @@ import {
   CardText,
   CardTitle,
   FormFeedback,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter
 } from 'reactstrap'
 
 // ** Illustrations Imports
@@ -46,7 +50,7 @@ import logo from '@src/assets/images/logo/logo.png'
 import '@styles/react/pages/page-authentication.scss'
 
 // ** Constants
-export const baseAPI_URL = 'https://sebfvs.southeastbank.com.bd/apiserver';
+export const baseAPI_URL = 'https://sebfvs.southeastbank.com.bd/apiserver'
 
 const ToastContent = ({ t, name, role }) => (
   <div className='d-flex'>
@@ -65,7 +69,7 @@ const ToastContent = ({ t, name, role }) => (
 
 const defaultValues = {
   password: "",
-  loginEmail: "",
+  loginEmail: ""
 }
 
 const Login = () => {
@@ -74,7 +78,10 @@ const Login = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const ability = useContext(AbilityContext)
+
+  // ** States
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errorModal, setErrorModal] = useState(false)
 
   const {
     control,
@@ -91,8 +98,9 @@ const Login = () => {
     }
   }, [navigate])
 
+  const toggleModal = () => setErrorModal(!errorModal)
+
   const getLogEnduser = (res) => {
-    // Corrected Path: res.data contains the tokens
     const accessToken = res.data?.access_token
     const refreshToken = res.data?.refresh_token
 
@@ -108,7 +116,7 @@ const Login = () => {
         "Authorization": `Bearer ${accessToken}`,
         "Content-Type": "application/json"
       }
-    };
+    }
 
     fetch(`${baseAPI_URL}/getloogedinuser`, requestOptions)
       .then(response => {
@@ -132,10 +140,7 @@ const Login = () => {
 
           dispatch(handleLogin(userData))
           ability.update(abilityfor)
-
-          // Redirect to home route based on role
           navigate(getHomeRouteForLoggedInUser(userData.roleName || 'admin'))
-
           toast(t => <ToastContent t={t} role={userData.role || 'User'} name={userData.fullName || userData.username || 'User'} />)
         } else {
           toast.error(result.result?.errorMsg || "Failed to load user data")
@@ -143,7 +148,7 @@ const Login = () => {
       })
       .catch(error => {
         console.error('Profile Error:', error)
-        toast.error("Login successful, but profile retrieval failed.")
+        toggleModal() // Show modal on network failure
       })
       .finally(() => setIsSubmitting(false))
   }
@@ -151,21 +156,21 @@ const Login = () => {
   const onSubmit = data => {
     setIsSubmitting(true)
 
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-    myHeaders.append("Authorization", "Basic bXktdHJ1c3RlZC1jbGllbnQ6c2VjcmV0");
+    const myHeaders = new Headers()
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded")
+    myHeaders.append("Authorization", "Basic bXktdHJ1c3RlZC1jbGllbnQ6c2VjcmV0")
 
-    const urlencoded = new URLSearchParams();
-    urlencoded.append("grant_type", "password");
-    urlencoded.append("username", data.loginEmail);
-    urlencoded.append("password", data.password);
+    const urlencoded = new URLSearchParams()
+    urlencoded.append("grant_type", "password")
+    urlencoded.append("username", data.loginEmail)
+    urlencoded.append("password", data.password)
 
     const requestOptions = {
       method: 'POST',
       headers: myHeaders,
       body: urlencoded,
       mode: 'cors'
-    };
+    }
 
     fetch(`${baseAPI_URL}/oauth/token`, requestOptions)
       .then(response => {
@@ -175,7 +180,6 @@ const Login = () => {
         return response.json()
       })
       .then(res => {
-        // Corrected Check: Verify res.data.access_token based on your specific JSON structure
         if (res.result?.error === false && res.data?.access_token) {
           getLogEnduser(res)
         } else {
@@ -186,18 +190,7 @@ const Login = () => {
       .catch(error => {
         setIsSubmitting(false)
         console.error('Fetch Error:', error)
-        toast.error(
-          <div>
-            <strong>Connection Failed:</strong>
-            <br />
-            API server unreachable. Verify your connection or SSL status.
-            <br />
-            <a href={baseAPI_URL} target="_blank" rel="noreferrer" style={{ textDecoration: 'underline' }}>
-              Verify API Access
-            </a>
-          </div>,
-          { duration: 6000 }
-        )
+        toggleModal() // Trigger the Diagnostic Modal
       })
   }
 
@@ -270,6 +263,88 @@ const Login = () => {
           </Col>
         </Col>
       </Row>
+
+      {/* Connection Diagnostic Modal */}
+      <Modal
+        isOpen={errorModal}
+        toggle={toggleModal}
+        className='modal-dialog-centered'
+        contentClassName='border-0 shadow-lg'
+        size='md'
+      >
+        <ModalBody className='p-0 overflow-hidden' style={{ borderRadius: '16px' }}>
+          {/* Header Section */}
+          <div className='text-center p-4' style={{ backgroundColor: '#fff' }}>
+            <div className='mb-3 d-inline-flex align-items-center justify-content-center'
+              style={{ width: '70px', height: '70px', borderRadius: '50%', backgroundColor: '#fee2e2' }}>
+              <Shield size={36} className='text-danger' />
+            </div>
+            <h3 className='fw-bolder text-dark mb-1' style={{ fontSize: '2.5rem' }}>Connection Failed</h3>
+            <h5 className='text-muted' style={{ fontSize: '1.5rem' }}>
+              The API server could not be reached.
+            </h5>
+            {/* Minimalist Top Close */}
+            <button
+              className='position-absolute border-0 bg-transparent'
+              style={{ top: '24px', right: '24px' }}
+              onClick={toggleModal}
+            >
+              <X size={24} className='text-muted' />
+            </button>
+          </div>
+
+          <div className='px-4 pb-4'>
+            {/* High-Readability Instruction Box */}
+            <div className='rounded-3 p-3 mb-2' style={{ backgroundColor: '#fff5f5', border: '1px solid #fecaca' }}>
+              <div className='d-flex align-items-center mb-2'>
+                <AlertCircle size={20} className='text-danger me-1' />
+                <span className='fw-bold text-dark' style={{ fontSize: '1.5rem' }}>How to fix:</span>
+              </div>
+
+              <div className='d-flex flex-column gap-1'>
+                <div className='d-flex align-items-center'>
+                  <span className='badge rounded-circle bg-white text-danger border me-2' style={{ width: '28px', height: '28px', lineHeight: '20px', fontSize: '1rem' }}>1</span>
+                  <span style={{ fontSize: '1.05rem', color: '#374151' }}>Click <strong>Authorize Connection</strong></span>
+                </div>
+                <div className='d-flex align-items-center'>
+                  <span className='badge rounded-circle bg-white text-danger border me-2' style={{ width: '28px', height: '28px', lineHeight: '20px', fontSize: '1rem' }}>2</span>
+                  <span style={{ fontSize: '1.05rem', color: '#374151' }}>Sign in to access this site <strong>then</strong> press <strong>"Cancel"</strong></span>
+                </div>
+                <div className='d-flex align-items-center'>
+                  <span className='badge rounded-circle bg-white text-danger border me-2' style={{ width: '28px', height: '28px', lineHeight: '20px', fontSize: '1rem' }}>3</span>
+                  <span style={{ fontSize: '1.05rem', color: '#374151' }}>Return here and log in again</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Aligned Action Buttons */}
+            <div className='d-flex gap-2'>
+              <Button
+                color='primary'
+                href={baseAPI_URL+'/oauth/token'}
+                target='_blank'
+                rel='noreferrer'
+                className='flex-grow-1 py-2 fw-bold d-flex align-items-center justify-content-center'
+                style={{ borderRadius: '10px', fontSize: '1rem' }}
+                onClick={toggleModal}
+              >
+                <Globe size={18} className='me-1' />
+                Authorize Connection
+              </Button>
+
+              <Button
+                color='secondary'
+                outline
+                className='py-2 fw-bold'
+                style={{ borderRadius: '10px', fontSize: '1rem', minWidth: '100px' }}
+                onClick={toggleModal}
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </ModalBody>
+      </Modal>
     </div>
   )
 }
